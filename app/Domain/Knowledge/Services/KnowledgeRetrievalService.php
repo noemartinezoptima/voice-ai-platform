@@ -2,7 +2,6 @@
 
 namespace App\Domain\Knowledge\Services;
 
-use App\Domain\Knowledge\Repositories\KnowledgeChunkRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class KnowledgeRetrievalService
@@ -56,7 +55,7 @@ class KnowledgeRetrievalService
     }
 
     /**
-     * @param float[] $queryEmbedding
+     * @param  float[]  $queryEmbedding
      * @return list<array{content: string, similarity: float, document_name: string, metadata: array<string, mixed>}>
      */
     private function searchSimilar(
@@ -97,8 +96,8 @@ class KnowledgeRetrievalService
     }
 
     /**
-     * @param float[] $a
-     * @param float[] $b
+     * @param  float[]  $a
+     * @param  float[]  $b
      */
     private function cosineSimilarity(array $a, array $b): float
     {

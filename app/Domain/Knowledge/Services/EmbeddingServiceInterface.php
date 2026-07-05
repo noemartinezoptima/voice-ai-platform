@@ -5,7 +5,7 @@ namespace App\Domain\Knowledge\Services;
 interface EmbeddingServiceInterface
 {
     /**
-     * @param string[] $texts
+     * @param  string[]  $texts
      * @return array<int, float[]>
      */
     public function embedMany(array $texts): array;
