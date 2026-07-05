@@ -20,6 +20,7 @@ class FlowRequest extends FormRequest
             'phone_number' => ['nullable', 'string', 'max:20'],
             'is_active' => ['boolean'],
             'config' => ['nullable', 'json'],
+            'template_id' => ['nullable', 'string', 'max:50'],
         ];
     }
 }

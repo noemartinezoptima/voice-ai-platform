@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Domain\Flow\Entities\Flow;
 use App\Domain\Flow\Repositories\FlowRepositoryInterface;
+use App\Domain\Flow\Services\FlowTemplates;
 use App\Domain\Flow\ValueObjects\FlowConfig;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FlowRequest;
@@ -37,24 +38,42 @@ class FlowController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('Flows/Create');
+        return Inertia::render('Flows/Create', [
+            'templates' => FlowTemplates::all(),
+        ]);
     }
 
     public function store(FlowRequest $request): RedirectResponse
     {
+        $templateId = $request->input('template_id');
+        $configArray = null;
+
+        if ($templateId !== null) {
+            foreach (FlowTemplates::all() as $tmpl) {
+                if ($tmpl['id'] === $templateId) {
+                    $configArray = $tmpl['config'];
+                    break;
+                }
+            }
+        }
+
+        if ($configArray === null) {
+            $configArray = [
+                'start_step' => 's1',
+                'steps' => [
+                    's1' => ['id' => 's1', 'type' => 'say', 'config' => ['text' => 'Hello from ZeroVoice'], 'next' => 'hangup'],
+                    'hangup' => ['id' => 'hangup', 'type' => 'hangup'],
+                ],
+            ];
+        }
+
         $flow = new Flow(
             id: (string) Str::uuid(),
             tenantId: $request->user()->tenant_id,
             name: $request->name,
             description: $request->description,
             phoneNumber: $request->phone_number,
-            config: FlowConfig::fromArray([
-                'start_step' => 's1',
-                'steps' => [
-                    's1' => ['id' => 's1', 'type' => 'say', 'config' => ['text' => 'Hello from ZeroVoice'], 'next' => 'hangup'],
-                    'hangup' => ['id' => 'hangup', 'type' => 'hangup'],
-                ],
-            ]),
+            config: FlowConfig::fromArray($configArray),
             isActive: $request->boolean('is_active'),
         );
 
