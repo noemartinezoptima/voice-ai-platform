@@ -1,0 +1,25 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+    "mcp": {
+        "herd": {
+            "type": "local",
+            "command": [
+                "/Users/zerocool/Library/Application Support/Herd/bin/php",
+                "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
+            ],
+            "env": {
+                "SITE_PATH": "/Volumes/ZeroCool/repos/voice-ai-platform"
+            },
+            "enabled": true
+        },
+        "laravel-boost": {
+            "type": "local",
+            "enabled": true,
+            "command": [
+                "php",
+                "artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}

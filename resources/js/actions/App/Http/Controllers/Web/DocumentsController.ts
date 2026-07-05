@@ -1,0 +1,326 @@
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../../wayfinder'
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::index
+* @see app/Http/Controllers/Web/DocumentsController.php:28
+* @route '/settings/documents'
+*/
+export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
+    method: 'get',
+})
+
+index.definition = {
+    methods: ["get","head"],
+    url: '/settings/documents',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::index
+* @see app/Http/Controllers/Web/DocumentsController.php:28
+* @route '/settings/documents'
+*/
+index.url = (options?: RouteQueryOptions) => {
+    return index.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::index
+* @see app/Http/Controllers/Web/DocumentsController.php:28
+* @route '/settings/documents'
+*/
+index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::index
+* @see app/Http/Controllers/Web/DocumentsController.php:28
+* @route '/settings/documents'
+*/
+index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: index.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::create
+* @see app/Http/Controllers/Web/DocumentsController.php:39
+* @route '/settings/documents/create'
+*/
+export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: create.url(options),
+    method: 'get',
+})
+
+create.definition = {
+    methods: ["get","head"],
+    url: '/settings/documents/create',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::create
+* @see app/Http/Controllers/Web/DocumentsController.php:39
+* @route '/settings/documents/create'
+*/
+create.url = (options?: RouteQueryOptions) => {
+    return create.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::create
+* @see app/Http/Controllers/Web/DocumentsController.php:39
+* @route '/settings/documents/create'
+*/
+create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: create.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::create
+* @see app/Http/Controllers/Web/DocumentsController.php:39
+* @route '/settings/documents/create'
+*/
+create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: create.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::store
+* @see app/Http/Controllers/Web/DocumentsController.php:51
+* @route '/settings/documents'
+*/
+export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(options),
+    method: 'post',
+})
+
+store.definition = {
+    methods: ["post"],
+    url: '/settings/documents',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::store
+* @see app/Http/Controllers/Web/DocumentsController.php:51
+* @route '/settings/documents'
+*/
+store.url = (options?: RouteQueryOptions) => {
+    return store.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::store
+* @see app/Http/Controllers/Web/DocumentsController.php:51
+* @route '/settings/documents'
+*/
+store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::show
+* @see app/Http/Controllers/Web/DocumentsController.php:76
+* @route '/settings/documents/{document}'
+*/
+export const show = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: show.url(args, options),
+    method: 'get',
+})
+
+show.definition = {
+    methods: ["get","head"],
+    url: '/settings/documents/{document}',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::show
+* @see app/Http/Controllers/Web/DocumentsController.php:76
+* @route '/settings/documents/{document}'
+*/
+show.url = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { document: args }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            document: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        document: args.document,
+    }
+
+    return show.definition.url
+            .replace('{document}', parsedArgs.document.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::show
+* @see app/Http/Controllers/Web/DocumentsController.php:76
+* @route '/settings/documents/{document}'
+*/
+show.get = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: show.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::show
+* @see app/Http/Controllers/Web/DocumentsController.php:76
+* @route '/settings/documents/{document}'
+*/
+show.head = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: show.url(args, options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::destroy
+* @see app/Http/Controllers/Web/DocumentsController.php:95
+* @route '/settings/documents/{document}'
+*/
+export const destroy = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
+    method: 'delete',
+})
+
+destroy.definition = {
+    methods: ["delete"],
+    url: '/settings/documents/{document}',
+} satisfies RouteDefinition<["delete"]>
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::destroy
+* @see app/Http/Controllers/Web/DocumentsController.php:95
+* @route '/settings/documents/{document}'
+*/
+destroy.url = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { document: args }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            document: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        document: args.document,
+    }
+
+    return destroy.definition.url
+            .replace('{document}', parsedArgs.document.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::destroy
+* @see app/Http/Controllers/Web/DocumentsController.php:95
+* @route '/settings/documents/{document}'
+*/
+destroy.delete = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
+    method: 'delete',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::reProcess
+* @see app/Http/Controllers/Web/DocumentsController.php:109
+* @route '/settings/documents/{document}/reprocess'
+*/
+export const reProcess = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: reProcess.url(args, options),
+    method: 'post',
+})
+
+reProcess.definition = {
+    methods: ["post"],
+    url: '/settings/documents/{document}/reprocess',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::reProcess
+* @see app/Http/Controllers/Web/DocumentsController.php:109
+* @route '/settings/documents/{document}/reprocess'
+*/
+reProcess.url = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { document: args }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            document: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        document: args.document,
+    }
+
+    return reProcess.definition.url
+            .replace('{document}', parsedArgs.document.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::reProcess
+* @see app/Http/Controllers/Web/DocumentsController.php:109
+* @route '/settings/documents/{document}/reprocess'
+*/
+reProcess.post = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: reProcess.url(args, options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::uploadFile
+* @see app/Http/Controllers/Web/DocumentsController.php:122
+* @route '/settings/documents/upload'
+*/
+export const uploadFile = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: uploadFile.url(options),
+    method: 'post',
+})
+
+uploadFile.definition = {
+    methods: ["post"],
+    url: '/settings/documents/upload',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::uploadFile
+* @see app/Http/Controllers/Web/DocumentsController.php:122
+* @route '/settings/documents/upload'
+*/
+uploadFile.url = (options?: RouteQueryOptions) => {
+    return uploadFile.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\DocumentsController::uploadFile
+* @see app/Http/Controllers/Web/DocumentsController.php:122
+* @route '/settings/documents/upload'
+*/
+uploadFile.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: uploadFile.url(options),
+    method: 'post',
+})
+
+const DocumentsController = { index, create, store, show, destroy, reProcess, uploadFile }
+
+export default DocumentsController

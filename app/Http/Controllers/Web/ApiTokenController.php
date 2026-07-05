@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Controllers\Web;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ApiTokenRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Inertia\Inertia;
+use Inertia\Response;
+
+class ApiTokenController extends Controller
+{
+    public function index(Request $request): Response
+    {
+        $tokens = $request->user()->tokens()->orderBy('created_at', 'desc')->get()->map(fn ($t) => [
+            'id' => $t->id,
+            'name' => $t->name,
+            'abilities' => $t->abilities,
+            'last_used_at' => $t->last_used_at?->diffForHumans(),
+            'created_at' => $t->created_at->toDateTimeString(),
+            'expires_at' => $t->expires_at?->toDateTimeString(),
+        ]);
+
+        return Inertia::render('ApiTokens/Index', [
+            'tokens' => $tokens,
+        ]);
+    }
+
+    public function store(ApiTokenRequest $request): RedirectResponse
+    {
+        $abilities = $request->abilities
+            ? array_map('trim', explode(',', $request->abilities))
+            : ['*'];
+
+        $token = $request->user()->createToken(
+            $request->name,
+            $abilities,
+            Carbon::now()->addYear(),
+        );
+
+        return redirect()->route('api-tokens.index')
+            ->with('token', $token->plainTextToken);
+    }
+
+    public function destroy(Request $request, string $id): RedirectResponse
+    {
+        $request->user()->tokens()->where('id', $id)->delete();
+
+        return redirect()->route('api-tokens.index')
+            ->with('success', 'Token revoked.');
+    }
+}

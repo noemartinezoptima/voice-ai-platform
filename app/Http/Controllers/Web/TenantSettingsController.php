@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Http\Controllers\Web;
+
+use App\Domain\Tenant\Entities\Tenant;
+use App\Domain\Tenant\Repositories\TenantRepositoryInterface;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\TenantSettingsRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
+
+class TenantSettingsController extends Controller
+{
+    public function __construct(
+        private readonly TenantRepositoryInterface $tenantRepository,
+    ) {}
+
+    private const MASK = '********';
+
+    public function edit(Request $request): Response
+    {
+        $tenant = $this->tenantRepository->findById($request->user()->tenant_id);
+
+        abort_if($tenant === null, 404);
+
+        $settings = $tenant->settings();
+
+        return Inertia::render('Settings/Tenant', [
+            'tenant' => [
+                'id' => $tenant->id(),
+                'name' => $tenant->name(),
+                'slug' => $tenant->slug(),
+                'timezone' => $settings['timezone'] ?? null,
+                'default_language' => $settings['default_language'] ?? null,
+                'is_active' => $tenant->isActive(),
+                'twilio_account_sid' => $settings['twilio_account_sid'] ?? '',
+                'twilio_auth_token' => isset($settings['twilio_auth_token']) ? self::MASK : '',
+                'twilio_phone_number' => $settings['twilio_phone_number'] ?? '',
+                'elevenlabs_api_key' => isset($settings['elevenlabs_api_key']) ? self::MASK : '',
+                'elevenlabs_default_voice_id' => $settings['elevenlabs_default_voice_id'] ?? '',
+            ],
+        ]);
+    }
+
+    public function update(TenantSettingsRequest $request): RedirectResponse
+    {
+        $existing = $this->tenantRepository->findById($request->user()->tenant_id);
+
+        abort_if($existing === null, 404);
+
+        $settings = $existing->settings();
+        $settings['timezone'] = $request->timezone;
+        $settings['default_language'] = $request->default_language;
+        $settings['twilio_account_sid'] = $request->twilio_account_sid;
+        $settings['twilio_phone_number'] = $request->twilio_phone_number;
+        $settings['elevenlabs_default_voice_id'] = $request->elevenlabs_default_voice_id;
+
+        if ($request->twilio_auth_token !== self::MASK) {
+            $settings['twilio_auth_token'] = $request->twilio_auth_token;
+        }
+
+        if ($request->elevenlabs_api_key !== self::MASK) {
+            $settings['elevenlabs_api_key'] = $request->elevenlabs_api_key;
+        }
+
+        $updated = new Tenant(
+            id: $existing->id(),
+            name: $request->name,
+            slug: $request->slug,
+            settings: $settings,
+            isActive: $existing->isActive(),
+        );
+
+        $this->tenantRepository->save($updated);
+
+        return redirect()->route('settings.tenant')
+            ->with('success', 'Settings saved.');
+    }
+}

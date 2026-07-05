@@ -1,0 +1,16 @@
+includes:
+    - vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    level: 6
+    paths:
+        - app
+    tmpDir: storage/framework/cache/phpstan
+    excludePaths:
+        - .phpstorm.meta.php
+        - _ide_helper.php
+        - _ide_helper_models.php
+    databaseMigrationsPath:
+        - database/migrations
+
+

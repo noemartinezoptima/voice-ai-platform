@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'failed' => 'These credentials do not match our records.',
+    'password' => 'The provided password is incorrect.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'login' => 'Log In',
+    'register' => 'Register',
+    'logout' => 'Log Out',
+    'email' => 'Email',
+    'password_field' => 'Password',
+    'confirm_password' => 'Confirm Password',
+    'remember_me' => 'Remember Me',
+    'forgot_password' => 'Forgot your password?',
+    'reset_password' => 'Reset Password',
+    'send_reset_link' => 'Send Password Reset Link',
+    'verify_email' => 'Verify Your Email Address',
+    'verification_link_sent' => 'A fresh verification link has been sent to your email.',
+    'verify_notice' => 'Before proceeding, please check your email for a verification link.',
+    'verify_resend' => 'If you did not receive the email, click here to request another.',
+    'name' => 'Name',
+    'already_registered' => 'Already registered?',
+    'accept_invite' => 'Accept Invitation',
+    'join_team' => 'You have been invited to join :team.',
+    'register_to_accept' => 'Create an account to accept the invitation.',
+];

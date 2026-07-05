@@ -1,0 +1,25 @@
+{
+  "name": "media-stream-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "ws": "^8.16.0",
+    "dotenv": "^16.4.0",
+    "redis": "^4.6.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "tsx": "^4.16.0",
+    "@types/ws": "^8.5.10",
+    "@types/node": "^22.0.0",
+    "vitest": "^2.0.0"
+  }
+}

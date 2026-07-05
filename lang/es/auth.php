@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'failed' => 'Estas credenciales no coinciden con nuestros registros.',
+    'password' => 'La contraseña ingresada es incorrecta.',
+    'throttle' => 'Demasiados intentos. Intenta de nuevo en :seconds segundos.',
+    'login' => 'Iniciar Sesión',
+    'register' => 'Registrarse',
+    'logout' => 'Cerrar Sesión',
+    'email' => 'Correo Electrónico',
+    'password_field' => 'Contraseña',
+    'confirm_password' => 'Confirmar Contraseña',
+    'remember_me' => 'Recordarme',
+    'forgot_password' => '¿Olvidaste tu contraseña?',
+    'reset_password' => 'Restablecer Contraseña',
+    'send_reset_link' => 'Enviar Enlace',
+    'verify_email' => 'Verifica tu Correo',
+    'verification_link_sent' => 'Se ha enviado un enlace de verificación.',
+    'verify_notice' => 'Revisa tu correo para el enlace de verificación.',
+    'verify_resend' => 'Si no recibiste el correo, haz clic aquí para solicitar otro.',
+    'name' => 'Nombre',
+    'already_registered' => '¿Ya registrado?',
+    'accept_invite' => 'Aceptar Invitación',
+    'join_team' => 'Has sido invitado a :team.',
+    'register_to_accept' => 'Crea una cuenta para aceptar la invitación.',
+];
