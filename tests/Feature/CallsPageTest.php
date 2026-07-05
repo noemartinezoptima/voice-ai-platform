@@ -114,4 +114,42 @@ class CallsPageTest extends TestCase
             ->get('/calls/nonexistent-id')
             ->assertNotFound();
     }
+
+    public function test_export_csv_requires_authentication(): void
+    {
+        $this->get('/calls/export/csv')->assertRedirect('/login');
+    }
+
+    public function test_export_csv_downloads(): void
+    {
+        CallModelFactory::new()->count(2)->create(['tenant_id' => $this->user->tenant_id]);
+
+        $response = $this->actingAs($this->user)->get('/calls/export/csv');
+
+        $response->assertOk();
+        $response->assertHeader('Content-Type', 'text/csv; charset=utf-8');
+        $this->assertStringStartsWith('attachment; filename="calls-export-', $response->headers->get('Content-Disposition'));
+        $content = $response->getContent();
+        $this->assertStringStartsWith('CallSid,From,To,Status,Duration,Flow,StartedAt,EndedAt,RecordingUrl,Notes', $content);
+        $this->assertStringContainsString('completed', $content);
+    }
+
+    public function test_export_csv_respects_tenant_scoping(): void
+    {
+        $myTenant = TenantFactory::new()->create();
+        $myUser = User::factory()->create(['tenant_id' => $myTenant->id]);
+
+        CallModelFactory::new()->create(['tenant_id' => $myTenant->id, 'from_number' => '+1111']);
+        CallModelFactory::new()->create(['tenant_id' => $myTenant->id, 'from_number' => '+2222', 'status' => 'failed']);
+        $otherTenant = TenantFactory::new()->create();
+        CallModelFactory::new()->create(['tenant_id' => $otherTenant->id, 'from_number' => '+3333']);
+
+        $response = $this->actingAs($myUser)->get('/calls/export/csv');
+
+        $response->assertOk();
+        $content = $response->getContent();
+        $this->assertStringContainsString('+1111', $content);
+        $this->assertStringContainsString('+2222', $content);
+        $this->assertStringNotContainsString('+3333', $content);
+    }
 }

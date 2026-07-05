@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/calls', [CallController::class, 'index'])->name('calls.index');
     Route::get('/calls/{call}', [CallController::class, 'show'])->name('calls.show');
     Route::patch('/calls/{call}/notes', [CallController::class, 'updateNotes'])->name('calls.notes');
+    Route::get('/calls/export/csv', [CallController::class, 'exportCsv'])->name('calls.export');
 
     Route::get('/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');

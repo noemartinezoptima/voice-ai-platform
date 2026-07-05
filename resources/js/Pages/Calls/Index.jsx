@@ -6,6 +6,7 @@ import { Text } from '@/Components/catalyst/text';
 import { Input } from '@/Components/catalyst/input';
 import { Select } from '@/Components/catalyst/select';
 import { Badge } from '@/Components/catalyst/badge';
+import { Button } from '@/Components/catalyst/button';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
 import { Pagination, PaginationList, PaginationPage, PaginationGap, PaginationNext, PaginationPrevious } from '@/Components/catalyst/pagination';
 import { index, show } from '@/actions/App/Http/Controllers/Web/CallController';
@@ -73,6 +74,17 @@ export default function Index({ calls, filters }) {
                         <option value="transferred">Transferred</option>
                     </Select>
                 </div>
+                <Button
+                    outline
+                    onClick={() => {
+                        const params = new URLSearchParams();
+                        if (search) params.set('search', search);
+                        if (status) params.set('status', status);
+                        window.location.href = '/calls/export/csv?' + params.toString();
+                    }}
+                >
+                    Export CSV
+                </Button>
             </div>
 
             {calls.data.length === 0 ? (
