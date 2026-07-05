@@ -12,6 +12,7 @@ import {
     LogOut,
     ChevronUp,
     FileText,
+    Radio,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -22,6 +23,7 @@ import { Dropdown, DropdownButton, DropdownMenu, DropdownItem, DropdownDivider, 
 import { dashboard, logout } from '@/routes'
 import { index as flowsIndex } from '@/actions/App/Http/Controllers/Web/FlowController'
 import { index as callsIndex } from '@/actions/App/Http/Controllers/Web/CallController'
+import { index as monitorIndex } from '@/actions/App/Http/Controllers/Web/MonitorController'
 import { index as apiTokensIndex } from '@/actions/App/Http/Controllers/Web/ApiTokenController'
 import { edit as profileEdit } from '@/routes/profile'
 import { index as teamIndex } from '@/routes/team'
@@ -33,6 +35,7 @@ const navItems = [
     { label: 'Dashboard', href: dashboard().url, icon: LayoutDashboard, active: 'dashboard' },
     { label: 'Flows', href: flowsIndex().url, icon: GitBranch, active: 'flows.*' },
     { label: 'Calls', href: callsIndex().url, icon: Phone, active: 'calls.*' },
+    { label: 'Monitor', href: monitorIndex().url, icon: Radio, active: 'monitor.*' },
     { label: 'Team', href: teamIndex().url, icon: Users, active: 'team.*' },
     { label: 'API Tokens', href: apiTokensIndex().url, icon: Key, active: 'api-tokens.*' },
     { label: 'Settings', href: settingsTenant().url, icon: Settings, active: 'settings.tenant' },

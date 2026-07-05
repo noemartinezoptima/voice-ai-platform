@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::index
-* @see app/Http/Controllers/Web/DocumentsController.php:28
+* @see app/Http/Controllers/Web/DocumentsController.php:29
 * @route '/settings/documents'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::index
-* @see app/Http/Controllers/Web/DocumentsController.php:28
+* @see app/Http/Controllers/Web/DocumentsController.php:29
 * @route '/settings/documents'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::index
-* @see app/Http/Controllers/Web/DocumentsController.php:28
+* @see app/Http/Controllers/Web/DocumentsController.php:29
 * @route '/settings/documents'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::index
-* @see app/Http/Controllers/Web/DocumentsController.php:28
+* @see app/Http/Controllers/Web/DocumentsController.php:29
 * @route '/settings/documents'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::create
-* @see app/Http/Controllers/Web/DocumentsController.php:39
+* @see app/Http/Controllers/Web/DocumentsController.php:40
 * @route '/settings/documents/create'
 */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -60,7 +60,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::create
-* @see app/Http/Controllers/Web/DocumentsController.php:39
+* @see app/Http/Controllers/Web/DocumentsController.php:40
 * @route '/settings/documents/create'
 */
 create.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::create
-* @see app/Http/Controllers/Web/DocumentsController.php:39
+* @see app/Http/Controllers/Web/DocumentsController.php:40
 * @route '/settings/documents/create'
 */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -79,7 +79,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::create
-* @see app/Http/Controllers/Web/DocumentsController.php:39
+* @see app/Http/Controllers/Web/DocumentsController.php:40
 * @route '/settings/documents/create'
 */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -89,7 +89,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::store
-* @see app/Http/Controllers/Web/DocumentsController.php:51
+* @see app/Http/Controllers/Web/DocumentsController.php:52
 * @route '/settings/documents'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -104,7 +104,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::store
-* @see app/Http/Controllers/Web/DocumentsController.php:51
+* @see app/Http/Controllers/Web/DocumentsController.php:52
 * @route '/settings/documents'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -113,7 +113,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::store
-* @see app/Http/Controllers/Web/DocumentsController.php:51
+* @see app/Http/Controllers/Web/DocumentsController.php:52
 * @route '/settings/documents'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -123,7 +123,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::show
-* @see app/Http/Controllers/Web/DocumentsController.php:76
+* @see app/Http/Controllers/Web/DocumentsController.php:77
 * @route '/settings/documents/{document}'
 */
 export const show = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -138,7 +138,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::show
-* @see app/Http/Controllers/Web/DocumentsController.php:76
+* @see app/Http/Controllers/Web/DocumentsController.php:77
 * @route '/settings/documents/{document}'
 */
 show.url = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -165,7 +165,7 @@ show.url = (args: { document: string | number } | [document: string | number ] |
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::show
-* @see app/Http/Controllers/Web/DocumentsController.php:76
+* @see app/Http/Controllers/Web/DocumentsController.php:77
 * @route '/settings/documents/{document}'
 */
 show.get = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -175,7 +175,7 @@ show.get = (args: { document: string | number } | [document: string | number ] |
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::show
-* @see app/Http/Controllers/Web/DocumentsController.php:76
+* @see app/Http/Controllers/Web/DocumentsController.php:77
 * @route '/settings/documents/{document}'
 */
 show.head = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -185,7 +185,7 @@ show.head = (args: { document: string | number } | [document: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::destroy
-* @see app/Http/Controllers/Web/DocumentsController.php:95
+* @see app/Http/Controllers/Web/DocumentsController.php:96
 * @route '/settings/documents/{document}'
 */
 export const destroy = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -200,7 +200,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::destroy
-* @see app/Http/Controllers/Web/DocumentsController.php:95
+* @see app/Http/Controllers/Web/DocumentsController.php:96
 * @route '/settings/documents/{document}'
 */
 destroy.url = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -227,7 +227,7 @@ destroy.url = (args: { document: string | number } | [document: string | number 
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::destroy
-* @see app/Http/Controllers/Web/DocumentsController.php:95
+* @see app/Http/Controllers/Web/DocumentsController.php:96
 * @route '/settings/documents/{document}'
 */
 destroy.delete = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -237,7 +237,7 @@ destroy.delete = (args: { document: string | number } | [document: string | numb
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::reprocess
-* @see app/Http/Controllers/Web/DocumentsController.php:109
+* @see app/Http/Controllers/Web/DocumentsController.php:110
 * @route '/settings/documents/{document}/reprocess'
 */
 export const reprocess = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -252,7 +252,7 @@ reprocess.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::reprocess
-* @see app/Http/Controllers/Web/DocumentsController.php:109
+* @see app/Http/Controllers/Web/DocumentsController.php:110
 * @route '/settings/documents/{document}/reprocess'
 */
 reprocess.url = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -279,7 +279,7 @@ reprocess.url = (args: { document: string | number } | [document: string | numbe
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::reprocess
-* @see app/Http/Controllers/Web/DocumentsController.php:109
+* @see app/Http/Controllers/Web/DocumentsController.php:110
 * @route '/settings/documents/{document}/reprocess'
 */
 reprocess.post = (args: { document: string | number } | [document: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -289,7 +289,7 @@ reprocess.post = (args: { document: string | number } | [document: string | numb
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::upload
-* @see app/Http/Controllers/Web/DocumentsController.php:122
+* @see app/Http/Controllers/Web/DocumentsController.php:123
 * @route '/settings/documents/upload'
 */
 export const upload = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -304,7 +304,7 @@ upload.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::upload
-* @see app/Http/Controllers/Web/DocumentsController.php:122
+* @see app/Http/Controllers/Web/DocumentsController.php:123
 * @route '/settings/documents/upload'
 */
 upload.url = (options?: RouteQueryOptions) => {
@@ -313,7 +313,7 @@ upload.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DocumentsController::upload
-* @see app/Http/Controllers/Web/DocumentsController.php:122
+* @see app/Http/Controllers/Web/DocumentsController.php:123
 * @route '/settings/documents/upload'
 */
 upload.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

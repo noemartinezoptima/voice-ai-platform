@@ -152,4 +152,62 @@ class CallsPageTest extends TestCase
         $this->assertStringContainsString('+2222', $content);
         $this->assertStringNotContainsString('+3333', $content);
     }
+
+    public function test_monitor_index_requires_authentication(): void
+    {
+        $this->get('/monitor')->assertRedirect('/login');
+    }
+
+    public function test_monitor_index_renders(): void
+    {
+        $this->actingAs($this->user)->get('/monitor')->assertOk();
+    }
+
+    public function test_monitor_active_returns_json(): void
+    {
+        $this->actingAs($this->user)->get('/monitor/active')
+            ->assertOk()
+            ->assertJsonStructure(['calls']);
+    }
+
+    public function test_monitor_active_only_shows_live_calls(): void
+    {
+        CallModelFactory::new()->create([
+            'tenant_id' => $this->user->tenant_id,
+            'status' => 'in_progress',
+            'from_number' => '+1111',
+        ]);
+        CallModelFactory::new()->create([
+            'tenant_id' => $this->user->tenant_id,
+            'status' => 'completed',
+            'from_number' => '+2222',
+        ]);
+
+        $response = $this->actingAs($this->user)->get('/monitor/active');
+
+        $content = $response->json();
+        $this->assertCount(1, $content['calls']);
+        $this->assertEquals('+1111', $content['calls'][0]['from_number']);
+    }
+
+    public function test_monitor_active_scoped_to_tenant(): void
+    {
+        $otherTenant = TenantFactory::new()->create();
+        CallModelFactory::new()->create([
+            'tenant_id' => $otherTenant->id,
+            'status' => 'in_progress',
+            'from_number' => '+3333',
+        ]);
+        CallModelFactory::new()->create([
+            'tenant_id' => $this->user->tenant_id,
+            'status' => 'in_progress',
+            'from_number' => '+1111',
+        ]);
+
+        $response = $this->actingAs($this->user)->get('/monitor/active');
+
+        $content = $response->json();
+        $this->assertCount(1, $content['calls']);
+        $this->assertEquals('+1111', $content['calls'][0]['from_number']);
+    }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Web\CallController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DocumentsController;
 use App\Http\Controllers\Web\FlowController;
+use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\TenantSettingsController;
 use App\Http\Controllers\Web\VoiceSettingsController;
@@ -54,9 +55,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/flows/{flow}', [FlowController::class, 'destroy'])->name('flows.destroy');
 
     Route::get('/calls', [CallController::class, 'index'])->name('calls.index');
+    Route::get('/calls/export/csv', [CallController::class, 'exportCsv'])->name('calls.export');
     Route::get('/calls/{call}', [CallController::class, 'show'])->name('calls.show');
     Route::patch('/calls/{call}/notes', [CallController::class, 'updateNotes'])->name('calls.notes');
-    Route::get('/calls/export/csv', [CallController::class, 'exportCsv'])->name('calls.export');
+
+    Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor.index');
+    Route::get('/monitor/active', [MonitorController::class, 'active'])->name('monitor.active');
 
     Route::get('/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');

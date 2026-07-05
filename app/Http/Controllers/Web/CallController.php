@@ -118,8 +118,8 @@ class CallController extends Controller
     }
 
     /**
-     * @param array<int, string> $headers
-     * @param array<int, array<int, string>> $rows
+     * @param  array<int, string>  $headers
+     * @param  array<int, array<int, string>>  $rows
      */
     private function arrayToCsv(array $headers, array $rows): string
     {
