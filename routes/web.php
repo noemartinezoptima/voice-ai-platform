@@ -24,7 +24,7 @@ Route::post('twilio/step', [WebhookController::class, 'step'])->middleware('twil
 Route::post('twilio/status', [WebhookController::class, 'status'])->middleware('twilio.verify');
 Route::post('twilio/gather', [WebhookController::class, 'gather'])->middleware('twilio.verify');
 Route::post('twilio/recording', [WebhookController::class, 'recording'])->middleware('twilio.verify');
-Route::post('twilio/sms/inbound', [TwilioSmsController::class, 'inbound']);
+Route::post('twilio/sms/inbound', [TwilioSmsController::class, 'inbound'])->middleware('throttle:twilio');
 
 Route::get('/', function () {
     if (Auth::check()) {
