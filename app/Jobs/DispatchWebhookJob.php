@@ -17,7 +17,7 @@ class DispatchWebhookJob implements ShouldQueue
     public int $timeout = 10;
 
     /**
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public function __construct(
         private readonly WebhookDestinationModel $webhook,

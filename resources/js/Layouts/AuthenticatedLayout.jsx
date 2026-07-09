@@ -14,6 +14,7 @@ import {
     FileText,
     Radio,
     Webhook,
+    MessageSquare,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -32,12 +33,14 @@ import { tenant as settingsTenant } from '@/routes/settings'
 import { edit as settingsVoice } from '@/actions/App/Http/Controllers/Web/VoiceSettingsController'
 import { index as documentsIndex } from '@/actions/App/Http/Controllers/Web/DocumentsController'
 import { index as webhooksIndex } from '@/actions/App/Http/Controllers/Web/WebhookDestinationController'
+import { index as smsIndex } from '@/actions/App/Http/Controllers/Web/SmsController'
 
 const navItems = [
     { label: 'Dashboard', href: dashboard().url, icon: LayoutDashboard, active: 'dashboard' },
     { label: 'Flows', href: flowsIndex().url, icon: GitBranch, active: 'flows.*' },
     { label: 'Calls', href: callsIndex().url, icon: Phone, active: 'calls.*' },
     { label: 'Monitor', href: monitorIndex().url, icon: Radio, active: 'monitor.*' },
+    { label: 'SMS', href: smsIndex().url, icon: MessageSquare, active: 'sms.*' },
     { label: 'Team', href: teamIndex().url, icon: Users, active: 'team.*' },
     { label: 'API Tokens', href: apiTokensIndex().url, icon: Key, active: 'api-tokens.*' },
     { label: 'Settings', href: settingsTenant().url, icon: Settings, active: 'settings.tenant' },

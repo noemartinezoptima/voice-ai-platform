@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Twilio\SmsController as TwilioSmsController;
 use App\Http\Controllers\Twilio\WebhookController;
 use App\Http\Controllers\Web\AcceptInviteController;
 use App\Http\Controllers\Web\ApiTokenController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DocumentsController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\MonitorController;
+use App\Http\Controllers\Web\SmsController;
 use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\TenantSettingsController;
 use App\Http\Controllers\Web\VoiceSettingsController;
@@ -22,6 +24,7 @@ Route::post('twilio/step', [WebhookController::class, 'step'])->middleware('twil
 Route::post('twilio/status', [WebhookController::class, 'status'])->middleware('twilio.verify');
 Route::post('twilio/gather', [WebhookController::class, 'gather'])->middleware('twilio.verify');
 Route::post('twilio/recording', [WebhookController::class, 'recording'])->middleware('twilio.verify');
+Route::post('twilio/sms/inbound', [TwilioSmsController::class, 'inbound']);
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -62,6 +65,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor.index');
     Route::get('/monitor/active', [MonitorController::class, 'active'])->name('monitor.active');
+
+    Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
 
     Route::get('/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');

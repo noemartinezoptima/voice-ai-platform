@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property string $id
@@ -16,12 +17,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property array<int, string> $events
  * @property string|null $description
  * @property bool $is_active
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 class WebhookDestinationModel extends Model
 {
-    /** @use HasFactory<\Database\Factories\WebhookDestinationModelFactory> */
+    /** @use HasFactory<WebhookDestinationModelFactory> */
     use HasFactory, HasUuids;
 
     protected $table = 'webhook_destinations';
@@ -42,7 +43,7 @@ class WebhookDestinationModel extends Model
         ];
     }
 
-    /** @return BelongsTo<\App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel, *> */
+    /** @return BelongsTo<TenantModel, *> */
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(TenantModel::class);
