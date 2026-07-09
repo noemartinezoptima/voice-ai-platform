@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug
  * @property array<string, mixed>|null $settings
  * @property bool $is_active
+ * @property string $plan
+ * @property string|null $stripe_customer_id
  */
 class TenantModel extends Model
 {
@@ -23,6 +25,8 @@ class TenantModel extends Model
         'slug',
         'settings',
         'is_active',
+        'plan',
+        'stripe_customer_id',
     ];
 
     protected function casts(): array
@@ -30,6 +34,7 @@ class TenantModel extends Model
         return [
             'settings' => 'array',
             'is_active' => 'boolean',
+            'plan' => 'string',
         ];
     }
 }

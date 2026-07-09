@@ -15,6 +15,7 @@ import {
     Radio,
     Webhook,
     MessageSquare,
+    CreditCard,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -34,6 +35,7 @@ import { edit as settingsVoice } from '@/actions/App/Http/Controllers/Web/VoiceS
 import { index as documentsIndex } from '@/actions/App/Http/Controllers/Web/DocumentsController'
 import { index as webhooksIndex } from '@/actions/App/Http/Controllers/Web/WebhookDestinationController'
 import { index as smsIndex } from '@/actions/App/Http/Controllers/Web/SmsController'
+import { index as billingIndex } from '@/actions/App/Http/Controllers/Web/BillingController'
 
 const navItems = [
     { label: 'Dashboard', href: dashboard().url, icon: LayoutDashboard, active: 'dashboard' },
@@ -47,6 +49,7 @@ const navItems = [
     { label: 'Voice & Language', href: settingsVoice().url, icon: Phone, active: 'settings.voice' },
     { label: 'Documents', href: documentsIndex().url, icon: FileText, active: 'settings.documents.*' },
     { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
+    { label: 'Billing', href: billingIndex().url, icon: CreditCard, active: 'billing.*' },
 ]
 
 function AccountDropdownMenu({ anchor }) {

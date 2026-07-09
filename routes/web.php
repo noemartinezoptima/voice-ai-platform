@@ -5,6 +5,7 @@ use App\Http\Controllers\Twilio\SmsController as TwilioSmsController;
 use App\Http\Controllers\Twilio\WebhookController;
 use App\Http\Controllers\Web\AcceptInviteController;
 use App\Http\Controllers\Web\ApiTokenController;
+use App\Http\Controllers\Web\BillingController;
 use App\Http\Controllers\Web\CallController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DocumentsController;
@@ -67,6 +68,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/monitor/active', [MonitorController::class, 'active'])->name('monitor.active');
 
     Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
+
+    Route::get('/billing', [BillingController::class, 'index'])->name('billing.index');
+    Route::patch('/billing/plan', [BillingController::class, 'updatePlan'])->name('billing.update');
 
     Route::get('/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');

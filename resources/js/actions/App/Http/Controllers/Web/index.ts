@@ -3,6 +3,7 @@ import FlowController from './FlowController'
 import CallController from './CallController'
 import MonitorController from './MonitorController'
 import SmsController from './SmsController'
+import BillingController from './BillingController'
 import ApiTokenController from './ApiTokenController'
 import TenantSettingsController from './TenantSettingsController'
 import VoiceSettingsController from './VoiceSettingsController'
@@ -17,6 +18,7 @@ const Web = {
     CallController: Object.assign(CallController, CallController),
     MonitorController: Object.assign(MonitorController, MonitorController),
     SmsController: Object.assign(SmsController, SmsController),
+    BillingController: Object.assign(BillingController, BillingController),
     ApiTokenController: Object.assign(ApiTokenController, ApiTokenController),
     TenantSettingsController: Object.assign(TenantSettingsController, TenantSettingsController),
     VoiceSettingsController: Object.assign(VoiceSettingsController, VoiceSettingsController),

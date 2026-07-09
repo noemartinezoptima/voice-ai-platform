@@ -19,6 +19,7 @@ class TenantFactory extends Factory
             'slug' => fake()->unique()->slug(),
             'settings' => [],
             'is_active' => true,
+            'plan' => 'free',
         ];
     }
 
