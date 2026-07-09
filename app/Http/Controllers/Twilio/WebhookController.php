@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Twilio;
 use App\Application\Call\DTOs\InboundCallData;
 use App\Application\Call\UseCases\HandleInboundCall;
 use App\Application\Flow\Services\FlowExecutor;
+use App\Application\Webhook\Services\WebhookDispatcher;
 use App\Domain\Call\Repositories\CallRepositoryInterface;
 use App\Domain\Flow\Repositories\FlowRepositoryInterface;
 use App\Http\Controllers\Controller;
@@ -20,6 +21,7 @@ class WebhookController extends Controller
         private readonly FlowRepositoryInterface $flowRepository,
         private readonly CallRepositoryInterface $callRepository,
         private readonly FlowExecutor $flowExecutor,
+        private readonly WebhookDispatcher $webhookDispatcher,
     ) {}
 
     public function inbound(Request $request): Response
@@ -126,10 +128,34 @@ class WebhookController extends Controller
                     $call->markCompleted();
                     $this->callRepository->save($call);
                 }
+
+                $mapped = $this->mapStatusToEvent($callStatus);
+
+                if ($mapped !== null) {
+                    $this->webhookDispatcher->dispatch($mapped, [
+                        'call_sid' => (string) $call->getCallSid(),
+                        'status' => $call->getStatus(),
+                        'from' => (string) $call->getFromNumber(),
+                        'to' => (string) $call->getToNumber(),
+                        'duration_seconds' => $call->getDurationSeconds(),
+                    ]);
+                }
             }
         }
 
         Log::info('Twilio status callback', $request->all());
+    }
+
+    private function mapStatusToEvent(?string $twilioStatus): ?string
+    {
+        return match ($twilioStatus) {
+            'initiated' => 'call.initiated',
+            'ringing' => 'call.in_progress',
+            'in-progress' => 'call.in_progress',
+            'completed' => 'call.completed',
+            'failed', 'busy', 'no-answer' => 'call.failed',
+            default => null,
+        };
     }
 
     public function recording(Request $request): void

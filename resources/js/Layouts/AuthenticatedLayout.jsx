@@ -13,6 +13,7 @@ import {
     ChevronUp,
     FileText,
     Radio,
+    Webhook,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -30,6 +31,7 @@ import { index as teamIndex } from '@/routes/team'
 import { tenant as settingsTenant } from '@/routes/settings'
 import { edit as settingsVoice } from '@/actions/App/Http/Controllers/Web/VoiceSettingsController'
 import { index as documentsIndex } from '@/actions/App/Http/Controllers/Web/DocumentsController'
+import { index as webhooksIndex } from '@/actions/App/Http/Controllers/Web/WebhookDestinationController'
 
 const navItems = [
     { label: 'Dashboard', href: dashboard().url, icon: LayoutDashboard, active: 'dashboard' },
@@ -41,6 +43,7 @@ const navItems = [
     { label: 'Settings', href: settingsTenant().url, icon: Settings, active: 'settings.tenant' },
     { label: 'Voice & Language', href: settingsVoice().url, icon: Phone, active: 'settings.voice' },
     { label: 'Documents', href: documentsIndex().url, icon: FileText, active: 'settings.documents.*' },
+    { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
 ]
 
 function AccountDropdownMenu({ anchor }) {

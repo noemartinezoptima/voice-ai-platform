@@ -36,11 +36,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->isOwner() || $this->isAdmin();
     }
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [

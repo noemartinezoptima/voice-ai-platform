@@ -12,6 +12,7 @@ use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\TenantSettingsController;
 use App\Http\Controllers\Web\VoiceSettingsController;
+use App\Http\Controllers\Web\WebhookDestinationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -79,6 +80,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/settings/documents/{document}', [DocumentsController::class, 'destroy'])->name('settings.documents.destroy');
     Route::post('/settings/documents/{document}/reprocess', [DocumentsController::class, 'reProcess'])->name('settings.documents.reprocess');
     Route::post('/settings/documents/upload', [DocumentsController::class, 'uploadFile'])->name('settings.documents.upload');
+
+    Route::get('/settings/webhooks', [WebhookDestinationController::class, 'index'])->name('settings.webhooks.index');
+    Route::post('/settings/webhooks', [WebhookDestinationController::class, 'store'])->name('settings.webhooks.store');
+    Route::patch('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'update'])->name('settings.webhooks.update');
+    Route::delete('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'destroy'])->name('settings.webhooks.destroy');
 
     Route::get('/team', [TeamMemberController::class, 'index'])->name('team.index');
     Route::post('/team/invite', [TeamMemberController::class, 'invite'])->name('team.invite');

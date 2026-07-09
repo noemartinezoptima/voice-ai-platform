@@ -2,6 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../
 import tenant69401c from './tenant'
 import voice1db564 from './voice'
 import documents from './documents'
+import webhooks from './webhooks'
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
 * @see app/Http/Controllers/Web/TenantSettingsController.php:22
@@ -94,6 +95,7 @@ const settings = {
     tenant: Object.assign(tenant, tenant69401c),
     voice: Object.assign(voice, voice1db564),
     documents: Object.assign(documents, documents),
+    webhooks: Object.assign(webhooks, webhooks),
 }
 
 export default settings

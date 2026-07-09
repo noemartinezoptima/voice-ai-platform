@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::inbound
-* @see app/Http/Controllers/Twilio/WebhookController.php:25
+* @see app/Http/Controllers/Twilio/WebhookController.php:27
 * @route '/twilio/inbound'
 */
 export const inbound = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ inbound.definition = {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::inbound
-* @see app/Http/Controllers/Twilio/WebhookController.php:25
+* @see app/Http/Controllers/Twilio/WebhookController.php:27
 * @route '/twilio/inbound'
 */
 inbound.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ inbound.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::inbound
-* @see app/Http/Controllers/Twilio/WebhookController.php:25
+* @see app/Http/Controllers/Twilio/WebhookController.php:27
 * @route '/twilio/inbound'
 */
 inbound.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -35,7 +35,7 @@ inbound.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::step
-* @see app/Http/Controllers/Twilio/WebhookController.php:50
+* @see app/Http/Controllers/Twilio/WebhookController.php:52
 * @route '/twilio/step'
 */
 export const step = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -50,7 +50,7 @@ step.definition = {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::step
-* @see app/Http/Controllers/Twilio/WebhookController.php:50
+* @see app/Http/Controllers/Twilio/WebhookController.php:52
 * @route '/twilio/step'
 */
 step.url = (options?: RouteQueryOptions) => {
@@ -59,7 +59,7 @@ step.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::step
-* @see app/Http/Controllers/Twilio/WebhookController.php:50
+* @see app/Http/Controllers/Twilio/WebhookController.php:52
 * @route '/twilio/step'
 */
 step.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -69,7 +69,7 @@ step.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::status
-* @see app/Http/Controllers/Twilio/WebhookController.php:116
+* @see app/Http/Controllers/Twilio/WebhookController.php:118
 * @route '/twilio/status'
 */
 export const status = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -84,7 +84,7 @@ status.definition = {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::status
-* @see app/Http/Controllers/Twilio/WebhookController.php:116
+* @see app/Http/Controllers/Twilio/WebhookController.php:118
 * @route '/twilio/status'
 */
 status.url = (options?: RouteQueryOptions) => {
@@ -93,7 +93,7 @@ status.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::status
-* @see app/Http/Controllers/Twilio/WebhookController.php:116
+* @see app/Http/Controllers/Twilio/WebhookController.php:118
 * @route '/twilio/status'
 */
 status.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -103,7 +103,7 @@ status.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::gather
-* @see app/Http/Controllers/Twilio/WebhookController.php:158
+* @see app/Http/Controllers/Twilio/WebhookController.php:184
 * @route '/twilio/gather'
 */
 export const gather = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -118,7 +118,7 @@ gather.definition = {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::gather
-* @see app/Http/Controllers/Twilio/WebhookController.php:158
+* @see app/Http/Controllers/Twilio/WebhookController.php:184
 * @route '/twilio/gather'
 */
 gather.url = (options?: RouteQueryOptions) => {
@@ -127,7 +127,7 @@ gather.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::gather
-* @see app/Http/Controllers/Twilio/WebhookController.php:158
+* @see app/Http/Controllers/Twilio/WebhookController.php:184
 * @route '/twilio/gather'
 */
 gather.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -137,7 +137,7 @@ gather.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::recording
-* @see app/Http/Controllers/Twilio/WebhookController.php:135
+* @see app/Http/Controllers/Twilio/WebhookController.php:161
 * @route '/twilio/recording'
 */
 export const recording = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -152,7 +152,7 @@ recording.definition = {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::recording
-* @see app/Http/Controllers/Twilio/WebhookController.php:135
+* @see app/Http/Controllers/Twilio/WebhookController.php:161
 * @route '/twilio/recording'
 */
 recording.url = (options?: RouteQueryOptions) => {
@@ -161,7 +161,7 @@ recording.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::recording
-* @see app/Http/Controllers/Twilio/WebhookController.php:135
+* @see app/Http/Controllers/Twilio/WebhookController.php:161
 * @route '/twilio/recording'
 */
 recording.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

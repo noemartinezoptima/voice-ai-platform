@@ -6,6 +6,7 @@ import ApiTokenController from './ApiTokenController'
 import TenantSettingsController from './TenantSettingsController'
 import VoiceSettingsController from './VoiceSettingsController'
 import DocumentsController from './DocumentsController'
+import WebhookDestinationController from './WebhookDestinationController'
 import TeamMemberController from './TeamMemberController'
 import AcceptInviteController from './AcceptInviteController'
 
@@ -18,6 +19,7 @@ const Web = {
     TenantSettingsController: Object.assign(TenantSettingsController, TenantSettingsController),
     VoiceSettingsController: Object.assign(VoiceSettingsController, VoiceSettingsController),
     DocumentsController: Object.assign(DocumentsController, DocumentsController),
+    WebhookDestinationController: Object.assign(WebhookDestinationController, WebhookDestinationController),
     TeamMemberController: Object.assign(TeamMemberController, TeamMemberController),
     AcceptInviteController: Object.assign(AcceptInviteController, AcceptInviteController),
 }
