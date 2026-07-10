@@ -78,6 +78,12 @@ class TeamMemberController extends Controller
             'token' => Str::random(64),
         ]);
 
+        activity('team')
+            ->causedBy($request->user())
+            ->event('invite_sent')
+            ->withProperties(['email' => $request->email])
+            ->log(":causer.name invitó a {$request->email}");
+
         return back()->with('success', 'Invitation sent to '.$request->email.'.');
     }
 
@@ -91,7 +97,14 @@ class TeamMemberController extends Controller
 
         $request->validate(['role' => 'required|string|in:admin,member']);
 
+        $currentRole = $user->role;
         $user->update(['role' => $request->role]);
+
+        activity('team')
+            ->causedBy($request->user())
+            ->event('role_changed')
+            ->withProperties(['user' => $user->name, 'from' => $currentRole, 'to' => $request->role])
+            ->log(":causer.name cambió el rol de {$user->name} de {$currentRole} a {$request->role}");
 
         return back()->with('success', 'Member role updated.');
     }
@@ -104,7 +117,14 @@ class TeamMemberController extends Controller
         abort_if($current->id === $user->id, 403);
         abort_if($user->tenant_id !== $current->tenant_id, 403);
 
+        $userName = $user->name;
         $user->update(['tenant_id' => null, 'role' => 'member']);
+
+        activity('team')
+            ->causedBy($request->user())
+            ->event('member_removed')
+            ->withProperties(['user' => $userName])
+            ->log(":causer.name eliminó a {$userName} del equipo");
 
         return back()->with('success', 'Member removed from tenant.');
     }

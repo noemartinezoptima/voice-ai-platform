@@ -40,13 +40,30 @@ class ApiTokenController extends Controller
             Carbon::now()->addYear(),
         );
 
+        activity('security')
+            ->causedBy($request->user())
+            ->event('api_token_created')
+            ->log(":causer.name creó el token «{$request->name}»");
+
         return redirect()->route('api-tokens.index')
             ->with('token', $token->plainTextToken);
     }
 
     public function destroy(Request $request, string $id): RedirectResponse
     {
-        $request->user()->tokens()->where('id', $id)->delete();
+        $token = $request->user()->tokens()->where('id', $id)->first();
+
+        if ($token) {
+            $name = $token->name;
+            $token->delete();
+        } else {
+            $name = 'unknown';
+        }
+
+        activity('security')
+            ->causedBy($request->user())
+            ->event('api_token_revoked')
+            ->log(":causer.name revocó el token «{$name}»");
 
         return redirect()->route('api-tokens.index')
             ->with('success', 'Token revoked.');

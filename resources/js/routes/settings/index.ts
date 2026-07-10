@@ -3,6 +3,7 @@ import tenant69401c from './tenant'
 import voice1db564 from './voice'
 import documents from './documents'
 import webhooks from './webhooks'
+import activity from './activity'
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
 * @see app/Http/Controllers/Web/TenantSettingsController.php:22
@@ -96,6 +97,7 @@ const settings = {
     voice: Object.assign(voice, voice1db564),
     documents: Object.assign(documents, documents),
     webhooks: Object.assign(webhooks, webhooks),
+    activity: Object.assign(activity, activity),
 }
 
 export default settings

@@ -79,7 +79,7 @@ invite.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::update
-* @see app/Http/Controllers/Web/TeamMemberController.php:84
+* @see app/Http/Controllers/Web/TeamMemberController.php:90
 * @route '/team/{user}/role'
 */
 export const update = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -94,7 +94,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::update
-* @see app/Http/Controllers/Web/TeamMemberController.php:84
+* @see app/Http/Controllers/Web/TeamMemberController.php:90
 * @route '/team/{user}/role'
 */
 update.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -127,7 +127,7 @@ update.url = (args: { user: number | { id: number } } | [user: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::update
-* @see app/Http/Controllers/Web/TeamMemberController.php:84
+* @see app/Http/Controllers/Web/TeamMemberController.php:90
 * @route '/team/{user}/role'
 */
 update.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -137,7 +137,7 @@ update.patch = (args: { user: number | { id: number } } | [user: number | { id: 
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::destroy
-* @see app/Http/Controllers/Web/TeamMemberController.php:99
+* @see app/Http/Controllers/Web/TeamMemberController.php:112
 * @route '/team/{user}'
 */
 export const destroy = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -152,7 +152,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::destroy
-* @see app/Http/Controllers/Web/TeamMemberController.php:99
+* @see app/Http/Controllers/Web/TeamMemberController.php:112
 * @route '/team/{user}'
 */
 destroy.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -185,7 +185,7 @@ destroy.url = (args: { user: number | { id: number } } | [user: number | { id: n
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::destroy
-* @see app/Http/Controllers/Web/TeamMemberController.php:99
+* @see app/Http/Controllers/Web/TeamMemberController.php:112
 * @route '/team/{user}'
 */
 destroy.delete = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({

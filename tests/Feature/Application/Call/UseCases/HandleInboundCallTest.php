@@ -70,7 +70,7 @@ class HandleInboundCallTest extends TestCase
         $this->tenants->method('findById')->willReturn($tenant);
         $this->calls->expects($this->once())->method('save');
 
-        $data = new InboundCallData('CA' . str_repeat('b', 32), '+15551111111', '+15552222222');
+        $data = new InboundCallData('CA'.str_repeat('b', 32), '+15551111111', '+15552222222');
 
         $call = $this->useCase->execute($data);
 
@@ -87,7 +87,7 @@ class HandleInboundCallTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Tenant not found or inactive');
 
-        $data = new InboundCallData('CA' . str_repeat('c', 32), '+15551111111', '+15552222222');
+        $data = new InboundCallData('CA'.str_repeat('c', 32), '+15551111111', '+15552222222');
 
         $this->useCase->execute($data);
     }

@@ -16,6 +16,7 @@ import {
     Webhook,
     MessageSquare,
     CreditCard,
+    Activity,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -36,6 +37,7 @@ import { index as documentsIndex } from '@/actions/App/Http/Controllers/Web/Docu
 import { index as webhooksIndex } from '@/actions/App/Http/Controllers/Web/WebhookDestinationController'
 import { index as smsIndex } from '@/actions/App/Http/Controllers/Web/SmsController'
 import { index as billingIndex } from '@/actions/App/Http/Controllers/Web/BillingController'
+import { index as activityIndex } from '@/actions/App/Http/Controllers/Web/ActivityLogController'
 
 const navItems = [
     { label: 'Dashboard', href: dashboard().url, icon: LayoutDashboard, active: 'dashboard' },
@@ -50,6 +52,7 @@ const navItems = [
     { label: 'Documents', href: documentsIndex().url, icon: FileText, active: 'settings.documents.*' },
     { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
     { label: 'Billing', href: billingIndex().url, icon: CreditCard, active: 'billing.*' },
+    { label: 'Activity Log', href: activityIndex().url, icon: Activity, active: 'settings.activity.*' },
 ]
 
 function AccountDropdownMenu({ anchor }) {

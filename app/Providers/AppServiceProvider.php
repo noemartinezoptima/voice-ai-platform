@@ -21,8 +21,12 @@ use App\Infrastructure\Services\FakeAiService;
 use App\Infrastructure\Services\Knowledge\OpenAIEmbeddingService;
 use App\Infrastructure\Services\OpenAiService;
 use App\Infrastructure\Services\TwilioAiService;
+use App\Listeners\UserActivitySubscriber;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -80,6 +84,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Gate::define('viewAuditLog', fn (User $user) => $user->isOwnerOrAdmin());
+
+        Event::subscribe(UserActivitySubscriber::class);
+
         Vite::prefetch(concurrency: 3);
 
         RateLimiter::for('api', function (Request $request) {

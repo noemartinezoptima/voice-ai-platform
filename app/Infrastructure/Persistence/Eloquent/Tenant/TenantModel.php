@@ -4,6 +4,8 @@ namespace App\Infrastructure\Persistence\Eloquent\Tenant;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property string $id
@@ -16,9 +18,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TenantModel extends Model
 {
-    use HasUuids;
+    use HasUuids, LogsActivity;
 
     protected $table = 'tenants';
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'slug', 'settings', 'plan'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     protected $fillable = [
         'name',

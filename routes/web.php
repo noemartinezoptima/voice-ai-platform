@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Twilio\SmsController as TwilioSmsController;
 use App\Http\Controllers\Twilio\WebhookController;
 use App\Http\Controllers\Web\AcceptInviteController;
+use App\Http\Controllers\Web\ActivityLogController;
 use App\Http\Controllers\Web\ApiTokenController;
 use App\Http\Controllers\Web\BillingController;
 use App\Http\Controllers\Web\CallController;
@@ -94,6 +95,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings/webhooks', [WebhookDestinationController::class, 'store'])->name('settings.webhooks.store');
     Route::patch('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'update'])->name('settings.webhooks.update');
     Route::delete('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'destroy'])->name('settings.webhooks.destroy');
+
+    Route::get('/settings/activity', [ActivityLogController::class, 'index'])->name('settings.activity.index');
 
     Route::get('/team', [TeamMemberController::class, 'index'])->name('team.index');
     Route::post('/team/invite', [TeamMemberController::class, 'invite'])->name('team.invite');

@@ -35,7 +35,14 @@ class BillingController extends Controller
 
         /** @var TenantModel $tenant */
         $tenant = TenantModel::findOrFail($request->user()->tenant_id);
+        $previousPlan = $tenant->plan;
         $tenant->update(['plan' => $validated['plan']]);
+
+        activity('billing')
+            ->causedBy($request->user())
+            ->event('plan_changed')
+            ->withProperties(['from' => $previousPlan, 'to' => $validated['plan']])
+            ->log(":causer.name cambió el plan de {$previousPlan} a {$validated['plan']}");
 
         return redirect()->route('billing.index')
             ->with('success', 'Plan updated to '.ucfirst($validated['plan']).'.');

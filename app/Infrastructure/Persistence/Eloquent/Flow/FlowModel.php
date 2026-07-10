@@ -4,6 +4,8 @@ namespace App\Infrastructure\Persistence\Eloquent\Flow;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property string $id
@@ -17,9 +19,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FlowModel extends Model
 {
-    use HasUuids;
+    use HasUuids, LogsActivity;
 
     protected $table = 'flows';
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     protected $fillable = [
         'tenant_id',

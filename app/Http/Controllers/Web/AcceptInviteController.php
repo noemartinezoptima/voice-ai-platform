@@ -24,6 +24,12 @@ class AcceptInviteController extends Controller
             ]);
             $invitation->update(['accepted_at' => now()]);
 
+            activity('team')
+                ->event('invite_accepted')
+                ->causedBy($user)
+                ->withProperties(['email' => $user->email])
+                ->log("{$user->email} aceptó la invitación");
+
             return redirect()->route('dashboard')
                 ->with('success', 'You joined the team!');
         }
@@ -36,6 +42,12 @@ class AcceptInviteController extends Controller
                 'role' => $invitation->role,
             ]);
             $invitation->update(['accepted_at' => now()]);
+
+            activity('team')
+                ->event('invite_accepted')
+                ->causedBy($existing)
+                ->withProperties(['email' => $existing->email])
+                ->log("{$existing->email} aceptó la invitación");
 
             return redirect()->route('dashboard')
                 ->with('success', 'You joined the team!');
