@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { login, register } from '@/routes';
 import AuthLayout from '@/Layouts/AuthLayout';
@@ -16,6 +16,22 @@ export default function Register() {
     });
 
     const [visible, setVisible] = useState(false);
+
+    const passwordStrength = useMemo(() => {
+        const pw = data.password;
+        if (!pw) return { score: 0, label: '', color: '', width: '0%' };
+        let score = 0;
+        if (pw.length >= 8) score += 25;
+        if (pw.length >= 12) score += 10;
+        if (/[a-z]/.test(pw)) score += 15;
+        if (/[A-Z]/.test(pw)) score += 15;
+        if (/[0-9]/.test(pw)) score += 15;
+        if (/[^a-zA-Z0-9]/.test(pw)) score += 20;
+        if (score < 30) return { score, label: 'Weak', color: 'bg-red-500', width: '25%', textColor: 'text-red-600' };
+        if (score < 60) return { score, label: 'Fair', color: 'bg-amber-500', width: '55%', textColor: 'text-amber-600' };
+        if (score < 80) return { score, label: 'Good', color: 'bg-blue-500', width: '75%', textColor: 'text-blue-600' };
+        return { score, label: 'Strong', color: 'bg-emerald-500', width: '100%', textColor: 'text-emerald-600' };
+    }, [data.password]);
 
     const submit = (e) => {
         e.preventDefault();
@@ -91,6 +107,16 @@ export default function Register() {
                         </button>
                     </div>
                     {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+                    {data.password && (
+                        <div className="mt-2">
+                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
+                                <div className={`h-full rounded-full transition-all duration-300 ${passwordStrength.color}`} style={{ width: passwordStrength.width }} />
+                            </div>
+                            <p className={`mt-1 text-xs ${passwordStrength.textColor}`}>
+                                {passwordStrength.label}
+                            </p>
+                        </div>
+                    )}
                 </Field>
 
                 <Field>

@@ -126,19 +126,19 @@ export default function Index({ flows }) {
                                     <TableCell className="text-zinc-500 dark:text-zinc-400">v{flow.version}</TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex items-center justify-end gap-1">
-                                            <Button plain href={`/flows/${flow.id}`}>
+                                            <Button plain href={`/flows/${flow.id}`} title="View flow" aria-label="View flow">
                                                 <Workflow className="size-4" />
                                             </Button>
-                                            <Button plain href={`/flows/${flow.id}/export`}>
+                                            <Button plain href={`/flows/${flow.id}/export`} title="Export flow" aria-label="Export flow">
                                                 <Download className="size-4" />
                                             </Button>
-                                            <Button plain onClick={() => router.post(duplicate({flow: flow.id}).url)}>
+                                            <Button plain onClick={() => router.post(duplicate({flow: flow.id}).url)} title="Duplicate flow" aria-label="Duplicate flow">
                                                 <Copy className="size-4" />
                                             </Button>
-                                            <Button plain href={edit({flow: flow.id}).url}>
+                                            <Button plain href={edit({flow: flow.id}).url} title="Edit flow" aria-label="Edit flow">
                                                 <Pencil className="size-4" />
                                             </Button>
-                                            <Button plain onClick={() => setConfirmingDelete(flow)}>
+                                            <Button plain onClick={() => setConfirmingDelete(flow)} title="Delete flow" aria-label="Delete flow">
                                                 <Trash2 className="size-4" />
                                             </Button>
                                         </div>

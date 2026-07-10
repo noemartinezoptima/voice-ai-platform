@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Web;
 
-use App\Models\User;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
+use App\Models\User;
 use Database\Factories\TenantFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

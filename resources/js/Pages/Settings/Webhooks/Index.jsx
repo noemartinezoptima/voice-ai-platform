@@ -23,6 +23,18 @@ export default function Index({ webhooks }) {
     const [url, setUrl] = useState('');
     const [description, setDescription] = useState('');
     const [events, setEvents] = useState(['call.completed']);
+    const [urlError, setUrlError] = useState('');
+
+    function validateUrl(value) {
+        setUrl(value);
+        if (value && !value.startsWith('https://') && !value.startsWith('http://')) {
+            setUrlError('URL must start with http:// or https://');
+        } else if (value && !/^https?:\/\/.+\..+/.test(value)) {
+            setUrlError('Enter a valid URL');
+        } else {
+            setUrlError('');
+        }
+    }
 
     function toggleEvent(event) {
         setEvents((prev) =>
@@ -32,8 +44,9 @@ export default function Index({ webhooks }) {
 
     function handleSubmit(e) {
         e.preventDefault();
+        if (urlError) return;
         router.post(store().url, { url, description, events }, {
-            onSuccess: () => { setShowForm(false); setUrl(''); setDescription(''); setEvents(['call.completed']); },
+            onSuccess: () => { setShowForm(false); setUrl(''); setDescription(''); setEvents(['call.completed']); setUrlError(''); },
         });
     }
 
@@ -71,7 +84,14 @@ export default function Index({ webhooks }) {
                     <div className="space-y-4">
                         <div>
                             <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">URL</label>
-                            <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://example.com/webhook" required />
+                            <Input
+                                value={url}
+                                onChange={(e) => validateUrl(e.target.value)}
+                                placeholder="https://example.com/webhook"
+                                required
+                                invalid={urlError ? true : undefined}
+                            />
+                            {urlError && <p className="mt-1 text-xs text-red-600">{urlError}</p>}
                         </div>
                         <div>
                             <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">Description</label>
