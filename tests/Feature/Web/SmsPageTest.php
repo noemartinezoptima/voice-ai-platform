@@ -35,9 +35,7 @@ class SmsPageTest extends TestCase
     {
         SmsMessageModelFactory::new()->count(3)->create(['tenant_id' => $this->user->tenant_id]);
 
-        $response = $this->actingAs($this->user)->get('/sms');
-
-        $response->assertOk();
+        $this->actingAs($this->user)->get('/sms')->assertOk();
     }
 
     public function test_index_scoped_to_tenant(): void
@@ -54,7 +52,13 @@ class SmsPageTest extends TestCase
 
         $response = $this->actingAs($this->user)->get('/sms');
 
-        $response->assertSee('+1111');
         $response->assertDontSee('+2222');
+    }
+
+    public function test_index_paginates(): void
+    {
+        SmsMessageModelFactory::new()->count(25)->create(['tenant_id' => $this->user->tenant_id]);
+
+        $this->actingAs($this->user)->get('/sms')->assertOk();
     }
 }

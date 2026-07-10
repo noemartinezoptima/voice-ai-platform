@@ -37,6 +37,15 @@ class BillingPageTest extends TestCase
         $response->assertSee('Free');
     }
 
+    public function test_index_shows_all_plan_features(): void
+    {
+        $response = $this->actingAs($this->user)->get('/billing');
+
+        $response->assertSee('Free');
+        $response->assertSee('Pro');
+        $response->assertSee('Enterprise');
+    }
+
     public function test_update_plan(): void
     {
         $this->actingAs($this->user)
@@ -46,6 +55,14 @@ class BillingPageTest extends TestCase
         /** @var TenantModel $tenant */
         $tenant = TenantModel::find($this->user->tenant_id);
         $this->assertEquals('pro', $tenant->plan);
+    }
+
+    public function test_update_plan_shows_flash_message(): void
+    {
+        $this->actingAs($this->user)
+            ->patch('/billing/plan', ['plan' => 'pro'])
+            ->assertRedirect('/billing')
+            ->assertSessionHas('success');
     }
 
     public function test_update_plan_validates(): void
@@ -66,5 +83,26 @@ class BillingPageTest extends TestCase
 
         $otherTenant->refresh();
         $this->assertEquals('enterprise', $otherTenant->plan);
+
+        $firstTenant = TenantModel::find($this->user->tenant_id);
+        $this->assertEquals('free', $firstTenant->plan);
+    }
+
+    public function test_downgrade_to_free(): void
+    {
+        $tenant = TenantFactory::new()->create(['plan' => 'pro']);
+        $user = User::factory()->create(['tenant_id' => $tenant->id]);
+
+        $this->actingAs($user)
+            ->patch('/billing/plan', ['plan' => 'free'])
+            ->assertRedirect('/billing');
+
+        $tenant->refresh();
+        $this->assertEquals('free', $tenant->plan);
+    }
+
+    public function test_update_plan_requires_authentication(): void
+    {
+        $this->patch('/billing/plan', ['plan' => 'pro'])->assertRedirect('/login');
     }
 }
