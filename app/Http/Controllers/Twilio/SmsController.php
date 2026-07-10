@@ -17,7 +17,7 @@ class SmsController extends Controller
         $body = $request->input('Body');
         $messageSid = $request->input('MessageSid');
 
-        $tenant = TenantModel::where('twilio_phone_number', $to)->first();
+        $tenant = TenantModel::where('settings->twilio_phone_number', $to)->first();
 
         if ($tenant !== null) {
             SmsMessageModel::create([
