@@ -1,10 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ConnectTwilioButton from '@/Components/ConnectTwilioButton';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { Heading, Subheading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
 import { Button } from '@/Components/catalyst/button';
+import { Badge } from '@/Components/catalyst/badge';
 import { Field, Label, ErrorMessage } from '@/Components/catalyst/fieldset';
 import { Input } from '@/Components/catalyst/input';
 import { Select } from '@/Components/catalyst/select';
@@ -135,55 +136,65 @@ export default function Tenant({ tenant }) {
                             <Subheading>Twilio</Subheading>
                         </div>
                         <Text className="mt-1">Configure your Twilio account for phone call handling.</Text>
-                        <div className="mt-4 space-y-4">
-                            <Field>
-                                <Label>Account SID</Label>
-                                <Input
-                                    value={data.twilio_account_sid}
-                                    onChange={(e) => setData('twilio_account_sid', e.target.value)}
-                                    placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                                    invalid={errors.twilio_account_sid ? true : undefined}
-                                />
-                                {errors.twilio_account_sid && <ErrorMessage>{errors.twilio_account_sid}</ErrorMessage>}
-                            </Field>
 
-                            <Field>
-                                <Label>Auth Token</Label>
-                                <div className="relative">
-                                    <Input
-                                        type={showTwilioToken ? 'text' : 'password'}
-                                        value={data.twilio_auth_token}
-                                        onChange={(e) => setData('twilio_auth_token', e.target.value)}
-                                        placeholder={tenant.twilio_auth_token ? '********' : 'Enter auth token'}
-                                        invalid={errors.twilio_auth_token ? true : undefined}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowTwilioToken(!showTwilioToken)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
-                                        tabIndex={-1}
-                                    >
-                                        {showTwilioToken ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                                    </button>
+                        {tenant.twilio_oauth_enabled ? (
+                            <div className="mt-4 space-y-4">
+                                <div className="flex items-center gap-3 rounded-lg bg-emerald-50 p-4 dark:bg-emerald-900/20">
+                                    <Badge color="emerald">Connected</Badge>
+                                    <Text>Account {tenant.twilio_account_sid_oauth ?? 'connected'} — {tenant.twilio_connected_at ? new Date(tenant.twilio_connected_at).toLocaleDateString() : ''}</Text>
                                 </div>
-                                {errors.twilio_auth_token && <ErrorMessage>{errors.twilio_auth_token}</ErrorMessage>}
-                            </Field>
-
-                            <Field>
-                                <Label>Default Phone Number</Label>
-                                <Input
-                                    value={data.twilio_phone_number}
-                                    onChange={(e) => setData('twilio_phone_number', e.target.value)}
-                                    placeholder="+12345678900"
-                                    invalid={errors.twilio_phone_number ? true : undefined}
-                                />
-                                {errors.twilio_phone_number && <ErrorMessage>{errors.twilio_phone_number}</ErrorMessage>}
-                            </Field>
-
-                            {!tenant.twilio_oauth_enabled && (
+                                <Button outline onClick={() => router.post('/twilio/oauth/disconnect')}>
+                                    Disconnect
+                                </Button>
+                            </div>
+                        ) : (
+                            <div className="mt-4 space-y-4">
                                 <ConnectTwilioButton href={tenant.connectUrl} />
-                            )}
-                        </div>
+                                <Field>
+                                    <Label>Account SID</Label>
+                                    <Input
+                                        value={data.twilio_account_sid}
+                                        onChange={(e) => setData('twilio_account_sid', e.target.value)}
+                                        placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                                        invalid={errors.twilio_account_sid ? true : undefined}
+                                    />
+                                    {errors.twilio_account_sid && <ErrorMessage>{errors.twilio_account_sid}</ErrorMessage>}
+                                </Field>
+
+                                <Field>
+                                    <Label>Auth Token</Label>
+                                    <div className="relative">
+                                        <Input
+                                            type={showTwilioToken ? 'text' : 'password'}
+                                            value={data.twilio_auth_token}
+                                            onChange={(e) => setData('twilio_auth_token', e.target.value)}
+                                            placeholder={tenant.twilio_auth_token ? '********' : 'Enter auth token'}
+                                            invalid={errors.twilio_auth_token ? true : undefined}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowTwilioToken(!showTwilioToken)}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                                            tabIndex={-1}
+                                        >
+                                            {showTwilioToken ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                                        </button>
+                                    </div>
+                                    {errors.twilio_auth_token && <ErrorMessage>{errors.twilio_auth_token}</ErrorMessage>}
+                                </Field>
+
+                                <Field>
+                                    <Label>Default Phone Number</Label>
+                                    <Input
+                                        value={data.twilio_phone_number}
+                                        onChange={(e) => setData('twilio_phone_number', e.target.value)}
+                                        placeholder="+12345678900"
+                                        invalid={errors.twilio_phone_number ? true : undefined}
+                                    />
+                                    {errors.twilio_phone_number && <ErrorMessage>{errors.twilio_phone_number}</ErrorMessage>}
+                                </Field>
+                            </div>
+                        )}
                     </div>
 
                     <div className="rounded-xl border border-zinc-950/5 bg-white p-8 dark:border-white/10 dark:bg-zinc-900">
