@@ -23,6 +23,7 @@ use App\Infrastructure\Services\OpenAiService;
 use App\Infrastructure\Services\TwilioAiService;
 use App\Listeners\UserActivitySubscriber;
 use App\Models\User;
+use App\Services\TwilioOAuthService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -49,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(ChunkingService::class);
         $this->app->singleton(KnowledgeRetrievalService::class);
+        $this->app->singleton(TwilioOAuthService::class);
 
         $this->app->bind(AiServiceInterface::class, function () {
             $assistantSid = config('twilio.ai_assistant_sid');
