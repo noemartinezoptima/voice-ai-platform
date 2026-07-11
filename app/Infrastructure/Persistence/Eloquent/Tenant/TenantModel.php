@@ -47,4 +47,16 @@ class TenantModel extends Model
             'plan' => 'string',
         ];
     }
+
+    /** @return array<string, mixed> */
+    public function getDataProtectionAttribute(mixed $value): array
+    {
+        return array_merge([
+            'consent_required' => false,
+            'retention_days' => 90,
+            'consent_message' => 'This call may be recorded for quality and training purposes. By continuing, you consent to recording.',
+            'consent_recordings' => true,
+            'consent_transcripts' => true,
+        ], is_array($value) ? $value : (json_decode($value ?? '{}', true) ?: []));
+    }
 }

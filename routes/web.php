@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\ApiTokenController;
 use App\Http\Controllers\Web\BillingController;
 use App\Http\Controllers\Web\CallController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\DataProtectionController;
 use App\Http\Controllers\Web\DocumentsController;
 use App\Http\Controllers\Web\ElevenLabsAgentController;
 use App\Http\Controllers\Web\FlowController;
@@ -27,6 +28,9 @@ Route::post('twilio/step', [WebhookController::class, 'step'])->middleware('twil
 Route::post('twilio/status', [WebhookController::class, 'status'])->middleware('twilio.verify');
 Route::post('twilio/gather', [WebhookController::class, 'gather'])->middleware('twilio.verify');
 Route::post('twilio/recording', [WebhookController::class, 'recording'])->middleware('twilio.verify');
+Route::post('twilio/consent-callback', [WebhookController::class, 'consentCallback'])
+    ->middleware('twilio.verify')
+    ->name('twilio.consent-callback');
 Route::post('twilio/sms/inbound', [TwilioSmsController::class, 'inbound'])->middleware('throttle:twilio');
 
 Route::get('/', function () {
@@ -110,6 +114,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/team/invite', [TeamMemberController::class, 'invite'])->name('team.invite');
     Route::patch('/team/{user}/role', [TeamMemberController::class, 'update'])->name('team.update');
     Route::delete('/team/{user}', [TeamMemberController::class, 'destroy'])->name('team.destroy');
+
+    Route::get('/settings/data-protection', [DataProtectionController::class, 'edit'])
+        ->name('settings.data-protection');
+    Route::patch('/settings/data-protection', [DataProtectionController::class, 'update'])
+        ->name('settings.data-protection.update');
 });
 
 Route::get('/invite/{token}', AcceptInviteController::class)->name('invite.accept');

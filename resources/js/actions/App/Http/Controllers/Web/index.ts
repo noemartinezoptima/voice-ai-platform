@@ -12,6 +12,7 @@ import WebhookDestinationController from './WebhookDestinationController'
 import ActivityLogController from './ActivityLogController'
 import ElevenLabsAgentController from './ElevenLabsAgentController'
 import TeamMemberController from './TeamMemberController'
+import DataProtectionController from './DataProtectionController'
 import AcceptInviteController from './AcceptInviteController'
 
 const Web = {
@@ -29,6 +30,7 @@ const Web = {
     ActivityLogController: Object.assign(ActivityLogController, ActivityLogController),
     ElevenLabsAgentController: Object.assign(ElevenLabsAgentController, ElevenLabsAgentController),
     TeamMemberController: Object.assign(TeamMemberController, TeamMemberController),
+    DataProtectionController: Object.assign(DataProtectionController, DataProtectionController),
     AcceptInviteController: Object.assign(AcceptInviteController, AcceptInviteController),
 }
 

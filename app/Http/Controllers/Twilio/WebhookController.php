@@ -9,6 +9,7 @@ use App\Application\Webhook\Services\WebhookDispatcher;
 use App\Domain\Call\Repositories\CallRepositoryInterface;
 use App\Domain\Flow\Repositories\FlowRepositoryInterface;
 use App\Http\Controllers\Controller;
+use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -27,6 +28,27 @@ class WebhookController extends Controller
     public function inbound(Request $request): Response
     {
         try {
+            $toNumber = $request->input('To');
+            $tenantModel = TenantModel::where('settings->twilio_phone_number', $toNumber)->first();
+
+            if ($tenantModel !== null) {
+                $dp = $tenantModel->data_protection;
+                if (($dp['consent_required'] ?? false)) {
+                    $response = new VoiceResponse;
+                    $gather = $response->gather([
+                        'action' => '/twilio/consent-callback',
+                        'numDigits' => 1,
+                        'timeout' => 5,
+                    ]);
+                    $gather->say($dp['consent_message'] ?? 'This call may be recorded.');
+                    $gather->say('Press 1 to accept, or any other key to decline.');
+                    $response->say('You did not provide consent. Goodbye.');
+                    $response->hangup();
+
+                    return response((string) $response)->header('Content-Type', 'text/xml');
+                }
+            }
+
             $data = InboundCallData::fromTwilio($request->all());
             $call = $this->handleInboundCall->execute($data);
 
@@ -184,6 +206,48 @@ class WebhookController extends Controller
     public function gather(Request $request): Response
     {
         return $this->step($request);
+    }
+
+    public function consentCallback(Request $request): Response
+    {
+        $digits = $request->input('Digits');
+
+        if ($digits === '1') {
+            activity()
+                ->event('consent_granted')
+                ->withProperties([
+                    'caller' => $request->input('From'),
+                    'call_sid' => $request->input('CallSid'),
+                ])
+                ->log('Call recording consent granted');
+
+            $data = InboundCallData::fromTwilio($request->all());
+            $call = $this->handleInboundCall->execute($data);
+
+            $flow = $this->flowRepository->findById($call->getFlowId() ?? '');
+
+            if ($flow === null || ! $flow->isActive()) {
+                return $this->notConfigured();
+            }
+
+            $startStep = $flow->config()->startStep();
+
+            return $this->toResponse($this->flowExecutor->executeStep($startStep, $flow, $call));
+        }
+
+        activity()
+            ->event('consent_declined')
+            ->withProperties([
+                'caller' => $request->input('From'),
+                'call_sid' => $request->input('CallSid'),
+            ])
+            ->log('Call recording consent declined');
+
+        $response = new VoiceResponse;
+        $response->say('Goodbye.');
+        $response->hangup();
+
+        return $this->toResponse($response);
     }
 
     private function notConfigured(): Response

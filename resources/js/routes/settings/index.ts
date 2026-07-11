@@ -5,6 +5,7 @@ import documents from './documents'
 import webhooks from './webhooks'
 import activity from './activity'
 import agents from './agents'
+import dataProtection0a045c from './data-protection'
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
 * @see app/Http/Controllers/Web/TenantSettingsController.php:22
@@ -93,6 +94,50 @@ voice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 
+/**
+* @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
+* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @route '/settings/data-protection'
+*/
+export const dataProtection = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: dataProtection.url(options),
+    method: 'get',
+})
+
+dataProtection.definition = {
+    methods: ["get","head"],
+    url: '/settings/data-protection',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
+* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @route '/settings/data-protection'
+*/
+dataProtection.url = (options?: RouteQueryOptions) => {
+    return dataProtection.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
+* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @route '/settings/data-protection'
+*/
+dataProtection.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: dataProtection.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
+* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @route '/settings/data-protection'
+*/
+dataProtection.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: dataProtection.url(options),
+    method: 'head',
+})
+
 const settings = {
     tenant: Object.assign(tenant, tenant69401c),
     voice: Object.assign(voice, voice1db564),
@@ -100,6 +145,7 @@ const settings = {
     webhooks: Object.assign(webhooks, webhooks),
     activity: Object.assign(activity, activity),
     agents: Object.assign(agents, agents),
+    dataProtection: Object.assign(dataProtection, dataProtection0a045c),
 }
 
 export default settings
