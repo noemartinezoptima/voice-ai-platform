@@ -1,4 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../wayfinder'
+import oauth from './oauth'
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::consentCallback
 * @see app/Http/Controllers/Twilio/WebhookController.php:211
@@ -35,6 +36,7 @@ consentCallback.post = (options?: RouteQueryOptions): RouteDefinition<'post'> =>
 
 const twilio = {
     consentCallback: Object.assign(consentCallback, consentCallback),
+    oauth: Object.assign(oauth, oauth),
 }
 
 export default twilio

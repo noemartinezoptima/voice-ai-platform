@@ -6,6 +6,7 @@ import SmsController from './SmsController'
 import BillingController from './BillingController'
 import ApiTokenController from './ApiTokenController'
 import TenantSettingsController from './TenantSettingsController'
+import TwilioOAuthController from './TwilioOAuthController'
 import VoiceSettingsController from './VoiceSettingsController'
 import DocumentsController from './DocumentsController'
 import WebhookDestinationController from './WebhookDestinationController'
@@ -25,6 +26,7 @@ const Web = {
     BillingController: Object.assign(BillingController, BillingController),
     ApiTokenController: Object.assign(ApiTokenController, ApiTokenController),
     TenantSettingsController: Object.assign(TenantSettingsController, TenantSettingsController),
+    TwilioOAuthController: Object.assign(TwilioOAuthController, TwilioOAuthController),
     VoiceSettingsController: Object.assign(VoiceSettingsController, VoiceSettingsController),
     DocumentsController: Object.assign(DocumentsController, DocumentsController),
     WebhookDestinationController: Object.assign(WebhookDestinationController, WebhookDestinationController),

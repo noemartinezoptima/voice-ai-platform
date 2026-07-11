@@ -20,6 +20,7 @@ use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\SmsController;
 use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\TenantSettingsController;
+use App\Http\Controllers\Web\TwilioOAuthController;
 use App\Http\Controllers\Web\VoiceSettingsController;
 use App\Http\Controllers\Web\WebhookDestinationController;
 use Illuminate\Support\Facades\Auth;
@@ -88,6 +89,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/settings/tenant', [TenantSettingsController::class, 'edit'])->name('settings.tenant');
     Route::patch('/settings/tenant', [TenantSettingsController::class, 'update'])->name('settings.tenant.update');
+
+    Route::get('/twilio/oauth/callback', [TwilioOAuthController::class, 'callback'])
+        ->name('twilio.oauth.callback');
+    Route::post('/twilio/oauth/disconnect', [TwilioOAuthController::class, 'disconnect'])
+        ->name('twilio.oauth.disconnect');
 
     Route::get('/settings/voice', [VoiceSettingsController::class, 'edit'])->name('settings.voice');
     Route::patch('/settings/voice', [VoiceSettingsController::class, 'update'])->name('settings.voice.update');
