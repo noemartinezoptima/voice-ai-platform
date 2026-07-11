@@ -96,7 +96,7 @@ voice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
-* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @see app/Http/Controllers/Web/DataProtectionController.php:14
 * @route '/settings/data-protection'
 */
 export const dataProtection = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -111,7 +111,7 @@ dataProtection.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
-* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @see app/Http/Controllers/Web/DataProtectionController.php:14
 * @route '/settings/data-protection'
 */
 dataProtection.url = (options?: RouteQueryOptions) => {
@@ -120,7 +120,7 @@ dataProtection.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
-* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @see app/Http/Controllers/Web/DataProtectionController.php:14
 * @route '/settings/data-protection'
 */
 dataProtection.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -130,11 +130,55 @@ dataProtection.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
-* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @see app/Http/Controllers/Web/DataProtectionController.php:14
 * @route '/settings/data-protection'
 */
 dataProtection.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: dataProtection.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\Web\PrivacyController::privacy
+* @see app/Http/Controllers/Web/PrivacyController.php:14
+* @route '/settings/privacy'
+*/
+export const privacy = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: privacy.url(options),
+    method: 'get',
+})
+
+privacy.definition = {
+    methods: ["get","head"],
+    url: '/settings/privacy',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\PrivacyController::privacy
+* @see app/Http/Controllers/Web/PrivacyController.php:14
+* @route '/settings/privacy'
+*/
+privacy.url = (options?: RouteQueryOptions) => {
+    return privacy.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\PrivacyController::privacy
+* @see app/Http/Controllers/Web/PrivacyController.php:14
+* @route '/settings/privacy'
+*/
+privacy.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: privacy.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\PrivacyController::privacy
+* @see app/Http/Controllers/Web/PrivacyController.php:14
+* @route '/settings/privacy'
+*/
+privacy.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: privacy.url(options),
     method: 'head',
 })
 
@@ -146,6 +190,7 @@ const settings = {
     activity: Object.assign(activity, activity),
     agents: Object.assign(agents, agents),
     dataProtection: Object.assign(dataProtection, dataProtection0a045c),
+    privacy: Object.assign(privacy, privacy),
 }
 
 export default settings

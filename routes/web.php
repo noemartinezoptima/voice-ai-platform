@@ -16,6 +16,7 @@ use App\Http\Controllers\Web\DocumentsController;
 use App\Http\Controllers\Web\ElevenLabsAgentController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\MonitorController;
+use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\SmsController;
 use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\TenantSettingsController;
@@ -121,6 +122,9 @@ Route::middleware('auth')->group(function () {
         ->name('settings.data-protection');
     Route::patch('/settings/data-protection', [DataProtectionController::class, 'update'])
         ->name('settings.data-protection.update');
+
+    Route::get('/settings/privacy', [PrivacyController::class, 'index'])
+        ->name('settings.privacy');
 
     Route::delete('/api/tenant/data', [DataDeletionController::class, 'destroy'])
         ->name('api.tenant.data.delete');

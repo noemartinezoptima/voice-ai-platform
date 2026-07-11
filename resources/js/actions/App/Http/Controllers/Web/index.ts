@@ -13,6 +13,7 @@ import ActivityLogController from './ActivityLogController'
 import ElevenLabsAgentController from './ElevenLabsAgentController'
 import TeamMemberController from './TeamMemberController'
 import DataProtectionController from './DataProtectionController'
+import PrivacyController from './PrivacyController'
 import AcceptInviteController from './AcceptInviteController'
 
 const Web = {
@@ -31,6 +32,7 @@ const Web = {
     ElevenLabsAgentController: Object.assign(ElevenLabsAgentController, ElevenLabsAgentController),
     TeamMemberController: Object.assign(TeamMemberController, TeamMemberController),
     DataProtectionController: Object.assign(DataProtectionController, DataProtectionController),
+    PrivacyController: Object.assign(PrivacyController, PrivacyController),
     AcceptInviteController: Object.assign(AcceptInviteController, AcceptInviteController),
 }
 

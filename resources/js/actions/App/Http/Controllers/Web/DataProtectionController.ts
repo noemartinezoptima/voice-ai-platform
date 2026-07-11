@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::edit
-* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @see app/Http/Controllers/Web/DataProtectionController.php:14
 * @route '/settings/data-protection'
 */
 export const edit = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::edit
-* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @see app/Http/Controllers/Web/DataProtectionController.php:14
 * @route '/settings/data-protection'
 */
 edit.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ edit.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::edit
-* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @see app/Http/Controllers/Web/DataProtectionController.php:14
 * @route '/settings/data-protection'
 */
 edit.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ edit.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::edit
-* @see app/Http/Controllers/Web/DataProtectionController.php:19
+* @see app/Http/Controllers/Web/DataProtectionController.php:14
 * @route '/settings/data-protection'
 */
 edit.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ edit.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::update
-* @see app/Http/Controllers/Web/DataProtectionController.php:31
+* @see app/Http/Controllers/Web/DataProtectionController.php:26
 * @route '/settings/data-protection'
 */
 export const update = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -60,7 +60,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::update
-* @see app/Http/Controllers/Web/DataProtectionController.php:31
+* @see app/Http/Controllers/Web/DataProtectionController.php:26
 * @route '/settings/data-protection'
 */
 update.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ update.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::update
-* @see app/Http/Controllers/Web/DataProtectionController.php:31
+* @see app/Http/Controllers/Web/DataProtectionController.php:26
 * @route '/settings/data-protection'
 */
 update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
