@@ -1,4 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ConnectTwilioButton from '@/Components/ConnectTwilioButton';
 import { Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { Heading, Subheading } from '@/Components/catalyst/heading';
@@ -178,6 +179,10 @@ export default function Tenant({ tenant }) {
                                 />
                                 {errors.twilio_phone_number && <ErrorMessage>{errors.twilio_phone_number}</ErrorMessage>}
                             </Field>
+
+                            {!tenant.twilio_oauth_enabled && (
+                                <ConnectTwilioButton href={tenant.connectUrl} />
+                            )}
                         </div>
                     </div>
 

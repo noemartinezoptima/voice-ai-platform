@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TenantSettingsRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,6 +28,20 @@ class TenantSettingsController extends Controller
 
         $settings = $tenant->settings();
 
+        $state = Crypt::encryptString(json_encode([
+            'tenant_id' => $request->user()->tenant_id,
+            'user_id' => $request->user()->id,
+            'created_at' => now()->timestamp,
+        ]));
+
+        $connectUrl = config('twilio-oauth.authorize_url') . '?' . http_build_query([
+            'client_id' => config('twilio-oauth.client_id'),
+            'response_type' => 'code',
+            'scope' => implode(' ', config('twilio-oauth.scopes')),
+            'redirect_uri' => config('twilio-oauth.redirect_url'),
+            'state' => $state,
+        ]);
+
         return Inertia::render('Settings/Tenant', [
             'tenant' => [
                 'id' => $tenant->id(),
@@ -38,8 +53,12 @@ class TenantSettingsController extends Controller
                 'twilio_account_sid' => $settings['twilio_account_sid'] ?? '',
                 'twilio_auth_token' => isset($settings['twilio_auth_token']) ? self::MASK : '',
                 'twilio_phone_number' => $settings['twilio_phone_number'] ?? '',
+                'twilio_oauth_enabled' => $settings['twilio_oauth_enabled'] ?? false,
+                'twilio_account_sid_oauth' => $settings['twilio_oauth']['account_sid'] ?? null,
+                'twilio_connected_at' => $settings['twilio_oauth']['connected_at'] ?? null,
                 'elevenlabs_api_key' => isset($settings['elevenlabs_api_key']) ? self::MASK : '',
                 'elevenlabs_default_voice_id' => $settings['elevenlabs_default_voice_id'] ?? '',
+                'connectUrl' => $connectUrl,
             ],
         ]);
     }

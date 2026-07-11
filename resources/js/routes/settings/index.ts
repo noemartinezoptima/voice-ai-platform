@@ -8,7 +8,7 @@ import agents from './agents'
 import dataProtection0a045c from './data-protection'
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
-* @see app/Http/Controllers/Web/TenantSettingsController.php:22
+* @see app/Http/Controllers/Web/TenantSettingsController.php:23
 * @route '/settings/tenant'
 */
 export const tenant = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -23,7 +23,7 @@ tenant.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
-* @see app/Http/Controllers/Web/TenantSettingsController.php:22
+* @see app/Http/Controllers/Web/TenantSettingsController.php:23
 * @route '/settings/tenant'
 */
 tenant.url = (options?: RouteQueryOptions) => {
@@ -32,7 +32,7 @@ tenant.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
-* @see app/Http/Controllers/Web/TenantSettingsController.php:22
+* @see app/Http/Controllers/Web/TenantSettingsController.php:23
 * @route '/settings/tenant'
 */
 tenant.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -42,7 +42,7 @@ tenant.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
-* @see app/Http/Controllers/Web/TenantSettingsController.php:22
+* @see app/Http/Controllers/Web/TenantSettingsController.php:23
 * @route '/settings/tenant'
 */
 tenant.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
