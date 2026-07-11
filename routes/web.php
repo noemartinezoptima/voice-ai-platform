@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\DataDeletionController;
+use App\Http\Controllers\Api\DataExportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Twilio\SmsController as TwilioSmsController;
 use App\Http\Controllers\Twilio\WebhookController;
@@ -119,6 +121,11 @@ Route::middleware('auth')->group(function () {
         ->name('settings.data-protection');
     Route::patch('/settings/data-protection', [DataProtectionController::class, 'update'])
         ->name('settings.data-protection.update');
+
+    Route::delete('/api/tenant/data', [DataDeletionController::class, 'destroy'])
+        ->name('api.tenant.data.delete');
+    Route::get('/api/tenant/data/export', [DataExportController::class, 'export'])
+        ->name('api.tenant.data.export');
 });
 
 Route::get('/invite/{token}', AcceptInviteController::class)->name('invite.accept');
