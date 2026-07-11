@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class TwilioOAuthController extends Controller
 {
-    public function callback(Request $request)
+    public function callback(Request $request): RedirectResponse
     {
         $request->validate([
             'code' => 'required|string',
@@ -83,7 +84,7 @@ class TwilioOAuthController extends Controller
             ->with('success', 'Twilio account connected successfully.');
     }
 
-    public function disconnect(Request $request)
+    public function disconnect(Request $request): RedirectResponse
     {
         $tenant = TenantModel::find($request->user()->tenant_id);
         $settings = $tenant->settings ?? [];
