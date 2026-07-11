@@ -34,7 +34,7 @@ class TenantSettingsController extends Controller
             'created_at' => now()->timestamp,
         ]));
 
-        $connectUrl = config('twilio-oauth.authorize_url') . '?' . http_build_query([
+        $connectUrl = config('twilio-oauth.authorize_url').'?'.http_build_query([
             'client_id' => config('twilio-oauth.client_id'),
             'response_type' => 'code',
             'scope' => implode(' ', config('twilio-oauth.scopes')),

@@ -15,6 +15,7 @@ class TwilioOAuthControllerTest extends TestCase
     use RefreshDatabase;
 
     private TenantModel $tenant;
+
     private User $user;
 
     protected function setUp(): void
