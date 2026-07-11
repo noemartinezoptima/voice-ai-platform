@@ -17,6 +17,7 @@ import {
     MessageSquare,
     CreditCard,
     Activity,
+    Bot,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -38,6 +39,7 @@ import { index as webhooksIndex } from '@/actions/App/Http/Controllers/Web/Webho
 import { index as smsIndex } from '@/actions/App/Http/Controllers/Web/SmsController'
 import { index as billingIndex } from '@/actions/App/Http/Controllers/Web/BillingController'
 import { index as activityIndex } from '@/actions/App/Http/Controllers/Web/ActivityLogController'
+import { index as agentsIndex } from '@/actions/App/Http/Controllers/Web/ElevenLabsAgentController'
 
 const navItems = [
     { label: 'Dashboard', href: dashboard().url, icon: LayoutDashboard, active: 'dashboard' },
@@ -53,6 +55,7 @@ const navItems = [
     { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
     { label: 'Billing', href: billingIndex().url, icon: CreditCard, active: 'billing.*' },
     { label: 'Activity Log', href: activityIndex().url, icon: Activity, active: 'settings.activity.*' },
+    { label: 'Agents', href: agentsIndex().url, icon: Bot, active: 'settings.agents.*' },
 ]
 
 function AccountDropdownMenu({ anchor }) {

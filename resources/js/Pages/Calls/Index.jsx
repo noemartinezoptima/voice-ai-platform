@@ -9,7 +9,7 @@ import { Badge } from '@/Components/catalyst/badge';
 import { Button } from '@/Components/catalyst/button';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
 import { Pagination, PaginationList, PaginationPage, PaginationGap, PaginationNext, PaginationPrevious } from '@/Components/catalyst/pagination';
-import { index, show } from '@/actions/App/Http/Controllers/Web/CallController';
+import { index, show, retry } from '@/actions/App/Http/Controllers/Web/CallController';
 
 export default function Index({ calls, filters }) {
     const [search, setSearch] = useState(filters.search ?? '');
@@ -126,12 +126,27 @@ export default function Index({ calls, filters }) {
                                             : '\u2014'}
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Link
-                                            href={show({call: call.id}).url}
-                                            className="text-sm font-medium text-zinc-950 underline decoration-zinc-950/50 hover:decoration-zinc-950 dark:text-white dark:decoration-white/50 dark:hover:decoration-white"
-                                        >
-                                            View
-                                        </Link>
+                                        <div className="flex justify-end gap-2">
+                                            <Link
+                                                href={show({call: call.id}).url}
+                                                className="text-sm font-medium text-zinc-950 underline decoration-zinc-950/50 hover:decoration-zinc-950 dark:text-white dark:decoration-white/50 dark:hover:decoration-white"
+                                            >
+                                                View
+                                            </Link>
+                                            {call.status === 'failed' && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        if (confirm('Create a retry call from this failed call?')) {
+                                                            router.post(retry({call: call.id}).url);
+                                                        }
+                                                    }}
+                                                    className="text-sm font-medium text-red-600 underline decoration-red-600/50 hover:decoration-red-600 dark:text-red-400 dark:decoration-red-400/50 dark:hover:decoration-red-400"
+                                                >
+                                                    Retry
+                                                </button>
+                                            )}
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}

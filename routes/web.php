@@ -10,6 +10,7 @@ use App\Http\Controllers\Web\BillingController;
 use App\Http\Controllers\Web\CallController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DocumentsController;
+use App\Http\Controllers\Web\ElevenLabsAgentController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\SmsController;
@@ -64,6 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/calls/export/csv', [CallController::class, 'exportCsv'])->name('calls.export');
     Route::get('/calls/{call}', [CallController::class, 'show'])->name('calls.show');
     Route::patch('/calls/{call}/notes', [CallController::class, 'updateNotes'])->name('calls.notes');
+    Route::post('/calls/{call}/retry', [CallController::class, 'retry'])->name('calls.retry');
 
     Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor.index');
     Route::get('/monitor/active', [MonitorController::class, 'active'])->name('monitor.active');
@@ -97,6 +99,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'destroy'])->name('settings.webhooks.destroy');
 
     Route::get('/settings/activity', [ActivityLogController::class, 'index'])->name('settings.activity.index');
+
+    Route::get('/settings/agents', [ElevenLabsAgentController::class, 'index'])->name('settings.agents.index');
+    Route::post('/settings/agents', [ElevenLabsAgentController::class, 'store'])->name('settings.agents.store');
+    Route::patch('/settings/agents/{agent}', [ElevenLabsAgentController::class, 'update'])->name('settings.agents.update');
+    Route::delete('/settings/agents/{agent}', [ElevenLabsAgentController::class, 'destroy'])->name('settings.agents.destroy');
+    Route::post('/settings/agents/sync', [ElevenLabsAgentController::class, 'syncFromApi'])->name('settings.agents.sync');
 
     Route::get('/team', [TeamMemberController::class, 'index'])->name('team.index');
     Route::post('/team/invite', [TeamMemberController::class, 'invite'])->name('team.invite');

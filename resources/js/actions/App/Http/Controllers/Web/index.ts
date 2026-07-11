@@ -10,6 +10,7 @@ import VoiceSettingsController from './VoiceSettingsController'
 import DocumentsController from './DocumentsController'
 import WebhookDestinationController from './WebhookDestinationController'
 import ActivityLogController from './ActivityLogController'
+import ElevenLabsAgentController from './ElevenLabsAgentController'
 import TeamMemberController from './TeamMemberController'
 import AcceptInviteController from './AcceptInviteController'
 
@@ -26,6 +27,7 @@ const Web = {
     DocumentsController: Object.assign(DocumentsController, DocumentsController),
     WebhookDestinationController: Object.assign(WebhookDestinationController, WebhookDestinationController),
     ActivityLogController: Object.assign(ActivityLogController, ActivityLogController),
+    ElevenLabsAgentController: Object.assign(ElevenLabsAgentController, ElevenLabsAgentController),
     TeamMemberController: Object.assign(TeamMemberController, TeamMemberController),
     AcceptInviteController: Object.assign(AcceptInviteController, AcceptInviteController),
 }

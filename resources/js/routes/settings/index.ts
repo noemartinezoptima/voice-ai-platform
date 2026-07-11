@@ -4,6 +4,7 @@ import voice1db564 from './voice'
 import documents from './documents'
 import webhooks from './webhooks'
 import activity from './activity'
+import agents from './agents'
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
 * @see app/Http/Controllers/Web/TenantSettingsController.php:22
@@ -98,6 +99,7 @@ const settings = {
     documents: Object.assign(documents, documents),
     webhooks: Object.assign(webhooks, webhooks),
     activity: Object.assign(activity, activity),
+    agents: Object.assign(agents, agents),
 }
 
 export default settings
