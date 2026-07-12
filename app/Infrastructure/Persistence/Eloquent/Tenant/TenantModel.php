@@ -35,6 +35,7 @@ class TenantModel extends Model
         'name',
         'slug',
         'settings',
+        'encryption_key',
         'is_active',
         'plan',
         'stripe_customer_id',

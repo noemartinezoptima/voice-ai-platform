@@ -17,6 +17,7 @@ use App\Infrastructure\Persistence\Eloquent\Flow\EloquentFlowRepository;
 use App\Infrastructure\Persistence\Eloquent\Knowledge\EloquentChunkRepository;
 use App\Infrastructure\Persistence\Eloquent\Knowledge\EloquentDocumentRepository;
 use App\Infrastructure\Persistence\Eloquent\Tenant\EloquentTenantRepository;
+use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use App\Infrastructure\Persistence\Eloquent\Voice\CustomVoiceModel;
 use App\Infrastructure\Persistence\Eloquent\Voice\EloquentCustomVoiceRepository;
 use App\Infrastructure\Services\ElevenLabsAgentService;
@@ -26,6 +27,8 @@ use App\Infrastructure\Services\OpenAiService;
 use App\Infrastructure\Services\TwilioAiService;
 use App\Listeners\UserActivitySubscriber;
 use App\Models\User;
+use App\Observers\TenantObserver;
+use App\Services\TenantEncryptionService;
 use App\Services\TwilioOAuthService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -55,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ChunkingService::class);
         $this->app->singleton(KnowledgeRetrievalService::class);
         $this->app->singleton(TwilioOAuthService::class);
+        $this->app->singleton(TenantEncryptionService::class);
 
         $this->app->bind(AiServiceInterface::class, function () {
             $assistantSid = config('twilio.ai_assistant_sid');
@@ -103,6 +107,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manageSettings', fn (User $user) => $user->hasPermissionTo('settings.manage') || $user->isOwnerOrAdmin());
 
         Event::subscribe(UserActivitySubscriber::class);
+
+        TenantModel::observe(TenantObserver::class);
 
         Vite::prefetch(concurrency: 3);
 
