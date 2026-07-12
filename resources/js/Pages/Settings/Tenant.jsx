@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ConnectTwilioButton from '@/Components/ConnectTwilioButton';
+import ElevenLabsConnectModal from '@/Components/ElevenLabsConnectModal';
 import { Head, useForm, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { Heading, Subheading } from '@/Components/catalyst/heading';
@@ -21,12 +22,11 @@ export default function Tenant({ tenant }) {
         twilio_account_sid: tenant.twilio_account_sid ?? '',
         twilio_auth_token: tenant.twilio_auth_token ?? '',
         twilio_phone_number: tenant.twilio_phone_number ?? '',
-        elevenlabs_api_key: tenant.elevenlabs_api_key ?? '',
         elevenlabs_default_voice_id: tenant.elevenlabs_default_voice_id ?? '',
     });
 
     const [showTwilioToken, setShowTwilioToken] = useState(false);
-    const [showElevenlabsKey, setShowElevenlabsKey] = useState(false);
+    const [showElevenLabsModal, setShowElevenLabsModal] = useState(false);
 
     function submit(e) {
         e.preventDefault();
@@ -203,40 +203,25 @@ export default function Tenant({ tenant }) {
                             <Subheading>ElevenLabs</Subheading>
                         </div>
                         <Text className="mt-1">Configure your ElevenLabs voice synthesis settings.</Text>
-                        <div className="mt-4 space-y-4">
-                            <Field>
-                                <Label>API Key</Label>
-                                <div className="relative">
-                                    <Input
-                                        type={showElevenlabsKey ? 'text' : 'password'}
-                                        value={data.elevenlabs_api_key}
-                                        onChange={(e) => setData('elevenlabs_api_key', e.target.value)}
-                                        placeholder={tenant.elevenlabs_api_key ? '********' : 'Enter API key'}
-                                        invalid={errors.elevenlabs_api_key ? true : undefined}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowElevenlabsKey(!showElevenlabsKey)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
-                                        tabIndex={-1}
-                                    >
-                                        {showElevenlabsKey ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                                    </button>
-                                </div>
-                                {errors.elevenlabs_api_key && <ErrorMessage>{errors.elevenlabs_api_key}</ErrorMessage>}
-                            </Field>
 
-                            <Field>
-                                <Label>Default Voice ID</Label>
-                                <Input
-                                    value={data.elevenlabs_default_voice_id}
-                                    onChange={(e) => setData('elevenlabs_default_voice_id', e.target.value)}
-                                    placeholder="21m00Tcm4TlvDq8ikWAM"
-                                    invalid={errors.elevenlabs_default_voice_id ? true : undefined}
-                                />
-                                {errors.elevenlabs_default_voice_id && <ErrorMessage>{errors.elevenlabs_default_voice_id}</ErrorMessage>}
-                            </Field>
-                        </div>
+                        {tenant.elevenlabs_connected_at ? (
+                            <div className="mt-4 space-y-4">
+                                <div className="flex items-center gap-3 rounded-lg bg-emerald-50 p-4 dark:bg-emerald-900/20">
+                                    <Badge color="emerald">Connected</Badge>
+                                    <Text>Tier: {tenant.elevenlabs_subscription_tier ?? 'unknown'}</Text>
+                                </div>
+                                <div className="w-full bg-zinc-200 rounded-full h-2 dark:bg-zinc-700">
+                                    <div
+                                        className="bg-indigo-500 h-2 rounded-full"
+                                        style={{ width: `${Math.min(100, ((tenant.elevenlabs_character_count ?? 0) / (tenant.elevenlabs_character_limit ?? 1)) * 100)}%` }}
+                                    />
+                                </div>
+                                <Text>{tenant.elevenlabs_character_count ?? 0} / {tenant.elevenlabs_character_limit ?? 0} characters used</Text>
+                                <Button outline onClick={() => setShowElevenLabsModal(true)}>Reconnect</Button>
+                            </div>
+                        ) : (
+                            <Button outline className="mt-4" onClick={() => setShowElevenLabsModal(true)}>Connect ElevenLabs</Button>
+                        )}
                     </div>
 
                     <div className="flex justify-end gap-3">
@@ -246,6 +231,13 @@ export default function Tenant({ tenant }) {
                     </div>
                 </form>
             </div>
+
+            <ElevenLabsConnectModal
+                open={showElevenLabsModal}
+                onClose={() => setShowElevenLabsModal(false)}
+                onConnected={() => router.reload()}
+                reconnect={!!tenant.elevenlabs_connected_at}
+            />
         </AuthenticatedLayout>
     );
 }

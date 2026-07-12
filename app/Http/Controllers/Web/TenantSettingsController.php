@@ -58,6 +58,10 @@ class TenantSettingsController extends Controller
                 'twilio_connected_at' => $settings['twilio_oauth']['connected_at'] ?? null,
                 'elevenlabs_api_key' => isset($settings['elevenlabs_api_key']) ? self::MASK : '',
                 'elevenlabs_default_voice_id' => $settings['elevenlabs_default_voice_id'] ?? '',
+                'elevenlabs_connected_at' => $settings['elevenlabs_connected_at'] ?? null,
+                'elevenlabs_subscription_tier' => $settings['elevenlabs_subscription_tier'] ?? null,
+                'elevenlabs_character_count' => $settings['elevenlabs_character_count'] ?? 0,
+                'elevenlabs_character_limit' => $settings['elevenlabs_character_limit'] ?? 0,
                 'connectUrl' => $connectUrl,
             ],
         ]);
