@@ -1,6 +1,6 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { ArrowLeft, Phone } from 'lucide-react';
+import { ArrowLeft, Phone, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -18,10 +18,28 @@ export default function Builder({ flow }) {
   const [testing, setTesting] = useState(false);
   const [testPhone, setTestPhone] = useState('');
   const [showTestModal, setShowTestModal] = useState(false);
+  const [dirty, setDirty] = useState(false);
+  const dirtyRef = useRef(false);
   const builderRef = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (dirtyRef.current) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, []);
 
   const handleConfigChange = useCallback((newConfig) => {
     setConfig(newConfig);
+  }, []);
+
+  const handleDirty = useCallback(() => {
+    dirtyRef.current = true;
+    setDirty(true);
   }, []);
 
   const handleSave = useCallback(() => {
@@ -36,7 +54,11 @@ export default function Builder({ flow }) {
         is_active: flow.is_active,
         config: JSON.stringify(config),
       }, {
-        onSuccess: () => toast.success('Flow saved successfully'),
+        onSuccess: () => {
+          toast.success('Flow saved');
+          dirtyRef.current = false;
+          setDirty(false);
+        },
         onError: () => toast.error('Failed to save flow'),
         onFinish: () => setSaving(false),
         preserveScroll: true,
@@ -54,7 +76,7 @@ export default function Builder({ flow }) {
       await axios.post(`/flows/${flow.id}/test`, {
         phone_number: testPhone,
       });
-      toast.success('Test call initiated!');
+      toast.success('Test call initiated');
       setShowTestModal(false);
       setTestPhone('');
     } catch (err) {
@@ -84,6 +106,12 @@ export default function Builder({ flow }) {
             Drag steps from the toolbox onto the canvas. Connect them by dragging from the bottom handle of a step.
           </p>
           <div className="flex items-center gap-2">
+            {dirty && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
+                <span className="size-1.5 rounded-full bg-amber-500" />
+                Unsaved
+              </span>
+            )}
             <Button outline onClick={() => setShowTestModal(true)}>
               <Phone className="size-4" />
               Test Flow
@@ -95,7 +123,13 @@ export default function Builder({ flow }) {
         </div>
 
         <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-white/10 dark:bg-zinc-900">
-          <FlowBuilderComponent ref={builderRef} config={config} onConfigChange={handleConfigChange} />
+          <FlowBuilderComponent
+            ref={builderRef}
+            config={config}
+            onConfigChange={handleConfigChange}
+            onDirty={handleDirty}
+            onSave={handleSave}
+          />
         </div>
       </div>
 

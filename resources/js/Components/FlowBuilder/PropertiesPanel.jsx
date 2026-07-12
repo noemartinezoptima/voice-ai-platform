@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { AlertTriangle } from 'lucide-react';
 
 const FIELDS = {
   say: [
@@ -86,7 +87,7 @@ const FIELDS = {
   hangup: [],
 };
 
-export default function PropertiesPanel({ node, onUpdate, nodes }) {
+export default function PropertiesPanel({ node, onUpdate, nodes, validationErrors }) {
   const [localData, setLocalData] = useState({});
 
   useEffect(() => {
@@ -115,27 +116,51 @@ export default function PropertiesPanel({ node, onUpdate, nodes }) {
   }
 
   const fields = FIELDS[node.type] || [];
+  const nodeErrors = validationErrors?.[node.id] || [];
+
+  const getFieldError = (fieldKey) => {
+    return nodeErrors.find((e) => e.field === fieldKey)?.message;
+  };
 
   return (
     <div className="w-64 overflow-y-auto border-l bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="mb-4">
-        <p className="text-sm font-semibold text-zinc-900 capitalize dark:text-white">{node.type}</p>
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-semibold text-zinc-900 capitalize dark:text-white">{node.type}</p>
+          {nodeErrors.length > 0 && (
+            <AlertTriangle className="size-3.5 shrink-0 text-amber-500" />
+          )}
+        </div>
         <p className="text-xs text-zinc-400">ID: {node.id}</p>
+
+        {nodeErrors.length > 0 && (
+          <div className="mt-2 rounded-lg border border-red-200 bg-red-50 p-2 dark:border-red-800 dark:bg-red-950/30">
+            {nodeErrors.map((e, i) => (
+              <p key={i} className="text-[10px] leading-relaxed text-red-600 dark:text-red-400">
+                {e.message}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="space-y-4">
         {fields.map((field) => {
+          const error = getFieldError(field.key);
+
           if (field.type === 'branches') {
             return (
-              <BranchesEditor
-                key={field.key}
-                branches={localData.branches || []}
-                nodes={nodes}
-                onChange={(b) => {
-                  handleChange('branches', b);
-                  setTimeout(handleBlur, 0);
-                }}
-              />
+              <div key={field.key}>
+                <BranchesEditor
+                  branches={localData.branches || []}
+                  nodes={nodes}
+                  onChange={(b) => {
+                    handleChange('branches', b);
+                    setTimeout(handleBlur, 0);
+                  }}
+                />
+                {error && <p className="mt-1 text-[10px] text-red-500">{error}</p>}
+              </div>
             );
           }
 
@@ -147,12 +172,13 @@ export default function PropertiesPanel({ node, onUpdate, nodes }) {
                   value={localData[field.key] || ''}
                   onChange={(e) => handleChange(field.key, e.target.value)}
                   onBlur={handleBlur}
-                  className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-hidden dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+                  className={`w-full rounded-lg border bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-hidden dark:bg-zinc-800 dark:text-white ${error ? 'border-red-300 dark:border-red-700' : 'border-zinc-200 dark:border-zinc-700'}`}
                 >
                   {field.options.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
+                {error && <p className="mt-1 text-[10px] text-red-500">{error}</p>}
               </div>
             );
           }
@@ -167,8 +193,9 @@ export default function PropertiesPanel({ node, onUpdate, nodes }) {
                   onBlur={handleBlur}
                   rows={3}
                   placeholder={field.placeholder}
-                  className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-300 focus:border-blue-500 focus:outline-hidden dark:border-zinc-700 dark:bg-zinc-800 dark:text-white dark:placeholder:text-zinc-600"
+                  className={`w-full rounded-lg border bg-white px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-300 focus:border-blue-500 focus:outline-hidden dark:bg-zinc-800 dark:text-white dark:placeholder:text-zinc-600 ${error ? 'border-red-300 dark:border-red-700' : 'border-zinc-200 dark:border-zinc-700'}`}
                 />
+                {error && <p className="mt-1 text-[10px] text-red-500">{error}</p>}
               </div>
             );
           }
@@ -181,8 +208,9 @@ export default function PropertiesPanel({ node, onUpdate, nodes }) {
                 onChange={(e) => handleChange(field.key, e.target.value)}
                 onBlur={handleBlur}
                 placeholder={field.placeholder}
-                className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-300 focus:border-blue-500 focus:outline-hidden dark:border-zinc-700 dark:bg-zinc-800 dark:text-white dark:placeholder:text-zinc-600"
+                className={`w-full rounded-lg border bg-white px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-300 focus:border-blue-500 focus:outline-hidden dark:bg-zinc-800 dark:text-white dark:placeholder:text-zinc-600 ${error ? 'border-red-300 dark:border-red-700' : 'border-zinc-200 dark:border-zinc-700'}`}
               />
+              {error && <p className="mt-1 text-[10px] text-red-500">{error}</p>}
             </div>
           );
         })}
@@ -221,7 +249,7 @@ function BranchesEditor({ branches, nodes, onChange }) {
                 placeholder="Label"
                 className="w-20 rounded border border-zinc-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-zinc-700 focus:border-blue-500 focus:outline-hidden dark:border-zinc-600 dark:bg-zinc-700 dark:text-zinc-300"
               />
-              <button onClick={() => removeBranch(i)} className="text-[10px] text-red-400 hover:text-red-500">×</button>
+              <button onClick={() => removeBranch(i)} className="text-[10px] text-red-400 hover:text-red-500">&times;</button>
             </div>
             <input
               value={b.expression || ''}

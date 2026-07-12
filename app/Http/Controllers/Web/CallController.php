@@ -46,6 +46,8 @@ class CallController extends Controller
             ->where('calls.tenant_id', $request->user()->tenant_id)
             ->leftJoin('flows', 'calls.flow_id', '=', 'flows.id')
             ->select('calls.*', 'flows.name as flow_name')
+            ->with('callLogs')
+            ->with('retryOf')
             ->where('calls.id', $id)
             ->firstOrFail();
 

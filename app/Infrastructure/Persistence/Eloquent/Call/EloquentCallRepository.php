@@ -103,10 +103,12 @@ class EloquentCallRepository implements CallRepositoryInterface
             ->avg('duration_seconds');
     }
 
-    public function callsByDay(string $tenantId, int $days = 7): array
+    public function callsByDay(string $tenantId, ?string $start = null, ?string $end = null): array
     {
         return CallModel::where('tenant_id', $tenantId)
-            ->where('created_at', '>=', now()->subDays($days))
+            ->when($start, fn ($q) => $q->where('created_at', '>=', $start))
+            ->when($end, fn ($q) => $q->where('created_at', '<=', $end))
+            ->when(! $start && ! $end, fn ($q) => $q->where('created_at', '>=', now()->subDays(7)))
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->orderBy('date')
@@ -114,9 +116,12 @@ class EloquentCallRepository implements CallRepositoryInterface
             ->toArray();
     }
 
-    public function callsByStatus(string $tenantId): array
+    public function callsByStatus(string $tenantId, ?string $start = null, ?string $end = null): array
     {
         return CallModel::where('tenant_id', $tenantId)
+            ->when($start, fn ($q) => $q->where('created_at', '>=', $start))
+            ->when($end, fn ($q) => $q->where('created_at', '<=', $end))
+            ->when(! $start && ! $end, fn ($q) => $q->where('created_at', '>=', now()->subDays(7)))
             ->selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
             ->orderBy('count', 'desc')
@@ -124,11 +129,13 @@ class EloquentCallRepository implements CallRepositoryInterface
             ->toArray();
     }
 
-    public function avgDurationByDay(string $tenantId, int $days = 7): array
+    public function avgDurationByDay(string $tenantId, ?string $start = null, ?string $end = null): array
     {
         return CallModel::where('tenant_id', $tenantId)
             ->where('status', 'completed')
-            ->where('created_at', '>=', now()->subDays($days))
+            ->when($start, fn ($q) => $q->where('created_at', '>=', $start))
+            ->when($end, fn ($q) => $q->where('created_at', '<=', $end))
+            ->when(! $start && ! $end, fn ($q) => $q->where('created_at', '>=', now()->subDays(7)))
             ->selectRaw('DATE(created_at) as date, AVG(duration_seconds) as avg_seconds')
             ->groupBy('date')
             ->orderBy('date')
@@ -136,16 +143,57 @@ class EloquentCallRepository implements CallRepositoryInterface
             ->toArray();
     }
 
-    public function callsByFlow(string $tenantId, int $limit = 5): array
+    public function callsByFlow(string $tenantId, int $limit = 5, ?string $start = null, ?string $end = null): array
     {
         return CallModel::where('calls.tenant_id', $tenantId)
             ->join('flows', 'calls.flow_id', '=', 'flows.id')
+            ->when($start, fn ($q) => $q->where('calls.created_at', '>=', $start))
+            ->when($end, fn ($q) => $q->where('calls.created_at', '<=', $end))
+            ->when(! $start && ! $end, fn ($q) => $q->where('calls.created_at', '>=', now()->subDays(7)))
             ->selectRaw('flows.name as flow_name, COUNT(*) as count')
             ->groupBy('flows.name')
             ->orderBy('count', 'desc')
             ->limit($limit)
             ->get()
             ->toArray();
+    }
+
+    public function callsByFlowWithMetrics(string $tenantId, ?string $start = null, ?string $end = null): array
+    {
+        return CallModel::where('calls.tenant_id', $tenantId)
+            ->join('flows', 'calls.flow_id', '=', 'flows.id')
+            ->when($start, fn ($q) => $q->where('calls.created_at', '>=', $start))
+            ->when($end, fn ($q) => $q->where('calls.created_at', '<=', $end))
+            ->when(! $start && ! $end, fn ($q) => $q->where('calls.created_at', '>=', now()->subDays(7)))
+            ->selectRaw("
+                flows.name as flow_name,
+                COUNT(*) as total_calls,
+                COALESCE(AVG(duration_seconds), 0) as avg_duration,
+                SUM(CASE WHEN calls.status = 'completed' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as success_rate
+            ")
+            ->groupBy('flows.name')
+            ->orderBy('total_calls', 'desc')
+            ->get()
+            ->toArray();
+    }
+
+    public function countInRange(string $tenantId, ?string $start = null, ?string $end = null): int
+    {
+        return CallModel::where('tenant_id', $tenantId)
+            ->when($start, fn ($q) => $q->where('created_at', '>=', $start))
+            ->when($end, fn ($q) => $q->where('created_at', '<=', $end))
+            ->when(! $start && ! $end, fn ($q) => $q->where('created_at', '>=', now()->subDays(7)))
+            ->count();
+    }
+
+    public function avgDurationInRange(string $tenantId, ?string $start = null, ?string $end = null): int
+    {
+        return (int) CallModel::where('tenant_id', $tenantId)
+            ->where('status', 'completed')
+            ->when($start, fn ($q) => $q->where('created_at', '>=', $start))
+            ->when($end, fn ($q) => $q->where('created_at', '<=', $end))
+            ->when(! $start && ! $end, fn ($q) => $q->where('created_at', '>=', now()->subDays(7)))
+            ->avg('duration_seconds');
     }
 
     private function toEntity(CallModel $model): Call

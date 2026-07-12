@@ -26,14 +26,21 @@ interface CallRepositoryInterface
     public function avgDurationByTenant(string $tenantId): int;
 
     /** @return array<int, array{date: string, count: int}> */
-    public function callsByDay(string $tenantId, int $days = 7): array;
+    public function callsByDay(string $tenantId, ?string $start = null, ?string $end = null): array;
 
     /** @return array<int, array{status: string, count: int}> */
-    public function callsByStatus(string $tenantId): array;
+    public function callsByStatus(string $tenantId, ?string $start = null, ?string $end = null): array;
 
     /** @return array<int, array{date: string, avg_seconds: float}> */
-    public function avgDurationByDay(string $tenantId, int $days = 7): array;
+    public function avgDurationByDay(string $tenantId, ?string $start = null, ?string $end = null): array;
 
     /** @return array<int, array{flow_name: string, count: int}> */
-    public function callsByFlow(string $tenantId, int $limit = 5): array;
+    public function callsByFlow(string $tenantId, int $limit = 5, ?string $start = null, ?string $end = null): array;
+
+    public function countInRange(string $tenantId, ?string $start = null, ?string $end = null): int;
+
+    public function avgDurationInRange(string $tenantId, ?string $start = null, ?string $end = null): int;
+
+    /** @return array<int, array{flow_name: string, total_calls: int, avg_duration: float, success_rate: float}> */
+    public function callsByFlowWithMetrics(string $tenantId, ?string $start = null, ?string $end = null): array;
 }

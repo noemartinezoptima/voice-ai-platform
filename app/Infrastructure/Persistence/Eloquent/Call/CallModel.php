@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $id
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $call_sid
  * @property string $from_number
  * @property string $to_number
+ * @property string $direction
  * @property string $status
  * @property int $duration_seconds
  * @property string|null $current_step
@@ -46,6 +48,7 @@ class CallModel extends Model
         'call_sid',
         'from_number',
         'to_number',
+        'direction',
         'status',
         'duration_seconds',
         'current_step',
@@ -70,6 +73,24 @@ class CallModel extends Model
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(TenantModel::class, 'tenant_id');
+    }
+
+    /** @return HasMany<CallLogModel, $this> */
+    public function callLogs(): HasMany
+    {
+        return $this->hasMany(CallLogModel::class, 'call_id')->orderBy('created_at');
+    }
+
+    /** @return BelongsTo<CallModel, $this> */
+    public function retryOf(): BelongsTo
+    {
+        return $this->belongsTo(CallModel::class, 'retry_of_id');
+    }
+
+    /** @return HasMany<CallModel, $this> */
+    public function retries(): HasMany
+    {
+        return $this->hasMany(CallModel::class, 'retry_of_id');
     }
 
     protected function casts(): array

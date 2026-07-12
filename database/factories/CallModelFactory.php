@@ -16,6 +16,7 @@ class CallModelFactory extends Factory
             'call_sid' => 'CA'.$this->faker->regexify('[A-Za-z0-9]{32}'),
             'from_number' => $this->faker->phoneNumber(),
             'to_number' => $this->faker->phoneNumber(),
+            'direction' => 'inbound',
             'status' => 'completed',
             'duration_seconds' => $this->faker->numberBetween(10, 600),
             'context' => ['foo' => 'bar'],
