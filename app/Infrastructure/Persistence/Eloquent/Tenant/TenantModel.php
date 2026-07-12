@@ -4,6 +4,7 @@ namespace App\Infrastructure\Persistence\Eloquent\Tenant;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -58,5 +59,29 @@ class TenantModel extends Model
             'consent_recordings' => true,
             'consent_transcripts' => true,
         ], is_array($value) ? $value : (json_decode($value ?? '{}', true) ?: []));
+    }
+
+    public function getElevenLabsApiKeyAttribute(): ?string
+    {
+        $key = $this->settings['elevenlabs_api_key'] ?? null;
+        if ($key === null) {
+            return null;
+        }
+        try {
+            return Crypt::decryptString($key);
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+    public function setElevenLabsApiKey(?string $value): void
+    {
+        $settings = $this->settings ?? [];
+        if ($value !== null && $value !== '') {
+            $settings['elevenlabs_api_key'] = Crypt::encryptString($value);
+        } else {
+            unset($settings['elevenlabs_api_key']);
+        }
+        $this->settings = $settings;
     }
 }
