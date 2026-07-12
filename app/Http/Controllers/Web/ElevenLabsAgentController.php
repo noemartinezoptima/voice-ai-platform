@@ -8,6 +8,7 @@ use App\Infrastructure\Persistence\Eloquent\ElevenLabs\ElevenLabsAgentModel;
 use App\Infrastructure\Services\ElevenLabs\ElevenLabsAgentApiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,6 +20,7 @@ class ElevenLabsAgentController extends Controller
 
     public function index(Request $request): Response
     {
+        Gate::authorize('manageAgents');
         $localAgents = ElevenLabsAgentModel::where('tenant_id', $request->user()->tenant_id)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -30,6 +32,7 @@ class ElevenLabsAgentController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        Gate::authorize('manageAgents');
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'system_prompt' => ['nullable', 'string', 'max:10000'],
@@ -51,7 +54,7 @@ class ElevenLabsAgentController extends Controller
             $result = $api->create($validated);
         } catch (\RuntimeException $e) {
             return redirect()->route('settings.agents.index')
-                ->with('success', 'Failed to create agent: '.$e->getMessage());
+                ->with('error', 'Failed to create agent: '.$e->getMessage());
         }
 
         ElevenLabsAgentModel::create([
@@ -67,6 +70,7 @@ class ElevenLabsAgentController extends Controller
 
     public function update(Request $request, string $id): RedirectResponse
     {
+        Gate::authorize('manageAgents');
         $agent = ElevenLabsAgentModel::where('tenant_id', $request->user()->tenant_id)
             ->where('id', $id)
             ->firstOrFail();
@@ -92,7 +96,7 @@ class ElevenLabsAgentController extends Controller
             $api->update($agent->elevenlabs_agent_id, $validated);
         } catch (\RuntimeException $e) {
             return redirect()->route('settings.agents.index')
-                ->with('success', 'Failed to update agent: '.$e->getMessage());
+                ->with('error', 'Failed to update agent: '.$e->getMessage());
         }
 
         $agent->update([
@@ -106,6 +110,7 @@ class ElevenLabsAgentController extends Controller
 
     public function destroy(Request $request, string $id): RedirectResponse
     {
+        Gate::authorize('manageAgents');
         $agent = ElevenLabsAgentModel::where('tenant_id', $request->user()->tenant_id)
             ->where('id', $id)
             ->firstOrFail();
@@ -132,6 +137,7 @@ class ElevenLabsAgentController extends Controller
 
     public function syncFromApi(Request $request): RedirectResponse
     {
+        Gate::authorize('manageAgents');
         $tenant = $this->tenantRepository->findById($request->user()->tenant_id);
         abort_if($tenant === null, 404);
 
@@ -147,7 +153,7 @@ class ElevenLabsAgentController extends Controller
             $remoteAgents = $api->list();
         } catch (\RuntimeException $e) {
             return redirect()->route('settings.agents.index')
-                ->with('success', 'Failed to sync agents: '.$e->getMessage());
+                ->with('error', 'Failed to sync agents: '.$e->getMessage());
         }
 
         $existingIds = ElevenLabsAgentModel::where('tenant_id', $request->user()->tenant_id)

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Permission;
@@ -15,6 +16,7 @@ class RoleController extends Controller
 {
     public function index(Request $request): Response
     {
+        Gate::authorize('manageSettings');
         $roles = Role::with('permissions')->get()->map(fn (Role $role) => [
             'id' => $role->id,
             'name' => $role->name,
@@ -32,6 +34,7 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role): RedirectResponse
     {
+        Gate::authorize('manageSettings');
         $validated = $request->validate([
             'permissions' => ['required', 'array'],
             'permissions.*' => ['string', 'exists:permissions,name'],

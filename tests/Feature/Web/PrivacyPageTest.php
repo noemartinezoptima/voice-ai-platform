@@ -19,6 +19,7 @@ class PrivacyPageTest extends TestCase
 
         $tenant = TenantFactory::new()->create();
         $this->user = User::factory()->create(['tenant_id' => $tenant->id]);
+        $this->user->givePermissionTo('settings.manage');
     }
 
     public function test_privacy_page_loads(): void

@@ -21,6 +21,7 @@ class ElevenLabsAgentPageTest extends TestCase
         parent::setUp();
         $tenant = TenantFactory::new()->create();
         $this->user = User::factory()->create(['tenant_id' => $tenant->id]);
+        $this->user->givePermissionTo('agents.manage');
     }
 
     public function test_index_requires_authentication(): void

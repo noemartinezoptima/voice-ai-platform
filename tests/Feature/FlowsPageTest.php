@@ -20,6 +20,7 @@ class FlowsPageTest extends TestCase
         parent::setUp();
         $tenant = TenantFactory::new()->create();
         $this->user = User::factory()->create(['tenant_id' => $tenant->id]);
+        $this->user->givePermissionTo('flows.manage');
     }
 
     public function test_flows_index_page_requires_authentication(): void

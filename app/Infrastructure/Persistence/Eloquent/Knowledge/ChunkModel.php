@@ -2,9 +2,11 @@
 
 namespace App\Infrastructure\Persistence\Eloquent\Knowledge;
 
+use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $id
@@ -37,5 +39,11 @@ class ChunkModel extends Model
         return [
             'metadata' => 'array',
         ];
+    }
+
+    /** @return BelongsTo<TenantModel, $this> */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(TenantModel::class, 'tenant_id');
     }
 }

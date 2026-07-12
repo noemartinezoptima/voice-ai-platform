@@ -8,6 +8,7 @@ use App\Infrastructure\Persistence\Eloquent\Team\TenantInvitationModel;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -91,7 +92,7 @@ class TeamMemberController extends Controller
     {
         $current = $request->user();
 
-        abort_if(! $current->isOwner(), 403);
+        Gate::authorize('manageTeam');
         abort_if($current->id === $user->id, 403);
         abort_if($user->tenant_id !== $current->tenant_id, 403);
 
@@ -114,7 +115,7 @@ class TeamMemberController extends Controller
     {
         $current = $request->user();
 
-        abort_if(! $current->isOwner(), 403);
+        Gate::authorize('manageTeam');
         abort_if($current->id === $user->id, 403);
         abort_if($user->tenant_id !== $current->tenant_id, 403);
 

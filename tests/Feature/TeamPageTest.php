@@ -24,6 +24,7 @@ class TeamPageTest extends TestCase
             'tenant_id' => $this->tenantId,
             'role' => 'owner',
         ]);
+        $this->owner->assignRole('owner');
     }
 
     public function test_index_requires_authentication(): void

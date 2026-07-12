@@ -19,6 +19,7 @@ class BillingPageTest extends TestCase
         parent::setUp();
         $tenant = TenantFactory::new()->create();
         $this->user = User::factory()->create(['tenant_id' => $tenant->id]);
+        $this->user->givePermissionTo(['billing.view', 'billing.manage']);
     }
 
     public function test_index_requires_authentication(): void
@@ -76,6 +77,7 @@ class BillingPageTest extends TestCase
     {
         $otherTenant = TenantFactory::new()->create(['plan' => 'free']);
         $otherUser = User::factory()->create(['tenant_id' => $otherTenant->id]);
+        $otherUser->givePermissionTo('billing.manage');
 
         $this->actingAs($otherUser)
             ->patch('/billing/plan', ['plan' => 'enterprise'])
@@ -92,6 +94,7 @@ class BillingPageTest extends TestCase
     {
         $tenant = TenantFactory::new()->create(['plan' => 'pro']);
         $user = User::factory()->create(['tenant_id' => $tenant->id]);
+        $user->givePermissionTo('billing.manage');
 
         $this->actingAs($user)
             ->patch('/billing/plan', ['plan' => 'free'])

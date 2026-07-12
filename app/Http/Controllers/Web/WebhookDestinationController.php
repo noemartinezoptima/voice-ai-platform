@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Webhook\WebhookDestinationModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -13,6 +14,7 @@ class WebhookDestinationController extends Controller
 {
     public function index(Request $request): Response
     {
+        Gate::authorize('manageWebhooks');
         $webhooks = WebhookDestinationModel::where('tenant_id', $request->user()->tenant_id)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -24,6 +26,7 @@ class WebhookDestinationController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        Gate::authorize('manageWebhooks');
         $validated = $request->validate([
             'url' => ['required', 'url', 'max:2048'],
             'events' => ['required', 'array', 'min:1'],
@@ -44,6 +47,7 @@ class WebhookDestinationController extends Controller
 
     public function update(Request $request, string $id): RedirectResponse
     {
+        Gate::authorize('manageWebhooks');
         $webhook = WebhookDestinationModel::where('tenant_id', $request->user()->tenant_id)
             ->where('id', $id)
             ->firstOrFail();
@@ -64,6 +68,7 @@ class WebhookDestinationController extends Controller
 
     public function destroy(Request $request, string $id): RedirectResponse
     {
+        Gate::authorize('manageWebhooks');
         WebhookDestinationModel::where('tenant_id', $request->user()->tenant_id)
             ->where('id', $id)
             ->firstOrFail()

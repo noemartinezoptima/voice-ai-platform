@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\VoiceSettingsRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,6 +20,7 @@ class VoiceSettingsController extends Controller
 
     public function edit(Request $request): Response
     {
+        Gate::authorize('manageSettings');
         $tenant = $this->tenantRepository->findById($request->user()->tenant_id);
 
         abort_if($tenant === null, 404);
@@ -39,6 +41,7 @@ class VoiceSettingsController extends Controller
 
     public function update(VoiceSettingsRequest $request): RedirectResponse
     {
+        Gate::authorize('manageSettings');
         $existing = $this->tenantRepository->findById($request->user()->tenant_id);
 
         abort_if($existing === null, 404);

@@ -9,6 +9,7 @@ use App\Http\Requests\TenantSettingsRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -22,6 +23,7 @@ class TenantSettingsController extends Controller
 
     public function edit(Request $request): Response
     {
+        Gate::authorize('manageSettings');
         $tenant = $this->tenantRepository->findById($request->user()->tenant_id);
 
         abort_if($tenant === null, 404);
@@ -69,6 +71,7 @@ class TenantSettingsController extends Controller
 
     public function update(TenantSettingsRequest $request): RedirectResponse
     {
+        Gate::authorize('manageSettings');
         $existing = $this->tenantRepository->findById($request->user()->tenant_id);
 
         abort_if($existing === null, 404);

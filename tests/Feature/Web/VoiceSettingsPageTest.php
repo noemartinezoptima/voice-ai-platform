@@ -18,6 +18,7 @@ class VoiceSettingsPageTest extends TestCase
         parent::setUp();
         $tenant = TenantFactory::new()->create();
         $this->user = User::factory()->create(['tenant_id' => $tenant->id]);
+        $this->user->givePermissionTo('settings.manage');
     }
 
     public function test_edit_requires_authentication(): void

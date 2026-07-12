@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -13,6 +14,7 @@ class DataProtectionController extends Controller
 {
     public function edit(Request $request): Response
     {
+        Gate::authorize('manageSettings');
         $tenantId = $request->user()->tenant_id;
         $tenantModel = TenantModel::find($tenantId);
 
@@ -25,6 +27,7 @@ class DataProtectionController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
+        Gate::authorize('manageSettings');
         $tenantId = $request->user()->tenant_id;
         $tenantModel = TenantModel::find($tenantId);
 

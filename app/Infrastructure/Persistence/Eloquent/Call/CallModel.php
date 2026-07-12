@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Persistence\Eloquent\Call;
 
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
+use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -58,6 +59,12 @@ class CallModel extends Model
     public function flow(): BelongsTo
     {
         return $this->belongsTo(FlowModel::class, 'flow_id');
+    }
+
+    /** @return BelongsTo<TenantModel, $this> */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(TenantModel::class, 'tenant_id');
     }
 
     protected function casts(): array

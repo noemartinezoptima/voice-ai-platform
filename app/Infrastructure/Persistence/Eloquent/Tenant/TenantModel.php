@@ -2,8 +2,13 @@
 
 namespace App\Infrastructure\Persistence\Eloquent\Tenant;
 
+use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
+use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
+use App\Infrastructure\Persistence\Eloquent\Knowledge\DocumentModel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Crypt;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -84,5 +89,29 @@ class TenantModel extends Model
             unset($settings['elevenlabs_api_key']);
         }
         $this->settings = $settings;
+    }
+
+    /** @return HasMany<User, $this> */
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class, 'tenant_id');
+    }
+
+    /** @return HasMany<FlowModel, $this> */
+    public function flows(): HasMany
+    {
+        return $this->hasMany(FlowModel::class, 'tenant_id');
+    }
+
+    /** @return HasMany<CallModel, $this> */
+    public function calls(): HasMany
+    {
+        return $this->hasMany(CallModel::class, 'tenant_id');
+    }
+
+    /** @return HasMany<DocumentModel, $this> */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(DocumentModel::class, 'tenant_id');
     }
 }

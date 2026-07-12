@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,6 +15,7 @@ class BillingController extends Controller
 {
     public function index(Request $request): Response
     {
+        Gate::authorize('viewBilling');
         /** @var TenantModel $tenant */
         $tenant = TenantModel::findOrFail($request->user()->tenant_id);
 
@@ -29,6 +31,7 @@ class BillingController extends Controller
 
     public function updatePlan(Request $request): RedirectResponse
     {
+        Gate::authorize('manageBilling');
         $validated = $request->validate([
             'plan' => ['required', 'string', 'in:free,pro,enterprise'],
         ]);

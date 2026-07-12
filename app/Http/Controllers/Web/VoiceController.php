@@ -76,13 +76,13 @@ class VoiceController extends Controller
                 $error = $response->json()['detail']['message'] ?? $response->body();
 
                 return redirect()->route('settings.voices.index')
-                    ->with('success', 'Failed to clone voice: '.$error);
+                    ->with('error', 'Failed to clone voice: '.$error);
             }
 
             $voiceId = $response->json()['voice_id'];
         } catch (\Exception $e) {
             return redirect()->route('settings.voices.index')
-                ->with('success', 'Failed to connect to ElevenLabs: '.$e->getMessage());
+                ->with('error', 'Failed to connect to ElevenLabs: '.$e->getMessage());
         }
 
         $existingCount = CustomVoiceModel::where('tenant_id', $request->user()->tenant_id)->count();

@@ -19,6 +19,7 @@ class CallsPageTest extends TestCase
         parent::setUp();
         $tenant = TenantFactory::new()->create();
         $this->user = User::factory()->create(['tenant_id' => $tenant->id]);
+        $this->user->givePermissionTo('calls.export');
     }
 
     public function test_calls_index_requires_authentication(): void
@@ -138,6 +139,7 @@ class CallsPageTest extends TestCase
     {
         $myTenant = TenantFactory::new()->create();
         $myUser = User::factory()->create(['tenant_id' => $myTenant->id]);
+        $myUser->givePermissionTo('calls.export');
 
         CallModelFactory::new()->create(['tenant_id' => $myTenant->id, 'from_number' => '+1111']);
         CallModelFactory::new()->create(['tenant_id' => $myTenant->id, 'from_number' => '+2222', 'status' => 'failed']);

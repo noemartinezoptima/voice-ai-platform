@@ -2,8 +2,10 @@
 
 namespace App\Infrastructure\Persistence\Eloquent\Voice;
 
+use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -56,5 +58,11 @@ class CustomVoiceModel extends Model
             'requires_verification' => 'boolean',
             'sample_count' => 'integer',
         ];
+    }
+
+    /** @return BelongsTo<TenantModel, $this> */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(TenantModel::class, 'tenant_id');
     }
 }

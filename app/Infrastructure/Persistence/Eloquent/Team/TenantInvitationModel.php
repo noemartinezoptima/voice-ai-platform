@@ -2,8 +2,10 @@
 
 namespace App\Infrastructure\Persistence\Eloquent\Team;
 
+use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $id
@@ -32,5 +34,11 @@ class TenantInvitationModel extends Model
         return [
             'accepted_at' => 'datetime',
         ];
+    }
+
+    /** @return BelongsTo<TenantModel, $this> */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(TenantModel::class, 'tenant_id');
     }
 }

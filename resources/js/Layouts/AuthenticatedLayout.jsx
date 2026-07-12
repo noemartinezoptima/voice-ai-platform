@@ -92,7 +92,10 @@ export default function AuthenticatedLayout({ children }) {
         if (flash?.success) {
             toast.success(flash.success)
         }
-    }, [flash?.success])
+        if (flash?.error) {
+            toast.error(flash.error)
+        }
+    }, [flash?.success, flash?.error])
 
     return (
         <SidebarLayout

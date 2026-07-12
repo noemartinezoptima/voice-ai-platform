@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
@@ -14,6 +15,7 @@ class SystemHealthController extends Controller
 {
     public function index(Request $request): Response
     {
+        Gate::authorize('manageSettings');
         $tenantId = $request->user()->tenant_id;
 
         return Inertia::render('Settings/System/Index', [

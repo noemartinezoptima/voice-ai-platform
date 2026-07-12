@@ -2,8 +2,12 @@
 
 namespace App\Infrastructure\Persistence\Eloquent\Flow;
 
+use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
+use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -48,5 +52,17 @@ class FlowModel extends Model
             'is_active' => 'boolean',
             'version' => 'integer',
         ];
+    }
+
+    /** @return BelongsTo<TenantModel, $this> */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(TenantModel::class, 'tenant_id');
+    }
+
+    /** @return HasMany<CallModel, $this> */
+    public function calls(): HasMany
+    {
+        return $this->hasMany(CallModel::class, 'flow_id', 'id');
     }
 }

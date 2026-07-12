@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Activitylog\Models\Activity;
@@ -13,6 +14,7 @@ class PrivacyController extends Controller
 {
     public function index(Request $request): Response
     {
+        Gate::authorize('manageSettings');
         $tenantId = $request->user()->tenant_id;
 
         $totalCalls = \DB::table('calls')->where('tenant_id', $tenantId)->count();

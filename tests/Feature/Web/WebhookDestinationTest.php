@@ -19,6 +19,7 @@ class WebhookDestinationTest extends TestCase
         parent::setUp();
         $tenant = TenantFactory::new()->create();
         $this->user = User::factory()->create(['tenant_id' => $tenant->id]);
+        $this->user->givePermissionTo('webhooks.manage');
     }
 
     public function test_index_requires_authentication(): void

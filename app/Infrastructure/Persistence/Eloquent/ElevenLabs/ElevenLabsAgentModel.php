@@ -2,8 +2,10 @@
 
 namespace App\Infrastructure\Persistence\Eloquent\ElevenLabs;
 
+use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $id
@@ -33,5 +35,11 @@ class ElevenLabsAgentModel extends Model
             'config' => 'array',
             'is_active' => 'boolean',
         ];
+    }
+
+    /** @return BelongsTo<TenantModel, $this> */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(TenantModel::class, 'tenant_id');
     }
 }
