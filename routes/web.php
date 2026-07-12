@@ -91,6 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/monitor/calls/{call}/transcript', [MonitorController::class, 'transcript'])->name('monitor.transcript');
 
     Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
+    Route::post('/sms/send', [SmsController::class, 'send'])->name('sms.send');
 
     Route::get('/billing', [BillingController::class, 'index'])->name('billing.index');
     Route::patch('/billing/plan', [BillingController::class, 'updatePlan'])->name('billing.update');

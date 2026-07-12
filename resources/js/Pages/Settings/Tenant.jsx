@@ -24,6 +24,7 @@ export default function Tenant({ tenant }) {
         twilio_account_sid: tenant.twilio_account_sid ?? '',
         twilio_auth_token: tenant.twilio_auth_token ?? '',
         twilio_phone_number: tenant.twilio_phone_number ?? '',
+        whatsapp_phone_number: tenant.whatsapp_phone_number ?? '',
         elevenlabs_default_voice_id: tenant.elevenlabs_default_voice_id ?? '',
     });
 
@@ -185,8 +186,8 @@ export default function Tenant({ tenant }) {
                                     {errors.twilio_auth_token && <ErrorMessage>{errors.twilio_auth_token}</ErrorMessage>}
                                 </Field>
 
-                                <Field>
-                                    <Label>Default Phone Number</Label>
+                                 <Field>
+                                    <Label>Default Phone Number (SMS)</Label>
                                     <Input
                                         value={data.twilio_phone_number}
                                         onChange={(e) => setData('twilio_phone_number', e.target.value)}
@@ -194,6 +195,17 @@ export default function Tenant({ tenant }) {
                                         invalid={errors.twilio_phone_number ? true : undefined}
                                     />
                                     {errors.twilio_phone_number && <ErrorMessage>{errors.twilio_phone_number}</ErrorMessage>}
+                                </Field>
+
+                                <Field>
+                                    <Label>WhatsApp Phone Number</Label>
+                                    <Input
+                                        value={data.whatsapp_phone_number}
+                                        onChange={(e) => setData('whatsapp_phone_number', e.target.value)}
+                                        placeholder="+12345678900"
+                                        invalid={errors.whatsapp_phone_number ? true : undefined}
+                                    />
+                                    {errors.whatsapp_phone_number && <ErrorMessage>{errors.whatsapp_phone_number}</ErrorMessage>}
                                 </Field>
                             </div>
                         )}

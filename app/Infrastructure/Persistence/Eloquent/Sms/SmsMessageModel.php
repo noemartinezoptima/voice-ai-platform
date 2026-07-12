@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @property string $from_number
  * @property string $to_number
  * @property string $body
+ * @property string $channel
  * @property string $direction
  * @property string $status
  * @property string|null $message_sid
@@ -34,6 +35,7 @@ class SmsMessageModel extends Model
         'from_number',
         'to_number',
         'body',
+        'channel',
         'direction',
         'status',
         'message_sid',

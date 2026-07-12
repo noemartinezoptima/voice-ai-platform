@@ -55,6 +55,7 @@ class TenantSettingsController extends Controller
                 'twilio_account_sid' => $settings['twilio_account_sid'] ?? '',
                 'twilio_auth_token' => isset($settings['twilio_auth_token']) ? self::MASK : '',
                 'twilio_phone_number' => $settings['twilio_phone_number'] ?? '',
+                'whatsapp_phone_number' => $settings['whatsapp_phone_number'] ?? '',
                 'twilio_oauth_enabled' => $settings['twilio_oauth_enabled'] ?? false,
                 'twilio_account_sid_oauth' => $settings['twilio_oauth']['account_sid'] ?? null,
                 'twilio_connected_at' => $settings['twilio_oauth']['connected_at'] ?? null,
@@ -81,6 +82,7 @@ class TenantSettingsController extends Controller
         $settings['default_language'] = $request->default_language;
         $settings['twilio_account_sid'] = $request->twilio_account_sid;
         $settings['twilio_phone_number'] = $request->twilio_phone_number;
+        $settings['whatsapp_phone_number'] = $request->whatsapp_phone_number;
         $settings['elevenlabs_default_voice_id'] = $request->elevenlabs_default_voice_id;
 
         if ($request->twilio_auth_token !== self::MASK) {

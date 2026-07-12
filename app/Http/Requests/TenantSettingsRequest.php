@@ -23,6 +23,7 @@ class TenantSettingsRequest extends FormRequest
             'twilio_account_sid' => ['nullable', 'string', 'max:255'],
             'twilio_auth_token' => ['nullable', 'string', 'max:255'],
             'twilio_phone_number' => ['nullable', 'string', 'max:20'],
+            'whatsapp_phone_number' => ['nullable', 'string', 'max:20'],
             'elevenlabs_api_key' => ['nullable', 'string', 'max:255'],
             'elevenlabs_default_voice_id' => ['nullable', 'string', 'max:100'],
         ];

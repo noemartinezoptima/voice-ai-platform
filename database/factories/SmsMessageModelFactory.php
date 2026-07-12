@@ -16,6 +16,7 @@ class SmsMessageModelFactory extends Factory
             'from_number' => $this->faker->phoneNumber(),
             'to_number' => $this->faker->phoneNumber(),
             'body' => $this->faker->sentence(),
+            'channel' => 'sms',
             'direction' => 'inbound',
             'status' => 'received',
         ];
