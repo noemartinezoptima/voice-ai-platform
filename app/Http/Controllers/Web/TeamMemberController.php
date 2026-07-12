@@ -25,7 +25,7 @@ class TeamMemberController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'role' => $user->role,
+                'role' => $user->getRoleNames()->first() ?? 'member',
                 'joined_at' => $user->created_at->diffForHumans(),
             ]);
 
@@ -45,7 +45,7 @@ class TeamMemberController extends Controller
             'invitations' => $invitations,
             'currentUser' => [
                 'id' => $request->user()->id,
-                'role' => $request->user()->role,
+                'role' => $request->user()->getRoleNames()->first() ?? 'member',
             ],
         ]);
     }
@@ -97,7 +97,8 @@ class TeamMemberController extends Controller
 
         $request->validate(['role' => 'required|string|in:admin,member']);
 
-        $currentRole = $user->role;
+        $currentRole = $user->getRoleNames()->first() ?? 'member';
+        $user->syncRoles([$request->role]);
         $user->update(['role' => $request->role]);
 
         activity('team')
@@ -118,7 +119,8 @@ class TeamMemberController extends Controller
         abort_if($user->tenant_id !== $current->tenant_id, 403);
 
         $userName = $user->name;
-        $user->update(['tenant_id' => null, 'role' => 'member']);
+        $user->syncRoles([]);
+        $user->update(['tenant_id' => null]);
 
         activity('team')
             ->causedBy($request->user())

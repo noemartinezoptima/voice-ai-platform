@@ -90,7 +90,17 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Gate::define('viewAuditLog', fn (User $user) => $user->isOwnerOrAdmin());
+        Gate::define('viewAuditLog', fn (User $user) => $user->hasPermissionTo('audit.view') || $user->isOwnerOrAdmin());
+        Gate::define('manageFlows', fn (User $user) => $user->hasPermissionTo('flows.manage'));
+        Gate::define('createFlows', fn (User $user) => $user->hasPermissionTo('flows.create'));
+        Gate::define('deleteFlows', fn (User $user) => $user->hasPermissionTo('flows.delete'));
+        Gate::define('manageTeam', fn (User $user) => $user->hasPermissionTo('team.manage'));
+        Gate::define('viewBilling', fn (User $user) => $user->hasPermissionTo('billing.view'));
+        Gate::define('manageBilling', fn (User $user) => $user->hasPermissionTo('billing.manage'));
+        Gate::define('exportCalls', fn (User $user) => $user->hasPermissionTo('calls.export'));
+        Gate::define('manageWebhooks', fn (User $user) => $user->hasPermissionTo('webhooks.manage'));
+        Gate::define('manageAgents', fn (User $user) => $user->hasPermissionTo('agents.manage'));
+        Gate::define('manageSettings', fn (User $user) => $user->hasPermissionTo('settings.manage') || $user->isOwnerOrAdmin());
 
         Event::subscribe(UserActivitySubscriber::class);
 

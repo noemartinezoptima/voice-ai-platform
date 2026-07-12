@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property string $tenant_id
@@ -21,24 +22,24 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, LogsActivity, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles, LogsActivity, Notifiable;
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'email', 'role'])
+            ->logOnly(['name', 'email'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
 
     public function isOwner(): bool
     {
-        return $this->role === 'owner';
+        return $this->hasRole('owner') || $this->role === 'owner';
     }
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->hasRole('admin') || $this->role === 'admin';
     }
 
     public function isOwnerOrAdmin(): bool

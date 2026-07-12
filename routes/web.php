@@ -20,6 +20,7 @@ use App\Http\Controllers\Web\GettingStartedController;
 use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\RecordingController;
+use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\SmsController;
 use App\Http\Controllers\Web\SystemHealthController;
 use App\Http\Controllers\Web\TeamMemberController;
@@ -151,6 +152,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/settings/system', [SystemHealthController::class, 'index'])
         ->name('settings.system');
+
+    Route::get('/settings/roles', [RoleController::class, 'index'])
+        ->name('settings.roles');
+    Route::patch('/settings/roles/{role}', [RoleController::class, 'update'])
+        ->name('settings.roles.update');
 
     Route::get('/getting-started', [GettingStartedController::class, 'index'])
         ->middleware('verified')
