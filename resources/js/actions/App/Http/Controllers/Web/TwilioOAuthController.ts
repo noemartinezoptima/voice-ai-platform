@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\TwilioOAuthController::callback
-* @see app/Http/Controllers/Web/TwilioOAuthController.php:14
+* @see app/Http/Controllers/Web/TwilioOAuthController.php:15
 * @route '/twilio/oauth/callback'
 */
 export const callback = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ callback.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TwilioOAuthController::callback
-* @see app/Http/Controllers/Web/TwilioOAuthController.php:14
+* @see app/Http/Controllers/Web/TwilioOAuthController.php:15
 * @route '/twilio/oauth/callback'
 */
 callback.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ callback.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\TwilioOAuthController::callback
-* @see app/Http/Controllers/Web/TwilioOAuthController.php:14
+* @see app/Http/Controllers/Web/TwilioOAuthController.php:15
 * @route '/twilio/oauth/callback'
 */
 callback.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ callback.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\TwilioOAuthController::callback
-* @see app/Http/Controllers/Web/TwilioOAuthController.php:14
+* @see app/Http/Controllers/Web/TwilioOAuthController.php:15
 * @route '/twilio/oauth/callback'
 */
 callback.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ callback.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\TwilioOAuthController::disconnect
-* @see app/Http/Controllers/Web/TwilioOAuthController.php:86
+* @see app/Http/Controllers/Web/TwilioOAuthController.php:87
 * @route '/twilio/oauth/disconnect'
 */
 export const disconnect = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -60,7 +60,7 @@ disconnect.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TwilioOAuthController::disconnect
-* @see app/Http/Controllers/Web/TwilioOAuthController.php:86
+* @see app/Http/Controllers/Web/TwilioOAuthController.php:87
 * @route '/twilio/oauth/disconnect'
 */
 disconnect.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ disconnect.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\TwilioOAuthController::disconnect
-* @see app/Http/Controllers/Web/TwilioOAuthController.php:86
+* @see app/Http/Controllers/Web/TwilioOAuthController.php:87
 * @route '/twilio/oauth/disconnect'
 */
 disconnect.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

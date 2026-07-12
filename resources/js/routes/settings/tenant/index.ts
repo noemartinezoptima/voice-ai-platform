@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::update
-* @see app/Http/Controllers/Web/TenantSettingsController.php:66
+* @see app/Http/Controllers/Web/TenantSettingsController.php:70
 * @route '/settings/tenant'
 */
 export const update = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +16,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::update
-* @see app/Http/Controllers/Web/TenantSettingsController.php:66
+* @see app/Http/Controllers/Web/TenantSettingsController.php:70
 * @route '/settings/tenant'
 */
 update.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ update.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::update
-* @see app/Http/Controllers/Web/TenantSettingsController.php:66
+* @see app/Http/Controllers/Web/TenantSettingsController.php:70
 * @route '/settings/tenant'
 */
 update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({

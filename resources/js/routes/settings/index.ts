@@ -4,6 +4,7 @@ import voice1db564 from './voice'
 import documents from './documents'
 import webhooks from './webhooks'
 import activity from './activity'
+import elevenlabs from './elevenlabs'
 import agents from './agents'
 import dataProtection0a045c from './data-protection'
 /**
@@ -188,6 +189,7 @@ const settings = {
     documents: Object.assign(documents, documents),
     webhooks: Object.assign(webhooks, webhooks),
     activity: Object.assign(activity, activity),
+    elevenlabs: Object.assign(elevenlabs, elevenlabs),
     agents: Object.assign(agents, agents),
     dataProtection: Object.assign(dataProtection, dataProtection0a045c),
     privacy: Object.assign(privacy, privacy),

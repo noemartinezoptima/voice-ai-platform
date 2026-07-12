@@ -3,21 +3,25 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ElevenLabsKeyInvalid extends Notification
+class ElevenLabsKeyInvalid extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public function __construct(private readonly string $tenantName) {}
 
-    public function via($notifiable): array
+    /**
+     * @return array<int, string>
+     */
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable): MailMessage
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject('ElevenLabs API key needs attention')
