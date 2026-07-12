@@ -1,6 +1,7 @@
 import DashboardController from './DashboardController'
 import FlowController from './FlowController'
 import CallController from './CallController'
+import RecordingController from './RecordingController'
 import MonitorController from './MonitorController'
 import SmsController from './SmsController'
 import BillingController from './BillingController'
@@ -17,12 +18,14 @@ import TeamMemberController from './TeamMemberController'
 import DataProtectionController from './DataProtectionController'
 import PrivacyController from './PrivacyController'
 import SystemHealthController from './SystemHealthController'
+import GettingStartedController from './GettingStartedController'
 import AcceptInviteController from './AcceptInviteController'
 
 const Web = {
     DashboardController: Object.assign(DashboardController, DashboardController),
     FlowController: Object.assign(FlowController, FlowController),
     CallController: Object.assign(CallController, CallController),
+    RecordingController: Object.assign(RecordingController, RecordingController),
     MonitorController: Object.assign(MonitorController, MonitorController),
     SmsController: Object.assign(SmsController, SmsController),
     BillingController: Object.assign(BillingController, BillingController),
@@ -39,6 +42,7 @@ const Web = {
     DataProtectionController: Object.assign(DataProtectionController, DataProtectionController),
     PrivacyController: Object.assign(PrivacyController, PrivacyController),
     SystemHealthController: Object.assign(SystemHealthController, SystemHealthController),
+    GettingStartedController: Object.assign(GettingStartedController, GettingStartedController),
     AcceptInviteController: Object.assign(AcceptInviteController, AcceptInviteController),
 }
 

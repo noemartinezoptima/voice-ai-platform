@@ -44,6 +44,50 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
+* @see \App\Http\Controllers\Web\GettingStartedController::gettingStarted
+* @see app/Http/Controllers/Web/GettingStartedController.php:15
+* @route '/getting-started'
+*/
+export const gettingStarted = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: gettingStarted.url(options),
+    method: 'get',
+})
+
+gettingStarted.definition = {
+    methods: ["get","head"],
+    url: '/getting-started',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\GettingStartedController::gettingStarted
+* @see app/Http/Controllers/Web/GettingStartedController.php:15
+* @route '/getting-started'
+*/
+gettingStarted.url = (options?: RouteQueryOptions) => {
+    return gettingStarted.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\GettingStartedController::gettingStarted
+* @see app/Http/Controllers/Web/GettingStartedController.php:15
+* @route '/getting-started'
+*/
+gettingStarted.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: gettingStarted.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\GettingStartedController::gettingStarted
+* @see app/Http/Controllers/Web/GettingStartedController.php:15
+* @route '/getting-started'
+*/
+gettingStarted.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: gettingStarted.url(options),
+    method: 'head',
+})
+
+/**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
 * @see app/Http/Controllers/Auth/RegisteredUserController.php:22
 * @route '/register'

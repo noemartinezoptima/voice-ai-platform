@@ -79,7 +79,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\ApiTokenController::destroy
-* @see app/Http/Controllers/Web/ApiTokenController.php:52
+* @see app/Http/Controllers/Web/ApiTokenController.php:59
 * @route '/api-tokens/{token}'
 */
 export const destroy = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -94,7 +94,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\ApiTokenController::destroy
-* @see app/Http/Controllers/Web/ApiTokenController.php:52
+* @see app/Http/Controllers/Web/ApiTokenController.php:59
 * @route '/api-tokens/{token}'
 */
 destroy.url = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -121,7 +121,7 @@ destroy.url = (args: { token: string | number } | [token: string | number ] | st
 
 /**
 * @see \App\Http\Controllers\Web\ApiTokenController::destroy
-* @see app/Http/Controllers/Web/ApiTokenController.php:52
+* @see app/Http/Controllers/Web/ApiTokenController.php:59
 * @route '/api-tokens/{token}'
 */
 destroy.delete = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({

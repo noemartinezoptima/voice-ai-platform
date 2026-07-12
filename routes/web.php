@@ -16,6 +16,7 @@ use App\Http\Controllers\Web\DocumentsController;
 use App\Http\Controllers\Web\ElevenLabsAgentController;
 use App\Http\Controllers\Web\ElevenLabsConnectController;
 use App\Http\Controllers\Web\FlowController;
+use App\Http\Controllers\Web\GettingStartedController;
 use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\RecordingController;
@@ -143,6 +144,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/settings/system', [SystemHealthController::class, 'index'])
         ->name('settings.system');
+
+    Route::get('/getting-started', [GettingStartedController::class, 'index'])
+        ->middleware('verified')
+        ->name('getting-started');
+    Route::post('/getting-started/completed', [GettingStartedController::class, 'complete'])
+        ->name('getting-started.complete');
 
     Route::delete('/api/tenant/data', [DataDeletionController::class, 'destroy'])
         ->name('api.tenant.data.delete');
