@@ -11,11 +11,14 @@ use App\Domain\Knowledge\Services\ChunkingService;
 use App\Domain\Knowledge\Services\EmbeddingServiceInterface;
 use App\Domain\Knowledge\Services\KnowledgeRetrievalService;
 use App\Domain\Tenant\Repositories\TenantRepositoryInterface;
+use App\Domain\Voice\Repositories\CustomVoiceRepositoryInterface;
 use App\Infrastructure\Persistence\Eloquent\Call\EloquentCallRepository;
 use App\Infrastructure\Persistence\Eloquent\Flow\EloquentFlowRepository;
 use App\Infrastructure\Persistence\Eloquent\Knowledge\EloquentChunkRepository;
 use App\Infrastructure\Persistence\Eloquent\Knowledge\EloquentDocumentRepository;
 use App\Infrastructure\Persistence\Eloquent\Tenant\EloquentTenantRepository;
+use App\Infrastructure\Persistence\Eloquent\Voice\CustomVoiceModel;
+use App\Infrastructure\Persistence\Eloquent\Voice\EloquentCustomVoiceRepository;
 use App\Infrastructure\Services\ElevenLabsAgentService;
 use App\Infrastructure\Services\FakeAiService;
 use App\Infrastructure\Services\Knowledge\OpenAIEmbeddingService;
@@ -41,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CallRepositoryInterface::class, EloquentCallRepository::class);
         $this->app->bind(DocumentRepositoryInterface::class, EloquentDocumentRepository::class);
         $this->app->bind(KnowledgeChunkRepositoryInterface::class, EloquentChunkRepository::class);
+        $this->app->bind(CustomVoiceRepositoryInterface::class, fn () => new EloquentCustomVoiceRepository(new CustomVoiceModel));
 
         $this->app->bind(EmbeddingServiceInterface::class, function () {
             return new OpenAIEmbeddingService(

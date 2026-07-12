@@ -9,6 +9,7 @@ import ApiTokenController from './ApiTokenController'
 import TenantSettingsController from './TenantSettingsController'
 import TwilioOAuthController from './TwilioOAuthController'
 import VoiceSettingsController from './VoiceSettingsController'
+import VoiceController from './VoiceController'
 import DocumentsController from './DocumentsController'
 import WebhookDestinationController from './WebhookDestinationController'
 import ActivityLogController from './ActivityLogController'
@@ -33,6 +34,7 @@ const Web = {
     TenantSettingsController: Object.assign(TenantSettingsController, TenantSettingsController),
     TwilioOAuthController: Object.assign(TwilioOAuthController, TwilioOAuthController),
     VoiceSettingsController: Object.assign(VoiceSettingsController, VoiceSettingsController),
+    VoiceController: Object.assign(VoiceController, VoiceController),
     DocumentsController: Object.assign(DocumentsController, DocumentsController),
     WebhookDestinationController: Object.assign(WebhookDestinationController, WebhookDestinationController),
     ActivityLogController: Object.assign(ActivityLogController, ActivityLogController),

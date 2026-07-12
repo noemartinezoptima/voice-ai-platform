@@ -19,6 +19,7 @@ import {
     Activity,
     Bot,
     Server,
+    Mic,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -53,6 +54,7 @@ const navItems = [
     { label: 'API Tokens', href: apiTokensIndex().url, icon: Key, active: 'api-tokens.*' },
     { label: 'Settings', href: settingsTenant().url, icon: Settings, active: 'settings.tenant' },
     { label: 'Voice & Language', href: settingsVoice().url, icon: Phone, active: 'settings.voice' },
+    { label: 'Voices', href: '/settings/voices', icon: Mic, active: 'settings.voices.*' },
     { label: 'Documents', href: documentsIndex().url, icon: FileText, active: 'settings.documents.*' },
     { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
     { label: 'Billing', href: billingIndex().url, icon: CreditCard, active: 'billing.*' },

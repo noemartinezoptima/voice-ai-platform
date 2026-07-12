@@ -25,6 +25,7 @@ use App\Http\Controllers\Web\SystemHealthController;
 use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\TenantSettingsController;
 use App\Http\Controllers\Web\TwilioOAuthController;
+use App\Http\Controllers\Web\VoiceController;
 use App\Http\Controllers\Web\VoiceSettingsController;
 use App\Http\Controllers\Web\WebhookDestinationController;
 use Illuminate\Support\Facades\Auth;
@@ -102,6 +103,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/settings/voice', [VoiceSettingsController::class, 'edit'])->name('settings.voice');
     Route::patch('/settings/voice', [VoiceSettingsController::class, 'update'])->name('settings.voice.update');
+
+    Route::get('/settings/voices', [VoiceController::class, 'index'])->name('settings.voices.index');
+    Route::post('/settings/voices', [VoiceController::class, 'store'])->name('settings.voices.store');
+    Route::delete('/settings/voices/{voice}', [VoiceController::class, 'destroy'])->name('settings.voices.destroy');
+    Route::get('/settings/voices/{voice}', [VoiceController::class, 'show'])->name('settings.voices.show');
+    Route::patch('/settings/voices/{voice}/default', [VoiceController::class, 'setDefault'])->name('settings.voices.set-default');
 
     Route::get('/settings/documents', [DocumentsController::class, 'index'])->name('settings.documents.index');
     Route::get('/settings/documents/create', [DocumentsController::class, 'create'])->name('settings.documents.create');

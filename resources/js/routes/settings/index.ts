@@ -1,6 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../wayfinder'
 import tenant69401c from './tenant'
 import voice1db564 from './voice'
+import voices from './voices'
 import documents from './documents'
 import webhooks from './webhooks'
 import activity from './activity'
@@ -230,6 +231,7 @@ system.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 const settings = {
     tenant: Object.assign(tenant, tenant69401c),
     voice: Object.assign(voice, voice1db564),
+    voices: Object.assign(voices, voices),
     documents: Object.assign(documents, documents),
     webhooks: Object.assign(webhooks, webhooks),
     activity: Object.assign(activity, activity),
