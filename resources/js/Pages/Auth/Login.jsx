@@ -111,6 +111,19 @@ export default function Login({ status, canResetPassword }) {
                     {processing ? 'Signing in...' : 'Sign in'}
                 </Button>
 
+                <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-zinc-950/10 dark:border-white/10" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-zinc-50 px-2 text-zinc-500 dark:bg-zinc-950 dark:text-zinc-400">or</span>
+                    </div>
+                </div>
+
+                <a href="/sso/login" className="flex w-full items-center justify-center rounded-lg border border-zinc-950/15 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:text-zinc-300 dark:hover:bg-zinc-800">
+                    Continue with SSO
+                </a>
+
                 <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
                     Don't have an account?{' '}
                     <TextLink href={register().url}>Create one</TextLink>

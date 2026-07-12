@@ -20,6 +20,7 @@ import {
     Bot,
     Server,
     Mic,
+    Shield,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -61,6 +62,7 @@ const navItems = [
     { label: 'Activity Log', href: activityIndex().url, icon: Activity, active: 'settings.activity.*' },
     { label: 'Agents', href: agentsIndex().url, icon: Bot, active: 'settings.agents.*' },
     { label: 'System', href: systemIndex().url, icon: Server, active: 'settings.system' },
+    { label: 'Roles', href: '/settings/roles', icon: Shield, active: 'settings.roles' },
 ]
 
 function AccountDropdownMenu({ anchor }) {
