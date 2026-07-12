@@ -36,6 +36,7 @@ class ApiTokenPageTest extends TestCase
     {
         $this->actingAs($this->user)->post('/api-tokens', [
             'name' => 'Test Token',
+            'expires_in' => 'never',
         ])->assertRedirect(route('api-tokens.index'));
 
         $this->assertDatabaseHas('personal_access_tokens', [
@@ -47,7 +48,7 @@ class ApiTokenPageTest extends TestCase
     public function test_store_validates_name(): void
     {
         $this->actingAs($this->user)
-            ->post('/api-tokens', ['name' => ''])
+            ->post('/api-tokens', ['name' => '', 'expires_in' => 'never'])
             ->assertSessionHasErrors('name');
     }
 

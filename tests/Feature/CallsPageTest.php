@@ -130,7 +130,7 @@ class CallsPageTest extends TestCase
         $response->assertHeader('Content-Type', 'text/csv; charset=utf-8');
         $this->assertStringStartsWith('attachment; filename="calls-export-', $response->headers->get('Content-Disposition'));
         $content = $response->getContent();
-        $this->assertStringStartsWith('CallSid,From,To,Status,Duration,Flow,StartedAt,EndedAt,RecordingUrl,Notes', $content);
+        $this->assertStringStartsWith('CallSid,From,To,Status,Duration,Flow,StartedAt,EndedAt,RecordingUrl,RecordingPath,Notes', $content);
         $this->assertStringContainsString('completed', $content);
     }
 

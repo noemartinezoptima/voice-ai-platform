@@ -16,7 +16,7 @@ class HealthController extends Controller
             'database' => $this->checkDatabase(),
             'redis' => $this->checkRedis(),
             'queue' => $this->checkQueue(),
-       ];
+        ];
 
         $degraded = in_array('error', $services, true);
 

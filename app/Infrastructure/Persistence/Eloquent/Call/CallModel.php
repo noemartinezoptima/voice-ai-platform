@@ -20,6 +20,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $current_step
  * @property array<string, mixed>|null $context
  * @property string|null $error
+ * @property string|null $recording_sid
+ * @property string|null $recording_url
+ * @property string|null $recording_path
  * @property string|null $notes
  * @property string|null $retry_of_id
  * @property Carbon|null $started_at
@@ -44,6 +47,7 @@ class CallModel extends Model
         'error',
         'recording_sid',
         'recording_url',
+        'recording_path',
         'notes',
         'retry_of_id',
         'started_at',

@@ -29,6 +29,21 @@ class PurgeExpiredData extends Command
 
             $cutoff = Carbon::now()->subDays($retentionDays);
 
+            $callsToDelete = DB::table('calls')
+                ->where('tenant_id', $tenant->id)
+                ->where('created_at', '<', $cutoff)
+                ->whereNotNull('recording_path')
+                ->get();
+
+            $deletedRecordings = 0;
+
+            foreach ($callsToDelete as $call) {
+                if (Storage::disk('recordings')->exists($call->recording_path)) {
+                    Storage::disk('recordings')->delete($call->recording_path);
+                    $deletedRecordings++;
+                }
+            }
+
             $deletedCount = DB::table('calls')
                 ->where('tenant_id', $tenant->id)
                 ->where('created_at', '<', $cutoff)
@@ -36,7 +51,6 @@ class PurgeExpiredData extends Command
 
             if (Storage::disk('recordings')->exists((string) $tenant->id)) {
                 $recordingFiles = Storage::disk('recordings')->files((string) $tenant->id);
-                $deletedRecordings = 0;
 
                 foreach ($recordingFiles as $file) {
                     $fileTime = Storage::disk('recordings')->lastModified($file);
@@ -46,8 +60,6 @@ class PurgeExpiredData extends Command
                         $deletedRecordings++;
                     }
                 }
-            } else {
-                $deletedRecordings = 0;
             }
 
             if ($deletedCount > 0 || $deletedRecordings > 0) {

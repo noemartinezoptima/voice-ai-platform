@@ -104,4 +104,13 @@ class CallEntityTest extends TestCase
 
         $this->assertEquals(['key' => 'value'], $this->call->getContext());
     }
+
+    public function test_recording_path_can_be_set_and_retrieved(): void
+    {
+        $this->assertNull($this->call->getRecordingPath());
+
+        $this->call->setRecordingPath('tenants/tenant-1/calls/test-call-id.enc');
+
+        $this->assertEquals('tenants/tenant-1/calls/test-call-id.enc', $this->call->getRecordingPath());
+    }
 }

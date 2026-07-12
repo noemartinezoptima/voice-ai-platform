@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/health', HealthController::class)->withoutMiddleware(['auth:sanctum', 'throttle:api']);
 
-Route::middleware(['auth:sanctum', 'throttle:api'])->prefix('v1')->group(function () {
+Route::middleware(['token.expiry', 'auth:sanctum', 'throttle:api_tenant'])->prefix('v1')->group(function () {
     Route::apiResource('flows', FlowController::class);
     Route::apiResource('calls', CallController::class)->only(['index', 'show']);
     Route::get('calls/{call}/transcript', [CallController::class, 'transcript']);

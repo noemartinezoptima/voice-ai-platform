@@ -20,11 +20,23 @@ class DataDeletionController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
+        $calls = DB::table('calls')
+            ->where('tenant_id', $tenantId)
+            ->whereNotNull('recording_path')
+            ->get();
+
+        $deletedRecordings = 0;
+
+        foreach ($calls as $call) {
+            if (Storage::disk('recordings')->exists($call->recording_path)) {
+                Storage::disk('recordings')->delete($call->recording_path);
+                $deletedRecordings++;
+            }
+        }
+
         $deletedCalls = DB::table('calls')
             ->where('tenant_id', $tenantId)
             ->delete();
-
-        $deletedRecordings = 0;
 
         if (Storage::disk('recordings')->exists((string) $tenantId)) {
             $recordingFiles = Storage::disk('recordings')->files((string) $tenantId);

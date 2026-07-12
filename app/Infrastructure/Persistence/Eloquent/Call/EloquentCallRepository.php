@@ -53,6 +53,7 @@ class EloquentCallRepository implements CallRepositoryInterface
 
         $data['recording_sid'] = $call->getRecordingSid();
         $data['recording_url'] = $call->getRecordingUrl();
+        $data['recording_path'] = $call->getRecordingPath();
         $data['notes'] = $call->notes();
 
         if ($call->getStartedAt() !== null) {
@@ -165,6 +166,7 @@ class EloquentCallRepository implements CallRepositoryInterface
             endedAt: $model->ended_at?->toDateTimeImmutable(),
             recordingSid: $model->recording_sid,
             recordingUrl: $model->recording_url,
+            recordingPath: $model->recording_path,
             notes: $model->notes,
         );
     }

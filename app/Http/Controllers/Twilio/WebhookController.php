@@ -9,7 +9,9 @@ use App\Application\Webhook\Services\WebhookDispatcher;
 use App\Domain\Call\Repositories\CallRepositoryInterface;
 use App\Domain\Flow\Repositories\FlowRepositoryInterface;
 use App\Http\Controllers\Controller;
+use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
+use App\Jobs\DownloadAndEncryptRecording;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -194,6 +196,12 @@ class WebhookController extends Controller
                 $call->setRecordingSid($recordingSid);
                 $call->setRecordingUrl($recordingUrl);
                 $this->callRepository->save($call);
+
+                $callModel = CallModel::find($call->id());
+
+                if ($callModel !== null && $recordingUrl !== null) {
+                    DownloadAndEncryptRecording::dispatch($callModel, $recordingUrl);
+                }
 
                 Log::info('Recording stored', [
                     'callSid' => $callSid,

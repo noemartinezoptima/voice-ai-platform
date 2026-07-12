@@ -3,9 +3,12 @@
 namespace Tests\Feature\Api;
 
 use App\Models\User;
+use Database\Factories\CallModelFactory;
 use Database\Factories\TenantFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -45,5 +48,39 @@ class DataDeletionControllerTest extends TestCase
         $response = $this->actingAs($user)->deleteJson('/api/tenant/data');
 
         $response->assertForbidden();
+    }
+
+    public function test_deletes_recordings_referenced_by_calls(): void
+    {
+        $recordingsRoot = sys_get_temp_dir().'/recordings-'.uniqid();
+        Config::set('filesystems.disks.recordings.root', $recordingsRoot);
+
+        $tenant = TenantFactory::new()->create();
+        $user = User::factory()->create(['tenant_id' => $tenant->id, 'role' => 'owner']);
+        $call = CallModelFactory::new()->create([
+            'tenant_id' => $tenant->id,
+            'recording_path' => $tenant->id.'/recording-to-delete.enc',
+        ]);
+
+        Storage::disk('recordings')->makeDirectory($tenant->id);
+        Storage::disk('recordings')->put($call->recording_path, 'encrypted-content');
+
+        $response = $this->actingAs($user)->deleteJson('/api/tenant/data');
+
+        $response->assertOk();
+        $this->assertFalse(Storage::disk('recordings')->exists($call->recording_path));
+        $this->assertEquals(1, $response->json('deleted_calls'));
+        $this->assertEquals(1, $response->json('deleted_recordings'));
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($recordingsRoot, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        foreach ($iterator as $file) {
+            $file->isDir() ? rmdir($file->getPathname()) : unlink($file->getPathname());
+        }
+
+        rmdir($recordingsRoot);
     }
 }

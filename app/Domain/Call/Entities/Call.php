@@ -24,6 +24,7 @@ class Call
         private ?\DateTimeImmutable $endedAt = null,
         private ?string $recordingSid = null,
         private ?string $recordingUrl = null,
+        private ?string $recordingPath = null,
         private ?string $notes = null,
     ) {}
 
@@ -207,6 +208,16 @@ class Call
     public function setRecordingUrl(?string $recordingUrl): void
     {
         $this->recordingUrl = $recordingUrl;
+    }
+
+    public function getRecordingPath(): ?string
+    {
+        return $this->recordingPath;
+    }
+
+    public function setRecordingPath(?string $recordingPath): void
+    {
+        $this->recordingPath = $recordingPath;
     }
 
     public function notes(): ?string

@@ -18,6 +18,7 @@ use App\Http\Controllers\Web\ElevenLabsConnectController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\PrivacyController;
+use App\Http\Controllers\Web\RecordingController;
 use App\Http\Controllers\Web\SmsController;
 use App\Http\Controllers\Web\SystemHealthController;
 use App\Http\Controllers\Web\TeamMemberController;
@@ -74,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/calls', [CallController::class, 'index'])->name('calls.index');
     Route::get('/calls/export/csv', [CallController::class, 'exportCsv'])->name('calls.export');
     Route::get('/calls/{call}', [CallController::class, 'show'])->name('calls.show');
+    Route::get('/recordings/{call}/play', [RecordingController::class, '__invoke'])->name('recordings.play');
     Route::patch('/calls/{call}/notes', [CallController::class, 'updateNotes'])->name('calls.notes');
     Route::post('/calls/{call}/retry', [CallController::class, 'retry'])->name('calls.retry');
 

@@ -96,6 +96,10 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        RateLimiter::for('api_tenant', function (Request $request) {
+            return Limit::perMinute(100)->by($request->user()?->tenant_id ?: $request->ip());
+        });
+
         RateLimiter::for('twilio', function (Request $request) {
             return Limit::perMinute(30)->by($request->input('From') ?: $request->ip());
         });

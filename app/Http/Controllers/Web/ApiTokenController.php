@@ -34,10 +34,17 @@ class ApiTokenController extends Controller
             ? array_map('trim', explode(',', $request->abilities))
             : ['*'];
 
+        $expiresAt = match ($request->expires_in) {
+            '30' => Carbon::now()->addDays(30),
+            '90' => Carbon::now()->addDays(90),
+            '365' => Carbon::now()->addYear(),
+            default => null,
+        };
+
         $token = $request->user()->createToken(
             $request->name,
             $abilities,
-            Carbon::now()->addYear(),
+            $expiresAt,
         );
 
         activity('security')

@@ -82,7 +82,7 @@ export default function Show({ call }) {
                     </>
                 )}
 
-                {call.recording_url && (
+                {(call.recording_path || call.recording_url) && (
                     <>
                         <DescriptionTerm>Recording</DescriptionTerm>
                         <DescriptionDetails>
@@ -117,7 +117,7 @@ export default function Show({ call }) {
                 <DialogTitle>Call Recording</DialogTitle>
                 <DialogBody>
                     <audio controls className="w-full" autoPlay>
-                        <source src={call.recording_url} type="audio/wav" />
+                        <source src={call.recording_path ? route('recordings.play', call.id) : call.recording_url} type="audio/wav" />
                     </audio>
                 </DialogBody>
                 <DialogActions>

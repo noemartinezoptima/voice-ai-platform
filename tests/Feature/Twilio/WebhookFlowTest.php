@@ -8,9 +8,11 @@ use App\Domain\Flow\Services\AiServiceInterface;
 use App\Http\Middleware\ValidateTwilioRequest;
 use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
+use App\Jobs\DownloadAndEncryptRecording;
 use Database\Factories\FlowModelFactory;
 use Database\Factories\TenantFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
 
 class WebhookFlowTest extends TestCase
@@ -636,6 +638,8 @@ class WebhookFlowTest extends TestCase
 
     public function test_recording_callback_stores_recording_info(): void
     {
+        Bus::fake([DownloadAndEncryptRecording::class]);
+
         $callSid = 'CA80000000000000000000000000000001';
         $recordingSid = 'RE80000000000000000000000000000001';
         $recordingUrl = 'https://api.twilio.com/2010-04-01/Accounts/ACxxx/Recordings/RE80000000000000000000000000000001';
@@ -645,6 +649,8 @@ class WebhookFlowTest extends TestCase
             'From' => '+15551234567',
             'To' => '+14159309192',
         ]);
+
+        $call = CallModel::where('call_sid', $callSid)->firstOrFail();
 
         $this->post('/twilio/recording', [
             'CallSid' => $callSid,
@@ -658,6 +664,10 @@ class WebhookFlowTest extends TestCase
             'recording_sid' => $recordingSid,
             'recording_url' => $recordingUrl,
         ]);
+
+        Bus::assertDispatched(DownloadAndEncryptRecording::class, function (DownloadAndEncryptRecording $job) use ($call, $recordingUrl) {
+            return $job->call->is($call) && $job->recordingUrl === $recordingUrl;
+        });
     }
 
     public function test_recording_callback_ignores_non_completed(): void

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Middleware\CheckTokenExpiry;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\ValidateTwilioRequest;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
@@ -22,10 +24,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            SecurityHeaders::class,
+        ]);
+
+        $middleware->api(append: [
+            SecurityHeaders::class,
         ]);
 
         $middleware->alias([
             'twilio.verify' => ValidateTwilioRequest::class,
+            'token.expiry' => CheckTokenExpiry::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [

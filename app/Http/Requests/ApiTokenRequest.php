@@ -17,6 +17,7 @@ class ApiTokenRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'abilities' => ['nullable', 'string', 'max:500'],
+            'expires_in' => ['required', 'in:never,30,90,365'],
         ];
     }
 }

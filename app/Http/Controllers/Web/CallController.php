@@ -129,7 +129,7 @@ class CallController extends Controller
 
         $headers = [
             'CallSid', 'From', 'To', 'Status', 'Duration', 'Flow',
-            'StartedAt', 'EndedAt', 'RecordingUrl', 'Notes',
+            'StartedAt', 'EndedAt', 'RecordingUrl', 'RecordingPath', 'Notes',
         ];
 
         $rows = $calls->map(fn ($c) => [
@@ -142,6 +142,7 @@ class CallController extends Controller
             $c->started_at?->toIso8601String() ?? '',
             $c->ended_at?->toIso8601String() ?? '',
             $c->recording_url ?? '',
+            $c->recording_path ?? '',
             Str::replace("\n", ' ', $c->notes ?? ''),
         ]);
 

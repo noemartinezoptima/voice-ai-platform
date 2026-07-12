@@ -6,6 +6,7 @@ import { Text } from '@/Components/catalyst/text';
 import { Button } from '@/Components/catalyst/button';
 import { Field, Label, ErrorMessage } from '@/Components/catalyst/fieldset';
 import { Input } from '@/Components/catalyst/input';
+import { Select } from '@/Components/catalyst/select';
 import { Badge } from '@/Components/catalyst/badge';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
 import { Dialog, DialogTitle, DialogDescription, DialogBody, DialogActions } from '@/Components/catalyst/dialog';
@@ -16,6 +17,7 @@ export default function Index({ tokens, flash }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         abilities: '*',
+        expires_in: 'never',
     });
     const [showCreate, setShowCreate] = useState(false);
     const [newToken, setNewToken] = useState(flash?.token ?? null);
@@ -67,6 +69,7 @@ export default function Index({ tokens, flash }) {
                                     <TableHeader>Abilities</TableHeader>
                                     <TableHeader>Created</TableHeader>
                                     <TableHeader>Last Used</TableHeader>
+                                    <TableHeader>Expires</TableHeader>
                                     <TableHeader />
                                 </TableRow>
                             </TableHead>
@@ -82,8 +85,9 @@ export default function Index({ tokens, flash }) {
                                                   ))
                                             }
                                         </TableCell>
-                                        <TableCell className="text-zinc-500">{token.created_at}</TableCell>
-                                        <TableCell className="text-zinc-500">{token.last_used_at || 'Never'}</TableCell>
+                                    <TableCell className="text-zinc-500">{token.created_at}</TableCell>
+                                    <TableCell className="text-zinc-500">{token.last_used_at || 'Never'}</TableCell>
+                                    <TableCell className="text-zinc-500">{token.expires_at || 'Never'}</TableCell>
                                         <TableCell className="text-right">
                                             <button
                                                 onClick={() => setConfirmingRevoke(token)}
@@ -127,6 +131,19 @@ export default function Index({ tokens, flash }) {
                             />
                             <Text>Use flows:read,flows:write,calls:read or * for full access.</Text>
                             {errors.abilities && <ErrorMessage>{errors.abilities}</ErrorMessage>}
+                        </Field>
+                        <Field>
+                            <Label>Expires in</Label>
+                            <Select
+                                value={data.expires_in}
+                                onChange={(e) => setData('expires_in', e.target.value)}
+                            >
+                                <option value="never">Never</option>
+                                <option value="30">30 days</option>
+                                <option value="90">90 days</option>
+                                <option value="365">1 year</option>
+                            </Select>
+                            {errors.expires_in && <ErrorMessage>{errors.expires_in}</ErrorMessage>}
                         </Field>
                     </form>
                 </DialogBody>

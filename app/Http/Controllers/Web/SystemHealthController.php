@@ -49,6 +49,9 @@ class SystemHealthController extends Controller
         }
     }
 
+    /**
+     * @return array{id: int, connection: string, queue: string, exception: string, failed_at: string}
+     */
     private function getFailedJobs(): array
     {
         return DB::table('failed_jobs')
@@ -66,6 +69,9 @@ class SystemHealthController extends Controller
             ->toArray();
     }
 
+    /**
+     * @return array{queue: string, size: int}[]
+     */
     private function getQueueDepth(): array
     {
         $queues = ['default', 'twilio', 'emails'];
@@ -76,6 +82,9 @@ class SystemHealthController extends Controller
         ], $queues);
     }
 
+    /**
+     * @return array{total: int, failed: int, percentage: float}
+     */
     private function getErrorRate(string $tenantId): array
     {
         $total = DB::table('calls')
