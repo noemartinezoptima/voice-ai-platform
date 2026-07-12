@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\FlowController;
+use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\TenantController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/health', HealthController::class)->withoutMiddleware(['auth:sanctum', 'throttle:api']);
 
 Route::middleware(['auth:sanctum', 'throttle:api'])->prefix('v1')->group(function () {
     Route::apiResource('flows', FlowController::class);
