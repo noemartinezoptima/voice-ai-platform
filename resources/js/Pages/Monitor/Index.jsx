@@ -6,6 +6,7 @@ import { Text } from '@/Components/catalyst/text';
 import { Badge } from '@/Components/catalyst/badge';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
 import { show } from '@/actions/App/Http/Controllers/Web/CallController';
+import { active } from '@/actions/App/Http/Controllers/Web/MonitorController';
 
 export default function Monitor({ activeCalls: initial }) {
     const [calls, setCalls] = useState(initial ?? []);
@@ -14,7 +15,7 @@ export default function Monitor({ activeCalls: initial }) {
 
     useEffect(() => {
         function poll() {
-            fetch('/monitor/active')
+            fetch(active().url)
                 .then((r) => r.json())
                 .then((data) => setCalls(data.calls ?? []))
                 .catch(() => {});

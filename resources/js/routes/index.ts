@@ -1,5 +1,49 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../wayfinder'
 /**
+* @see \Illuminate\Routing\ViewController::__invoke
+* @see vendor/laravel/framework/src/Illuminate/Routing/ViewController.php:32
+* @route '/docs'
+*/
+export const scribe = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: scribe.url(options),
+    method: 'get',
+})
+
+scribe.definition = {
+    methods: ["get","head"],
+    url: '/docs',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Illuminate\Routing\ViewController::__invoke
+* @see vendor/laravel/framework/src/Illuminate/Routing/ViewController.php:32
+* @route '/docs'
+*/
+scribe.url = (options?: RouteQueryOptions) => {
+    return scribe.definition.url + queryParams(options)
+}
+
+/**
+* @see \Illuminate\Routing\ViewController::__invoke
+* @see vendor/laravel/framework/src/Illuminate/Routing/ViewController.php:32
+* @route '/docs'
+*/
+scribe.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: scribe.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Illuminate\Routing\ViewController::__invoke
+* @see vendor/laravel/framework/src/Illuminate/Routing/ViewController.php:32
+* @route '/docs'
+*/
+scribe.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: scribe.url(options),
+    method: 'head',
+})
+
+/**
 * @see \App\Http\Controllers\Web\DashboardController::dashboard
 * @see app/Http/Controllers/Web/DashboardController.php:19
 * @route '/dashboard'

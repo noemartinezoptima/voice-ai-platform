@@ -6,9 +6,12 @@ use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
 use App\Infrastructure\Persistence\Eloquent\Knowledge\DocumentModel;
 use App\Models\User;
+use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -21,12 +24,22 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property bool $is_active
  * @property string $plan
  * @property string|null $stripe_customer_id
+ * @property string|null $encryption_key
+ * @property array<string, mixed>|null $data_protection
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 class TenantModel extends Model
 {
-    use HasUuids, LogsActivity;
+    /** @use HasFactory<TenantFactory> */
+    use HasFactory, HasUuids, LogsActivity;
 
     protected $table = 'tenants';
+
+    protected static function newFactory(): TenantFactory
+    {
+        return TenantFactory::new();
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

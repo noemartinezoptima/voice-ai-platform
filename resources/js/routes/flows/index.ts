@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::index
-* @see app/Http/Controllers/Web/FlowController.php:27
+* @see app/Http/Controllers/Web/FlowController.php:28
 * @route '/flows'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -60,7 +60,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::index
-* @see app/Http/Controllers/Web/FlowController.php:27
+* @see app/Http/Controllers/Web/FlowController.php:28
 * @route '/flows'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::index
-* @see app/Http/Controllers/Web/FlowController.php:27
+* @see app/Http/Controllers/Web/FlowController.php:28
 * @route '/flows'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -79,7 +79,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::index
-* @see app/Http/Controllers/Web/FlowController.php:27
+* @see app/Http/Controllers/Web/FlowController.php:28
 * @route '/flows'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -123,7 +123,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::store
-* @see app/Http/Controllers/Web/FlowController.php:46
+* @see app/Http/Controllers/Web/FlowController.php:48
 * @route '/flows'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -138,7 +138,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::store
-* @see app/Http/Controllers/Web/FlowController.php:46
+* @see app/Http/Controllers/Web/FlowController.php:48
 * @route '/flows'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -147,7 +147,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::store
-* @see app/Http/Controllers/Web/FlowController.php:46
+* @see app/Http/Controllers/Web/FlowController.php:48
 * @route '/flows'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -219,7 +219,7 @@ show.head = (args: { flow: string | number } | [flow: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::show
-* @see app/Http/Controllers/Web/FlowController.php:147
+* @see app/Http/Controllers/Web/FlowController.php:149
 * @route '/flows/{flow}'
 */
 export const show = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -234,7 +234,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::show
-* @see app/Http/Controllers/Web/FlowController.php:147
+* @see app/Http/Controllers/Web/FlowController.php:149
 * @route '/flows/{flow}'
 */
 show.url = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -261,7 +261,7 @@ show.url = (args: { flow: string | number } | [flow: string | number ] | string 
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::show
-* @see app/Http/Controllers/Web/FlowController.php:147
+* @see app/Http/Controllers/Web/FlowController.php:149
 * @route '/flows/{flow}'
 */
 show.get = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -271,7 +271,7 @@ show.get = (args: { flow: string | number } | [flow: string | number ] | string 
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::show
-* @see app/Http/Controllers/Web/FlowController.php:147
+* @see app/Http/Controllers/Web/FlowController.php:149
 * @route '/flows/{flow}'
 */
 show.head = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -343,7 +343,7 @@ update.patch = (args: { flow: string | number } | [flow: string | number ] | str
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::update
-* @see app/Http/Controllers/Web/FlowController.php:99
+* @see app/Http/Controllers/Web/FlowController.php:101
 * @route '/flows/{flow}'
 */
 export const update = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -358,7 +358,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::update
-* @see app/Http/Controllers/Web/FlowController.php:99
+* @see app/Http/Controllers/Web/FlowController.php:101
 * @route '/flows/{flow}'
 */
 update.url = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -385,7 +385,7 @@ update.url = (args: { flow: string | number } | [flow: string | number ] | strin
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::update
-* @see app/Http/Controllers/Web/FlowController.php:99
+* @see app/Http/Controllers/Web/FlowController.php:101
 * @route '/flows/{flow}'
 */
 update.patch = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -447,7 +447,7 @@ destroy.delete = (args: { flow: string | number } | [flow: string | number ] | s
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::destroy
-* @see app/Http/Controllers/Web/FlowController.php:133
+* @see app/Http/Controllers/Web/FlowController.php:135
 * @route '/flows/{flow}'
 */
 export const destroy = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -462,7 +462,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::destroy
-* @see app/Http/Controllers/Web/FlowController.php:133
+* @see app/Http/Controllers/Web/FlowController.php:135
 * @route '/flows/{flow}'
 */
 destroy.url = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -489,7 +489,7 @@ destroy.url = (args: { flow: string | number } | [flow: string | number ] | stri
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::destroy
-* @see app/Http/Controllers/Web/FlowController.php:133
+* @see app/Http/Controllers/Web/FlowController.php:135
 * @route '/flows/{flow}'
 */
 destroy.delete = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -499,7 +499,7 @@ destroy.delete = (args: { flow: string | number } | [flow: string | number ] | s
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::create
-* @see app/Http/Controllers/Web/FlowController.php:39
+* @see app/Http/Controllers/Web/FlowController.php:41
 * @route '/flows/create'
 */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -514,7 +514,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::create
-* @see app/Http/Controllers/Web/FlowController.php:39
+* @see app/Http/Controllers/Web/FlowController.php:41
 * @route '/flows/create'
 */
 create.url = (options?: RouteQueryOptions) => {
@@ -523,7 +523,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::create
-* @see app/Http/Controllers/Web/FlowController.php:39
+* @see app/Http/Controllers/Web/FlowController.php:41
 * @route '/flows/create'
 */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -533,7 +533,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::create
-* @see app/Http/Controllers/Web/FlowController.php:39
+* @see app/Http/Controllers/Web/FlowController.php:41
 * @route '/flows/create'
 */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -543,7 +543,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::edit
-* @see app/Http/Controllers/Web/FlowController.php:86
+* @see app/Http/Controllers/Web/FlowController.php:88
 * @route '/flows/{flow}/edit'
 */
 export const edit = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -558,7 +558,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::edit
-* @see app/Http/Controllers/Web/FlowController.php:86
+* @see app/Http/Controllers/Web/FlowController.php:88
 * @route '/flows/{flow}/edit'
 */
 edit.url = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -585,7 +585,7 @@ edit.url = (args: { flow: string | number } | [flow: string | number ] | string 
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::edit
-* @see app/Http/Controllers/Web/FlowController.php:86
+* @see app/Http/Controllers/Web/FlowController.php:88
 * @route '/flows/{flow}/edit'
 */
 edit.get = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -595,7 +595,7 @@ edit.get = (args: { flow: string | number } | [flow: string | number ] | string 
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::edit
-* @see app/Http/Controllers/Web/FlowController.php:86
+* @see app/Http/Controllers/Web/FlowController.php:88
 * @route '/flows/{flow}/edit'
 */
 edit.head = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -605,7 +605,7 @@ edit.head = (args: { flow: string | number } | [flow: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::test
-* @see app/Http/Controllers/Web/FlowController.php:233
+* @see app/Http/Controllers/Web/FlowController.php:235
 * @route '/flows/{flow}/test'
 */
 export const test = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -620,7 +620,7 @@ test.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::test
-* @see app/Http/Controllers/Web/FlowController.php:233
+* @see app/Http/Controllers/Web/FlowController.php:235
 * @route '/flows/{flow}/test'
 */
 test.url = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -647,7 +647,7 @@ test.url = (args: { flow: string | number } | [flow: string | number ] | string 
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::test
-* @see app/Http/Controllers/Web/FlowController.php:233
+* @see app/Http/Controllers/Web/FlowController.php:235
 * @route '/flows/{flow}/test'
 */
 test.post = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -657,7 +657,7 @@ test.post = (args: { flow: string | number } | [flow: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::duplicate
-* @see app/Http/Controllers/Web/FlowController.php:160
+* @see app/Http/Controllers/Web/FlowController.php:162
 * @route '/flows/{flow}/duplicate'
 */
 export const duplicate = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -672,7 +672,7 @@ duplicate.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::duplicate
-* @see app/Http/Controllers/Web/FlowController.php:160
+* @see app/Http/Controllers/Web/FlowController.php:162
 * @route '/flows/{flow}/duplicate'
 */
 duplicate.url = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -699,7 +699,7 @@ duplicate.url = (args: { flow: string | number } | [flow: string | number ] | st
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::duplicate
-* @see app/Http/Controllers/Web/FlowController.php:160
+* @see app/Http/Controllers/Web/FlowController.php:162
 * @route '/flows/{flow}/duplicate'
 */
 duplicate.post = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -709,7 +709,7 @@ duplicate.post = (args: { flow: string | number } | [flow: string | number ] | s
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::exportMethod
-* @see app/Http/Controllers/Web/FlowController.php:183
+* @see app/Http/Controllers/Web/FlowController.php:185
 * @route '/flows/{flow}/export'
 */
 export const exportMethod = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -724,7 +724,7 @@ exportMethod.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::exportMethod
-* @see app/Http/Controllers/Web/FlowController.php:183
+* @see app/Http/Controllers/Web/FlowController.php:185
 * @route '/flows/{flow}/export'
 */
 exportMethod.url = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -751,7 +751,7 @@ exportMethod.url = (args: { flow: string | number } | [flow: string | number ] |
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::exportMethod
-* @see app/Http/Controllers/Web/FlowController.php:183
+* @see app/Http/Controllers/Web/FlowController.php:185
 * @route '/flows/{flow}/export'
 */
 exportMethod.get = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -761,7 +761,7 @@ exportMethod.get = (args: { flow: string | number } | [flow: string | number ] |
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::exportMethod
-* @see app/Http/Controllers/Web/FlowController.php:183
+* @see app/Http/Controllers/Web/FlowController.php:185
 * @route '/flows/{flow}/export'
 */
 exportMethod.head = (args: { flow: string | number } | [flow: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -771,7 +771,7 @@ exportMethod.head = (args: { flow: string | number } | [flow: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::importMethod
-* @see app/Http/Controllers/Web/FlowController.php:204
+* @see app/Http/Controllers/Web/FlowController.php:206
 * @route '/flows/import'
 */
 export const importMethod = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -786,7 +786,7 @@ importMethod.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::importMethod
-* @see app/Http/Controllers/Web/FlowController.php:204
+* @see app/Http/Controllers/Web/FlowController.php:206
 * @route '/flows/import'
 */
 importMethod.url = (options?: RouteQueryOptions) => {
@@ -795,7 +795,7 @@ importMethod.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\FlowController::importMethod
-* @see app/Http/Controllers/Web/FlowController.php:204
+* @see app/Http/Controllers/Web/FlowController.php:206
 * @route '/flows/import'
 */
 importMethod.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

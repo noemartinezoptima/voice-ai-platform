@@ -42,6 +42,7 @@ import { index as webhooksIndex } from '@/actions/App/Http/Controllers/Web/Webho
 import { index as smsIndex } from '@/actions/App/Http/Controllers/Web/SmsController'
 import { index as billingIndex } from '@/actions/App/Http/Controllers/Web/BillingController'
 import { index as activityIndex } from '@/actions/App/Http/Controllers/Web/ActivityLogController'
+import { index as voicesIndex } from '@/actions/App/Http/Controllers/Web/VoiceController'
 import { index as agentsIndex } from '@/actions/App/Http/Controllers/Web/ElevenLabsAgentController'
 import { index as systemIndex } from '@/actions/App/Http/Controllers/Web/SystemHealthController'
 
@@ -55,7 +56,7 @@ const navItems = [
     { label: 'API Tokens', href: apiTokensIndex().url, icon: Key, active: 'api-tokens.*' },
     { label: 'Settings', href: settingsTenant().url, icon: Settings, active: 'settings.tenant' },
     { label: 'Voice & Language', href: settingsVoice().url, icon: Phone, active: 'settings.voice' },
-    { label: 'Voices', href: '/settings/voices', icon: Mic, active: 'settings.voices.*' },
+    { label: 'Voices', href: voicesIndex().url, icon: Mic, active: 'settings.voices.*' },
     { label: 'Documents', href: documentsIndex().url, icon: FileText, active: 'settings.documents.*' },
     { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
     { label: 'Billing', href: billingIndex().url, icon: CreditCard, active: 'billing.*' },

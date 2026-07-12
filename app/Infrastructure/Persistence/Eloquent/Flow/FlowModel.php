@@ -4,10 +4,13 @@ namespace App\Infrastructure\Persistence\Eloquent\Flow;
 
 use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
+use Database\Factories\FlowModelFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -20,10 +23,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property array<string, mixed> $config
  * @property bool $is_active
  * @property int $version
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 class FlowModel extends Model
 {
-    use HasUuids, LogsActivity;
+    /** @use HasFactory<FlowModelFactory> */
+    use HasFactory, HasUuids, LogsActivity;
 
     protected $table = 'flows';
 

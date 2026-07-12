@@ -5,7 +5,9 @@ namespace App\Infrastructure\Persistence\Eloquent\Call;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Carbon\Carbon;
+use Database\Factories\CallModelFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -28,10 +30,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $retry_of_id
  * @property Carbon|null $started_at
  * @property Carbon|null $ended_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 class CallModel extends Model
 {
-    use HasUuids;
+    /** @use HasFactory<CallModelFactory> */
+    use HasFactory, HasUuids;
 
     protected $table = 'calls';
 

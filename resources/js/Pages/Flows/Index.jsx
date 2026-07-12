@@ -9,7 +9,7 @@ import { Badge } from '@/Components/catalyst/badge';
 import { Pagination, PaginationList, PaginationPage, PaginationGap, PaginationNext, PaginationPrevious } from '@/Components/catalyst/pagination';
 import { Alert, AlertTitle, AlertDescription, AlertActions } from '@/Components/catalyst/alert';
 import { Plus, Pencil, Trash2, GitBranch, Workflow, Copy, Download, Upload } from 'lucide-react';
-import { index, create, edit, update, destroy, duplicate } from '@/actions/App/Http/Controllers/Web/FlowController';
+import { index, create, edit, update, destroy, duplicate, show, importMethod, exportMethod } from '@/actions/App/Http/Controllers/Web/FlowController';
 
 export default function Index({ flows }) {
     const [confirmingDelete, setConfirmingDelete] = useState(null);
@@ -24,7 +24,7 @@ export default function Index({ flows }) {
         const formData = new FormData();
         formData.append('file', file);
 
-        router.post('/flows/import', formData, {
+        router.post(importMethod().url, formData, {
             onFinish: () => { setImporting(false); if (importRef.current) importRef.current.value = ''; },
         });
     }
@@ -102,7 +102,7 @@ export default function Index({ flows }) {
                                 <TableRow key={flow.id}>
                                     <TableCell>
                                         <Link
-                                            href={`/flows/${flow.id}`}
+                                            href={show({flow: flow.id}).url}
                                             className="font-medium text-zinc-950 transition-colors hover:text-zinc-600 dark:text-white dark:hover:text-zinc-300"
                                         >
                                             {flow.name}
@@ -126,10 +126,10 @@ export default function Index({ flows }) {
                                     <TableCell className="text-zinc-500 dark:text-zinc-400">v{flow.version}</TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex items-center justify-end gap-1">
-                                            <Button plain href={`/flows/${flow.id}`} title="View flow" aria-label="View flow">
+                                            <Button plain href={show({flow: flow.id}).url} title="View flow" aria-label="View flow">
                                                 <Workflow className="size-4" />
                                             </Button>
-                                            <Button plain href={`/flows/${flow.id}/export`} title="Export flow" aria-label="Export flow">
+                                            <Button plain href={exportMethod({flow: flow.id}).url} title="Export flow" aria-label="Export flow">
                                                 <Download className="size-4" />
                                             </Button>
                                             <Button plain onClick={() => router.post(duplicate({flow: flow.id}).url)} title="Duplicate flow" aria-label="Duplicate flow">

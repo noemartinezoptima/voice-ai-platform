@@ -92,6 +92,7 @@ export default function Index({ tokens, flash }) {
                                             <button
                                                 onClick={() => setConfirmingRevoke(token)}
                                                 className="text-sm font-medium text-red-600 hover:text-red-800"
+                                                aria-label={`Revoke ${token.name}`}
                                             >
                                                 Revoke
                                             </button>

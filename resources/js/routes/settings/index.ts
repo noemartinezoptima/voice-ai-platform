@@ -8,9 +8,10 @@ import activity from './activity'
 import elevenlabs from './elevenlabs'
 import agents from './agents'
 import dataProtection0a045c from './data-protection'
+import rolesF85c84 from './roles'
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
-* @see app/Http/Controllers/Web/TenantSettingsController.php:23
+* @see app/Http/Controllers/Web/TenantSettingsController.php:24
 * @route '/settings/tenant'
 */
 export const tenant = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -25,7 +26,7 @@ tenant.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
-* @see app/Http/Controllers/Web/TenantSettingsController.php:23
+* @see app/Http/Controllers/Web/TenantSettingsController.php:24
 * @route '/settings/tenant'
 */
 tenant.url = (options?: RouteQueryOptions) => {
@@ -34,7 +35,7 @@ tenant.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
-* @see app/Http/Controllers/Web/TenantSettingsController.php:23
+* @see app/Http/Controllers/Web/TenantSettingsController.php:24
 * @route '/settings/tenant'
 */
 tenant.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -44,7 +45,7 @@ tenant.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
-* @see app/Http/Controllers/Web/TenantSettingsController.php:23
+* @see app/Http/Controllers/Web/TenantSettingsController.php:24
 * @route '/settings/tenant'
 */
 tenant.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -54,7 +55,7 @@ tenant.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\VoiceSettingsController::voice
-* @see app/Http/Controllers/Web/VoiceSettingsController.php:20
+* @see app/Http/Controllers/Web/VoiceSettingsController.php:21
 * @route '/settings/voice'
 */
 export const voice = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -69,7 +70,7 @@ voice.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\VoiceSettingsController::voice
-* @see app/Http/Controllers/Web/VoiceSettingsController.php:20
+* @see app/Http/Controllers/Web/VoiceSettingsController.php:21
 * @route '/settings/voice'
 */
 voice.url = (options?: RouteQueryOptions) => {
@@ -78,7 +79,7 @@ voice.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\VoiceSettingsController::voice
-* @see app/Http/Controllers/Web/VoiceSettingsController.php:20
+* @see app/Http/Controllers/Web/VoiceSettingsController.php:21
 * @route '/settings/voice'
 */
 voice.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -88,7 +89,7 @@ voice.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\VoiceSettingsController::voice
-* @see app/Http/Controllers/Web/VoiceSettingsController.php:20
+* @see app/Http/Controllers/Web/VoiceSettingsController.php:21
 * @route '/settings/voice'
 */
 voice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -98,7 +99,7 @@ voice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
-* @see app/Http/Controllers/Web/DataProtectionController.php:14
+* @see app/Http/Controllers/Web/DataProtectionController.php:15
 * @route '/settings/data-protection'
 */
 export const dataProtection = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -113,7 +114,7 @@ dataProtection.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
-* @see app/Http/Controllers/Web/DataProtectionController.php:14
+* @see app/Http/Controllers/Web/DataProtectionController.php:15
 * @route '/settings/data-protection'
 */
 dataProtection.url = (options?: RouteQueryOptions) => {
@@ -122,7 +123,7 @@ dataProtection.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
-* @see app/Http/Controllers/Web/DataProtectionController.php:14
+* @see app/Http/Controllers/Web/DataProtectionController.php:15
 * @route '/settings/data-protection'
 */
 dataProtection.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -132,7 +133,7 @@ dataProtection.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::dataProtection
-* @see app/Http/Controllers/Web/DataProtectionController.php:14
+* @see app/Http/Controllers/Web/DataProtectionController.php:15
 * @route '/settings/data-protection'
 */
 dataProtection.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -142,7 +143,7 @@ dataProtection.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => 
 
 /**
 * @see \App\Http\Controllers\Web\PrivacyController::privacy
-* @see app/Http/Controllers/Web/PrivacyController.php:14
+* @see app/Http/Controllers/Web/PrivacyController.php:15
 * @route '/settings/privacy'
 */
 export const privacy = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -157,7 +158,7 @@ privacy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\PrivacyController::privacy
-* @see app/Http/Controllers/Web/PrivacyController.php:14
+* @see app/Http/Controllers/Web/PrivacyController.php:15
 * @route '/settings/privacy'
 */
 privacy.url = (options?: RouteQueryOptions) => {
@@ -166,7 +167,7 @@ privacy.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\PrivacyController::privacy
-* @see app/Http/Controllers/Web/PrivacyController.php:14
+* @see app/Http/Controllers/Web/PrivacyController.php:15
 * @route '/settings/privacy'
 */
 privacy.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -176,7 +177,7 @@ privacy.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\PrivacyController::privacy
-* @see app/Http/Controllers/Web/PrivacyController.php:14
+* @see app/Http/Controllers/Web/PrivacyController.php:15
 * @route '/settings/privacy'
 */
 privacy.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -186,7 +187,7 @@ privacy.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\SystemHealthController::system
-* @see app/Http/Controllers/Web/SystemHealthController.php:15
+* @see app/Http/Controllers/Web/SystemHealthController.php:16
 * @route '/settings/system'
 */
 export const system = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -201,7 +202,7 @@ system.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\SystemHealthController::system
-* @see app/Http/Controllers/Web/SystemHealthController.php:15
+* @see app/Http/Controllers/Web/SystemHealthController.php:16
 * @route '/settings/system'
 */
 system.url = (options?: RouteQueryOptions) => {
@@ -210,7 +211,7 @@ system.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\SystemHealthController::system
-* @see app/Http/Controllers/Web/SystemHealthController.php:15
+* @see app/Http/Controllers/Web/SystemHealthController.php:16
 * @route '/settings/system'
 */
 system.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -220,11 +221,55 @@ system.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\SystemHealthController::system
-* @see app/Http/Controllers/Web/SystemHealthController.php:15
+* @see app/Http/Controllers/Web/SystemHealthController.php:16
 * @route '/settings/system'
 */
 system.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: system.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\Web\RoleController::roles
+* @see app/Http/Controllers/Web/RoleController.php:17
+* @route '/settings/roles'
+*/
+export const roles = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: roles.url(options),
+    method: 'get',
+})
+
+roles.definition = {
+    methods: ["get","head"],
+    url: '/settings/roles',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\RoleController::roles
+* @see app/Http/Controllers/Web/RoleController.php:17
+* @route '/settings/roles'
+*/
+roles.url = (options?: RouteQueryOptions) => {
+    return roles.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\RoleController::roles
+* @see app/Http/Controllers/Web/RoleController.php:17
+* @route '/settings/roles'
+*/
+roles.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: roles.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\RoleController::roles
+* @see app/Http/Controllers/Web/RoleController.php:17
+* @route '/settings/roles'
+*/
+roles.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: roles.url(options),
     method: 'head',
 })
 
@@ -240,6 +285,7 @@ const settings = {
     dataProtection: Object.assign(dataProtection, dataProtection0a045c),
     privacy: Object.assign(privacy, privacy),
     system: Object.assign(system, system),
+    roles: Object.assign(roles, rolesF85c84),
 }
 
 export default settings

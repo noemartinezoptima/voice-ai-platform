@@ -19,6 +19,7 @@ import TeamMemberController from './TeamMemberController'
 import DataProtectionController from './DataProtectionController'
 import PrivacyController from './PrivacyController'
 import SystemHealthController from './SystemHealthController'
+import RoleController from './RoleController'
 import GettingStartedController from './GettingStartedController'
 import AcceptInviteController from './AcceptInviteController'
 
@@ -44,6 +45,7 @@ const Web = {
     DataProtectionController: Object.assign(DataProtectionController, DataProtectionController),
     PrivacyController: Object.assign(PrivacyController, PrivacyController),
     SystemHealthController: Object.assign(SystemHealthController, SystemHealthController),
+    RoleController: Object.assign(RoleController, RoleController),
     GettingStartedController: Object.assign(GettingStartedController, GettingStartedController),
     AcceptInviteController: Object.assign(AcceptInviteController, AcceptInviteController),
 }

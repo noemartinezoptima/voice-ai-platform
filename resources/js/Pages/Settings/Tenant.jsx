@@ -11,6 +11,8 @@ import { Field, Label, ErrorMessage } from '@/Components/catalyst/fieldset';
 import { Input } from '@/Components/catalyst/input';
 import { Select } from '@/Components/catalyst/select';
 import { Eye, EyeOff, Phone, Key } from 'lucide-react';
+import { update } from '@/actions/App/Http/Controllers/Web/TenantSettingsController';
+import { disconnect } from '@/actions/App/Http/Controllers/Web/TwilioOAuthController';
 
 export default function Tenant({ tenant }) {
     const { data, setData, patch, processing, errors } = useForm({
@@ -30,7 +32,7 @@ export default function Tenant({ tenant }) {
 
     function submit(e) {
         e.preventDefault();
-        patch('/settings/tenant', {
+        patch(update().url, {
             preserveScroll: true,
         });
     }
@@ -143,7 +145,7 @@ export default function Tenant({ tenant }) {
                                     <Badge color="emerald">Connected</Badge>
                                     <Text>Account {tenant.twilio_account_sid_oauth ?? 'connected'} — {tenant.twilio_connected_at ? new Date(tenant.twilio_connected_at).toLocaleDateString() : ''}</Text>
                                 </div>
-                                <Button outline onClick={() => router.post('/twilio/oauth/disconnect')}>
+                                <Button outline onClick={() => router.post(disconnect().url)}>
                                     Disconnect
                                 </Button>
                             </div>

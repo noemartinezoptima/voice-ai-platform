@@ -6,6 +6,7 @@ use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property string $id
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $elevenlabs_agent_id
  * @property array<string, mixed>|null $config
  * @property bool $is_active
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 class ElevenLabsAgentModel extends Model
 {

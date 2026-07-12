@@ -12,6 +12,7 @@ import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@
 import { Dialog, DialogTitle, DialogDescription, DialogBody, DialogActions } from '@/Components/catalyst/dialog';
 import { Field, Label, ErrorMessage } from '@/Components/catalyst/fieldset';
 import { Mic, Upload, Play, Trash2, Star } from 'lucide-react';
+import { store, destroy, setDefault } from '@/actions/App/Http/Controllers/Web/VoiceController';
 
 export default function Index({ voices }) {
     const [cloneOpen, setCloneOpen] = useState(false);
@@ -54,7 +55,7 @@ export default function Index({ voices }) {
 
     function handleClone(e) {
         e.preventDefault();
-        router.post('/settings/voices', data, {
+        router.post(store().url, data, {
             forceFormData: true,
             onSuccess: () => { setCloneOpen(false); reset(); },
         });
@@ -62,13 +63,13 @@ export default function Index({ voices }) {
 
     function handleDelete() {
         if (!deleteVoice) return;
-        router.delete(`/settings/voices/${deleteVoice.id}`, {
+        router.delete(destroy({voice: deleteVoice.id}).url, {
             onSuccess: () => setDeleteVoice(null),
         });
     }
 
     function handleSetDefault(voice) {
-        router.patch(`/settings/voices/${voice.id}/default`);
+        router.patch(setDefault({voice: voice.id}).url, { preserveScroll: true });
     }
 
     return (
@@ -123,16 +124,16 @@ export default function Index({ voices }) {
                                     <TableCell className="text-right">
                                         <div className="flex justify-end gap-2">
                                             {voice.preview_url && (
-                                                <Button outline onClick={() => new Audio(voice.preview_url).play()} title="Preview">
+                                                <Button outline onClick={() => new Audio(voice.preview_url).play()} title="Preview" aria-label={`Preview ${voice.name}`}>
                                                     <Play className="size-4" />
                                                 </Button>
                                             )}
                                             {!voice.is_default && (
-                                                <Button outline onClick={() => handleSetDefault(voice)} title="Set as default">
+                                                <Button outline onClick={() => handleSetDefault(voice)} title="Set as default" aria-label={`Set ${voice.name} as default`}>
                                                     <Star className="size-4" />
                                                 </Button>
                                             )}
-                                            <Button outline onClick={() => setDeleteVoice(voice)}>
+                                            <Button outline onClick={() => setDeleteVoice(voice)} aria-label={`Delete ${voice.name}`}>
                                                 <Trash2 className="size-4" />
                                             </Button>
                                         </div>

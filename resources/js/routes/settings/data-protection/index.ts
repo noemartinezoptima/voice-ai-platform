@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::update
-* @see app/Http/Controllers/Web/DataProtectionController.php:26
+* @see app/Http/Controllers/Web/DataProtectionController.php:28
 * @route '/settings/data-protection'
 */
 export const update = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +16,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::update
-* @see app/Http/Controllers/Web/DataProtectionController.php:26
+* @see app/Http/Controllers/Web/DataProtectionController.php:28
 * @route '/settings/data-protection'
 */
 update.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ update.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DataProtectionController::update
-* @see app/Http/Controllers/Web/DataProtectionController.php:26
+* @see app/Http/Controllers/Web/DataProtectionController.php:28
 * @route '/settings/data-protection'
 */
 update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({

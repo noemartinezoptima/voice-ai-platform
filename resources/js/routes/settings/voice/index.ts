@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\VoiceSettingsController::update
-* @see app/Http/Controllers/Web/VoiceSettingsController.php:40
+* @see app/Http/Controllers/Web/VoiceSettingsController.php:42
 * @route '/settings/voice'
 */
 export const update = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +16,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\VoiceSettingsController::update
-* @see app/Http/Controllers/Web/VoiceSettingsController.php:40
+* @see app/Http/Controllers/Web/VoiceSettingsController.php:42
 * @route '/settings/voice'
 */
 update.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ update.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\VoiceSettingsController::update
-* @see app/Http/Controllers/Web/VoiceSettingsController.php:40
+* @see app/Http/Controllers/Web/VoiceSettingsController.php:42
 * @route '/settings/voice'
 */
 update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({

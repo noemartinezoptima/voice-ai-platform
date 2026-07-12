@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::index
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:20
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:21
 * @route '/settings/agents'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::index
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:20
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:21
 * @route '/settings/agents'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::index
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:20
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:21
 * @route '/settings/agents'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::index
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:20
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:21
 * @route '/settings/agents'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::store
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:31
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:33
 * @route '/settings/agents'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -60,7 +60,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::store
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:31
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:33
 * @route '/settings/agents'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::store
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:31
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:33
 * @route '/settings/agents'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -79,7 +79,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::update
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:68
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:71
 * @route '/settings/agents/{agent}'
 */
 export const update = (args: { agent: string | number } | [agent: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -94,7 +94,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::update
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:68
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:71
 * @route '/settings/agents/{agent}'
 */
 update.url = (args: { agent: string | number } | [agent: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -121,7 +121,7 @@ update.url = (args: { agent: string | number } | [agent: string | number ] | str
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::update
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:68
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:71
 * @route '/settings/agents/{agent}'
 */
 update.patch = (args: { agent: string | number } | [agent: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -131,7 +131,7 @@ update.patch = (args: { agent: string | number } | [agent: string | number ] | s
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::destroy
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:107
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:111
 * @route '/settings/agents/{agent}'
 */
 export const destroy = (args: { agent: string | number } | [agent: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -146,7 +146,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::destroy
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:107
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:111
 * @route '/settings/agents/{agent}'
 */
 destroy.url = (args: { agent: string | number } | [agent: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -173,7 +173,7 @@ destroy.url = (args: { agent: string | number } | [agent: string | number ] | st
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::destroy
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:107
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:111
 * @route '/settings/agents/{agent}'
 */
 destroy.delete = (args: { agent: string | number } | [agent: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -183,7 +183,7 @@ destroy.delete = (args: { agent: string | number } | [agent: string | number ] |
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::sync
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:133
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:138
 * @route '/settings/agents/sync'
 */
 export const sync = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -198,7 +198,7 @@ sync.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::sync
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:133
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:138
 * @route '/settings/agents/sync'
 */
 sync.url = (options?: RouteQueryOptions) => {
@@ -207,7 +207,7 @@ sync.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\ElevenLabsAgentController::sync
-* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:133
+* @see app/Http/Controllers/Web/ElevenLabsAgentController.php:138
 * @route '/settings/agents/sync'
 */
 sync.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

@@ -4,12 +4,15 @@ import { Button } from '@/Components/catalyst/button';
 import { Heading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
 import { complete } from '@/actions/App/Http/Controllers/Web/GettingStartedController';
+import { tenant as settingsTenant } from '@/routes/settings';
+import { index as flowsIndex } from '@/actions/App/Http/Controllers/Web/FlowController';
+import { index as monitorIndex } from '@/actions/App/Http/Controllers/Web/MonitorController';
 
 const STEPS = [
-    { key: 'twilio', title: 'Connect Twilio', description: 'Link your Twilio account to handle phone calls and SMS.', link: '/settings/tenant' },
-    { key: 'elevenlabs', title: 'Connect ElevenLabs', description: 'Connect your ElevenLabs account for AI voice synthesis.', link: '/settings/tenant' },
-    { key: 'flow', title: 'Create Your First Flow', description: 'Design a voice assistant flow with our visual builder.', link: '/flows' },
-    { key: 'test', title: 'Make a Test Call', description: 'Call your assigned Twilio number to test your voice AI.', link: '/monitor' },
+    { key: 'twilio', title: 'Connect Twilio', description: 'Link your Twilio account to handle phone calls and SMS.', link: settingsTenant().url },
+    { key: 'elevenlabs', title: 'Connect ElevenLabs', description: 'Connect your ElevenLabs account for AI voice synthesis.', link: settingsTenant().url },
+    { key: 'flow', title: 'Create Your First Flow', description: 'Design a voice assistant flow with our visual builder.', link: flowsIndex().url },
+    { key: 'test', title: 'Make a Test Call', description: 'Call your assigned Twilio number to test your voice AI.', link: monitorIndex().url },
 ];
 
 export default function Index({ twilioConnected, elevenlabsConnected }) {
@@ -37,6 +40,8 @@ export default function Index({ twilioConnected, elevenlabsConnected }) {
                             key={step.key}
                             type="button"
                             onClick={() => setCurrentStep(i)}
+                            aria-label={`Step ${i + 1}: ${step.title}`}
+                            aria-current={i === currentStep ? 'step' : undefined}
                             className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
                                 i === currentStep
                                     ? 'bg-indigo-600 text-white'

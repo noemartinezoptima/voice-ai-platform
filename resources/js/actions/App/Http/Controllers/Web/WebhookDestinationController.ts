@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::index
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:14
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:15
 * @route '/settings/webhooks'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::index
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:14
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:15
 * @route '/settings/webhooks'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::index
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:14
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:15
 * @route '/settings/webhooks'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::index
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:14
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:15
 * @route '/settings/webhooks'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::store
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:25
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:27
 * @route '/settings/webhooks'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -60,7 +60,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::store
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:25
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:27
 * @route '/settings/webhooks'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::store
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:25
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:27
 * @route '/settings/webhooks'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -79,7 +79,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::update
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:45
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:48
 * @route '/settings/webhooks/{webhook}'
 */
 export const update = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -94,7 +94,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::update
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:45
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:48
 * @route '/settings/webhooks/{webhook}'
 */
 update.url = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -121,7 +121,7 @@ update.url = (args: { webhook: string | number } | [webhook: string | number ] |
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::update
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:45
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:48
 * @route '/settings/webhooks/{webhook}'
 */
 update.patch = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -131,7 +131,7 @@ update.patch = (args: { webhook: string | number } | [webhook: string | number ]
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::destroy
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:65
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:69
 * @route '/settings/webhooks/{webhook}'
 */
 export const destroy = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -146,7 +146,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::destroy
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:65
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:69
 * @route '/settings/webhooks/{webhook}'
 */
 destroy.url = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -173,7 +173,7 @@ destroy.url = (args: { webhook: string | number } | [webhook: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::destroy
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:65
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:69
 * @route '/settings/webhooks/{webhook}'
 */
 destroy.delete = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({

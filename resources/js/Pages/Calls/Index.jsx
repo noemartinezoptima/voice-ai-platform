@@ -9,7 +9,7 @@ import { Badge } from '@/Components/catalyst/badge';
 import { Button } from '@/Components/catalyst/button';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
 import { Pagination, PaginationList, PaginationPage, PaginationGap, PaginationNext, PaginationPrevious } from '@/Components/catalyst/pagination';
-import { index, show, retry } from '@/actions/App/Http/Controllers/Web/CallController';
+import { index, show, retry, exportCsv } from '@/actions/App/Http/Controllers/Web/CallController';
 
 export default function Index({ calls, filters }) {
     const [search, setSearch] = useState(filters.search ?? '');
@@ -59,6 +59,7 @@ export default function Index({ calls, filters }) {
                         onChange={(e) => setSearch(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && applyFilters()}
                         placeholder="Search phone number or SID..."
+                        aria-label="Search calls"
                     />
                 </div>
                 <div className="w-40">
@@ -76,11 +77,12 @@ export default function Index({ calls, filters }) {
                 </div>
                 <Button
                     outline
+                    aria-label="Export CSV"
                     onClick={() => {
-                        const params = new URLSearchParams();
-                        if (search) params.set('search', search);
-                        if (status) params.set('status', status);
-                        window.location.href = '/calls/export/csv?' + params.toString();
+                        const params = {};
+                        if (search) params.search = search;
+                        if (status) params.status = status;
+                        window.location.href = exportCsv({ query: params }).url;
                     }}
                 >
                     Export CSV

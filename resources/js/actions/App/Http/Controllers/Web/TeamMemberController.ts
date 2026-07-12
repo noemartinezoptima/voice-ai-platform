@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::index
-* @see app/Http/Controllers/Web/TeamMemberController.php:17
+* @see app/Http/Controllers/Web/TeamMemberController.php:18
 * @route '/team'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::index
-* @see app/Http/Controllers/Web/TeamMemberController.php:17
+* @see app/Http/Controllers/Web/TeamMemberController.php:18
 * @route '/team'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::index
-* @see app/Http/Controllers/Web/TeamMemberController.php:17
+* @see app/Http/Controllers/Web/TeamMemberController.php:18
 * @route '/team'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::index
-* @see app/Http/Controllers/Web/TeamMemberController.php:17
+* @see app/Http/Controllers/Web/TeamMemberController.php:18
 * @route '/team'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::invite
-* @see app/Http/Controllers/Web/TeamMemberController.php:53
+* @see app/Http/Controllers/Web/TeamMemberController.php:54
 * @route '/team/invite'
 */
 export const invite = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -60,7 +60,7 @@ invite.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::invite
-* @see app/Http/Controllers/Web/TeamMemberController.php:53
+* @see app/Http/Controllers/Web/TeamMemberController.php:54
 * @route '/team/invite'
 */
 invite.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ invite.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::invite
-* @see app/Http/Controllers/Web/TeamMemberController.php:53
+* @see app/Http/Controllers/Web/TeamMemberController.php:54
 * @route '/team/invite'
 */
 invite.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -79,7 +79,7 @@ invite.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::update
-* @see app/Http/Controllers/Web/TeamMemberController.php:90
+* @see app/Http/Controllers/Web/TeamMemberController.php:91
 * @route '/team/{user}/role'
 */
 export const update = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -94,7 +94,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::update
-* @see app/Http/Controllers/Web/TeamMemberController.php:90
+* @see app/Http/Controllers/Web/TeamMemberController.php:91
 * @route '/team/{user}/role'
 */
 update.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -127,7 +127,7 @@ update.url = (args: { user: number | { id: number } } | [user: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::update
-* @see app/Http/Controllers/Web/TeamMemberController.php:90
+* @see app/Http/Controllers/Web/TeamMemberController.php:91
 * @route '/team/{user}/role'
 */
 update.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -137,7 +137,7 @@ update.patch = (args: { user: number | { id: number } } | [user: number | { id: 
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::destroy
-* @see app/Http/Controllers/Web/TeamMemberController.php:112
+* @see app/Http/Controllers/Web/TeamMemberController.php:114
 * @route '/team/{user}'
 */
 export const destroy = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -152,7 +152,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::destroy
-* @see app/Http/Controllers/Web/TeamMemberController.php:112
+* @see app/Http/Controllers/Web/TeamMemberController.php:114
 * @route '/team/{user}'
 */
 destroy.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -185,7 +185,7 @@ destroy.url = (args: { user: number | { id: number } } | [user: number | { id: n
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::destroy
-* @see app/Http/Controllers/Web/TeamMemberController.php:112
+* @see app/Http/Controllers/Web/TeamMemberController.php:114
 * @route '/team/{user}'
 */
 destroy.delete = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({

@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\CallController::index
-* @see app/Http/Controllers/Web/CallController.php:16
+* @see app/Http/Controllers/Web/CallController.php:17
 * @route '/calls'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -60,7 +60,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\CallController::index
-* @see app/Http/Controllers/Web/CallController.php:16
+* @see app/Http/Controllers/Web/CallController.php:17
 * @route '/calls'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\CallController::index
-* @see app/Http/Controllers/Web/CallController.php:16
+* @see app/Http/Controllers/Web/CallController.php:17
 * @route '/calls'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -79,7 +79,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\CallController::index
-* @see app/Http/Controllers/Web/CallController.php:16
+* @see app/Http/Controllers/Web/CallController.php:17
 * @route '/calls'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -151,7 +151,7 @@ show.head = (args: { call: string | number } | [call: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\Web\CallController::show
-* @see app/Http/Controllers/Web/CallController.php:42
+* @see app/Http/Controllers/Web/CallController.php:43
 * @route '/calls/{call}'
 */
 export const show = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -166,7 +166,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\CallController::show
-* @see app/Http/Controllers/Web/CallController.php:42
+* @see app/Http/Controllers/Web/CallController.php:43
 * @route '/calls/{call}'
 */
 show.url = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -193,7 +193,7 @@ show.url = (args: { call: string | number } | [call: string | number ] | string 
 
 /**
 * @see \App\Http\Controllers\Web\CallController::show
-* @see app/Http/Controllers/Web/CallController.php:42
+* @see app/Http/Controllers/Web/CallController.php:43
 * @route '/calls/{call}'
 */
 show.get = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -203,7 +203,7 @@ show.get = (args: { call: string | number } | [call: string | number ] | string 
 
 /**
 * @see \App\Http\Controllers\Web\CallController::show
-* @see app/Http/Controllers/Web/CallController.php:42
+* @see app/Http/Controllers/Web/CallController.php:43
 * @route '/calls/{call}'
 */
 show.head = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -213,7 +213,7 @@ show.head = (args: { call: string | number } | [call: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\Web\CallController::exportMethod
-* @see app/Http/Controllers/Web/CallController.php:108
+* @see app/Http/Controllers/Web/CallController.php:109
 * @route '/calls/export/csv'
 */
 export const exportMethod = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -228,7 +228,7 @@ exportMethod.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\CallController::exportMethod
-* @see app/Http/Controllers/Web/CallController.php:108
+* @see app/Http/Controllers/Web/CallController.php:109
 * @route '/calls/export/csv'
 */
 exportMethod.url = (options?: RouteQueryOptions) => {
@@ -237,7 +237,7 @@ exportMethod.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\CallController::exportMethod
-* @see app/Http/Controllers/Web/CallController.php:108
+* @see app/Http/Controllers/Web/CallController.php:109
 * @route '/calls/export/csv'
 */
 exportMethod.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -247,7 +247,7 @@ exportMethod.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\CallController::exportMethod
-* @see app/Http/Controllers/Web/CallController.php:108
+* @see app/Http/Controllers/Web/CallController.php:109
 * @route '/calls/export/csv'
 */
 exportMethod.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -257,7 +257,7 @@ exportMethod.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\CallController::notes
-* @see app/Http/Controllers/Web/CallController.php:56
+* @see app/Http/Controllers/Web/CallController.php:57
 * @route '/calls/{call}/notes'
 */
 export const notes = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -272,7 +272,7 @@ notes.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\CallController::notes
-* @see app/Http/Controllers/Web/CallController.php:56
+* @see app/Http/Controllers/Web/CallController.php:57
 * @route '/calls/{call}/notes'
 */
 notes.url = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -299,7 +299,7 @@ notes.url = (args: { call: string | number } | [call: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\Web\CallController::notes
-* @see app/Http/Controllers/Web/CallController.php:56
+* @see app/Http/Controllers/Web/CallController.php:57
 * @route '/calls/{call}/notes'
 */
 notes.patch = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -309,7 +309,7 @@ notes.patch = (args: { call: string | number } | [call: string | number ] | stri
 
 /**
 * @see \App\Http\Controllers\Web\CallController::retry
-* @see app/Http/Controllers/Web/CallController.php:73
+* @see app/Http/Controllers/Web/CallController.php:74
 * @route '/calls/{call}/retry'
 */
 export const retry = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -324,7 +324,7 @@ retry.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\CallController::retry
-* @see app/Http/Controllers/Web/CallController.php:73
+* @see app/Http/Controllers/Web/CallController.php:74
 * @route '/calls/{call}/retry'
 */
 retry.url = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -351,7 +351,7 @@ retry.url = (args: { call: string | number } | [call: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\Web\CallController::retry
-* @see app/Http/Controllers/Web/CallController.php:73
+* @see app/Http/Controllers/Web/CallController.php:74
 * @route '/calls/{call}/retry'
 */
 retry.post = (args: { call: string | number } | [call: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({

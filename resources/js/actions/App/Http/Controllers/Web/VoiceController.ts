@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\VoiceController::index
-* @see app/Http/Controllers/Web/VoiceController.php:21
+* @see app/Http/Controllers/Web/VoiceController.php:23
 * @route '/settings/voices'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\VoiceController::index
-* @see app/Http/Controllers/Web/VoiceController.php:21
+* @see app/Http/Controllers/Web/VoiceController.php:23
 * @route '/settings/voices'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\VoiceController::index
-* @see app/Http/Controllers/Web/VoiceController.php:21
+* @see app/Http/Controllers/Web/VoiceController.php:23
 * @route '/settings/voices'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\VoiceController::index
-* @see app/Http/Controllers/Web/VoiceController.php:21
+* @see app/Http/Controllers/Web/VoiceController.php:23
 * @route '/settings/voices'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\VoiceController::store
-* @see app/Http/Controllers/Web/VoiceController.php:30
+* @see app/Http/Controllers/Web/VoiceController.php:34
 * @route '/settings/voices'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -60,7 +60,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\VoiceController::store
-* @see app/Http/Controllers/Web/VoiceController.php:30
+* @see app/Http/Controllers/Web/VoiceController.php:34
 * @route '/settings/voices'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\VoiceController::store
-* @see app/Http/Controllers/Web/VoiceController.php:30
+* @see app/Http/Controllers/Web/VoiceController.php:34
 * @route '/settings/voices'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -79,7 +79,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\VoiceController::destroy
-* @see app/Http/Controllers/Web/VoiceController.php:124
+* @see app/Http/Controllers/Web/VoiceController.php:115
 * @route '/settings/voices/{voice}'
 */
 export const destroy = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -94,7 +94,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\VoiceController::destroy
-* @see app/Http/Controllers/Web/VoiceController.php:124
+* @see app/Http/Controllers/Web/VoiceController.php:115
 * @route '/settings/voices/{voice}'
 */
 destroy.url = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -121,7 +121,7 @@ destroy.url = (args: { voice: string | number } | [voice: string | number ] | st
 
 /**
 * @see \App\Http\Controllers\Web\VoiceController::destroy
-* @see app/Http/Controllers/Web/VoiceController.php:124
+* @see app/Http/Controllers/Web/VoiceController.php:115
 * @route '/settings/voices/{voice}'
 */
 destroy.delete = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -129,6 +129,120 @@ destroy.delete = (args: { voice: string | number } | [voice: string | number ] |
     method: 'delete',
 })
 
-const VoiceController = { index, store, destroy }
+/**
+* @see \App\Http\Controllers\Web\VoiceController::show
+* @see app/Http/Controllers/Web/VoiceController.php:178
+* @route '/settings/voices/{voice}'
+*/
+export const show = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: show.url(args, options),
+    method: 'get',
+})
+
+show.definition = {
+    methods: ["get","head"],
+    url: '/settings/voices/{voice}',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\VoiceController::show
+* @see app/Http/Controllers/Web/VoiceController.php:178
+* @route '/settings/voices/{voice}'
+*/
+show.url = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { voice: args }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            voice: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        voice: args.voice,
+    }
+
+    return show.definition.url
+            .replace('{voice}', parsedArgs.voice.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\VoiceController::show
+* @see app/Http/Controllers/Web/VoiceController.php:178
+* @route '/settings/voices/{voice}'
+*/
+show.get = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: show.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\VoiceController::show
+* @see app/Http/Controllers/Web/VoiceController.php:178
+* @route '/settings/voices/{voice}'
+*/
+show.head = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: show.url(args, options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\Web\VoiceController::setDefault
+* @see app/Http/Controllers/Web/VoiceController.php:156
+* @route '/settings/voices/{voice}/default'
+*/
+export const setDefault = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: setDefault.url(args, options),
+    method: 'patch',
+})
+
+setDefault.definition = {
+    methods: ["patch"],
+    url: '/settings/voices/{voice}/default',
+} satisfies RouteDefinition<["patch"]>
+
+/**
+* @see \App\Http\Controllers\Web\VoiceController::setDefault
+* @see app/Http/Controllers/Web/VoiceController.php:156
+* @route '/settings/voices/{voice}/default'
+*/
+setDefault.url = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { voice: args }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            voice: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        voice: args.voice,
+    }
+
+    return setDefault.definition.url
+            .replace('{voice}', parsedArgs.voice.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\VoiceController::setDefault
+* @see app/Http/Controllers/Web/VoiceController.php:156
+* @route '/settings/voices/{voice}/default'
+*/
+setDefault.patch = (args: { voice: string | number } | [voice: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: setDefault.url(args, options),
+    method: 'patch',
+})
+
+const VoiceController = { index, store, destroy, show, setDefault }
 
 export default VoiceController
