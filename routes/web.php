@@ -14,6 +14,7 @@ use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DataProtectionController;
 use App\Http\Controllers\Web\DocumentsController;
 use App\Http\Controllers\Web\ElevenLabsAgentController;
+use App\Http\Controllers\Web\ElevenLabsConnectController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\PrivacyController;
@@ -112,6 +113,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'destroy'])->name('settings.webhooks.destroy');
 
     Route::get('/settings/activity', [ActivityLogController::class, 'index'])->name('settings.activity.index');
+
+    Route::post('/settings/elevenlabs/connect', [ElevenLabsConnectController::class, 'connect'])
+        ->name('settings.elevenlabs.connect');
+    Route::get('/settings/elevenlabs/status', [ElevenLabsConnectController::class, 'status'])
+        ->name('settings.elevenlabs.status');
 
     Route::get('/settings/agents', [ElevenLabsAgentController::class, 'index'])->name('settings.agents.index');
     Route::post('/settings/agents', [ElevenLabsAgentController::class, 'store'])->name('settings.agents.store');
