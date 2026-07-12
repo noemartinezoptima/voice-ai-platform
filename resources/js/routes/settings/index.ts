@@ -183,6 +183,50 @@ privacy.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 
+/**
+* @see \App\Http\Controllers\Web\SystemHealthController::system
+* @see app/Http/Controllers/Web/SystemHealthController.php:15
+* @route '/settings/system'
+*/
+export const system = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: system.url(options),
+    method: 'get',
+})
+
+system.definition = {
+    methods: ["get","head"],
+    url: '/settings/system',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\SystemHealthController::system
+* @see app/Http/Controllers/Web/SystemHealthController.php:15
+* @route '/settings/system'
+*/
+system.url = (options?: RouteQueryOptions) => {
+    return system.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\SystemHealthController::system
+* @see app/Http/Controllers/Web/SystemHealthController.php:15
+* @route '/settings/system'
+*/
+system.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: system.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\SystemHealthController::system
+* @see app/Http/Controllers/Web/SystemHealthController.php:15
+* @route '/settings/system'
+*/
+system.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: system.url(options),
+    method: 'head',
+})
+
 const settings = {
     tenant: Object.assign(tenant, tenant69401c),
     voice: Object.assign(voice, voice1db564),
@@ -193,6 +237,7 @@ const settings = {
     agents: Object.assign(agents, agents),
     dataProtection: Object.assign(dataProtection, dataProtection0a045c),
     privacy: Object.assign(privacy, privacy),
+    system: Object.assign(system, system),
 }
 
 export default settings

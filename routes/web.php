@@ -19,6 +19,7 @@ use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\SmsController;
+use App\Http\Controllers\Web\SystemHealthController;
 use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\TenantSettingsController;
 use App\Http\Controllers\Web\TwilioOAuthController;
@@ -137,6 +138,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/settings/privacy', [PrivacyController::class, 'index'])
         ->name('settings.privacy');
+
+    Route::get('/settings/system', [SystemHealthController::class, 'index'])
+        ->name('settings.system');
 
     Route::delete('/api/tenant/data', [DataDeletionController::class, 'destroy'])
         ->name('api.tenant.data.delete');
