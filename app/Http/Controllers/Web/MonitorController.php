@@ -15,6 +15,7 @@ class MonitorController extends Controller
     {
         return Inertia::render('Monitor/Index', [
             'activeCalls' => $this->getActiveCalls($request),
+            'tenantId' => $request->user()->tenant_id,
         ]);
     }
 
@@ -37,5 +38,19 @@ class MonitorController extends Controller
             ->take(50)
             ->get()
             ->toArray();
+    }
+
+    public function transcript(Request $request, string $id): JsonResponse
+    {
+        $call = CallModel::query()
+            ->where('tenant_id', $request->user()->tenant_id)
+            ->where('id', $id)
+            ->with('callLogs')
+            ->firstOrFail();
+
+        return response()->json([
+            'context' => $call->context,
+            'call_logs' => $call->callLogs->toArray(),
+        ]);
     }
 }

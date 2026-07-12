@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Events\CallUpdated;
 use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
 use Illuminate\Http\JsonResponse;
@@ -103,6 +104,8 @@ class CallController extends Controller
                 'flow_id' => $original->flow_id,
             ])
             ->log('call_retried');
+
+        CallUpdated::dispatch($retry);
 
         return redirect()->route('calls.index')
             ->with('success', 'Retry call created from failed call.');

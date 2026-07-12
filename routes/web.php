@@ -88,6 +88,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor.index');
     Route::get('/monitor/active', [MonitorController::class, 'active'])->name('monitor.active');
+    Route::get('/monitor/calls/{call}/transcript', [MonitorController::class, 'transcript'])->name('monitor.transcript');
 
     Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
 

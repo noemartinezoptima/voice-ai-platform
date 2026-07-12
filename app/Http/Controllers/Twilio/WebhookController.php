@@ -8,6 +8,7 @@ use App\Application\Flow\Services\FlowExecutor;
 use App\Application\Webhook\Services\WebhookDispatcher;
 use App\Domain\Call\Repositories\CallRepositoryInterface;
 use App\Domain\Flow\Repositories\FlowRepositoryInterface;
+use App\Events\CallUpdated;
 use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
@@ -163,6 +164,12 @@ class WebhookController extends Controller
                         'to' => (string) $call->getToNumber(),
                         'duration_seconds' => $call->getDurationSeconds(),
                     ]);
+                }
+
+                $callModel = CallModel::find($call->id());
+
+                if ($callModel !== null) {
+                    CallUpdated::dispatch($callModel);
                 }
             }
         }
