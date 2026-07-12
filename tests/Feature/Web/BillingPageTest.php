@@ -29,7 +29,13 @@ class BillingPageTest extends TestCase
 
     public function test_index_renders(): void
     {
-        $this->actingAs($this->user)->get('/billing')->assertOk();
+        $this->actingAs($this->user)
+            ->get('/billing')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Billing/Index')
+                ->has('plans')
+            );
     }
 
     public function test_index_shows_current_plan(): void
@@ -45,6 +51,11 @@ class BillingPageTest extends TestCase
         $response->assertSee('Free');
         $response->assertSee('Pro');
         $response->assertSee('Enterprise');
+        $response->assertOk();
+        $response->assertInertia(fn ($page) => $page
+            ->has('plans')
+            ->has('currentPlan')
+        );
     }
 
     public function test_update_plan(): void

@@ -33,9 +33,16 @@ class SmsPageTest extends TestCase
 
     public function test_index_shows_messages(): void
     {
-        SmsMessageModelFactory::new()->count(3)->create(['tenant_id' => $this->user->tenant_id]);
+        SmsMessageModelFactory::new()->create([
+            'tenant_id' => $this->user->tenant_id,
+            'from_number' => '+15551234567',
+            'body' => 'Hello from SMS test',
+        ]);
 
-        $this->actingAs($this->user)->get('/sms')->assertOk();
+        $this->actingAs($this->user)
+            ->get('/sms')
+            ->assertOk()
+            ->assertSee('Hello from SMS test');
     }
 
     public function test_index_scoped_to_tenant(): void
@@ -59,6 +66,12 @@ class SmsPageTest extends TestCase
     {
         SmsMessageModelFactory::new()->count(25)->create(['tenant_id' => $this->user->tenant_id]);
 
-        $this->actingAs($this->user)->get('/sms')->assertOk();
+        $this->actingAs($this->user)
+            ->get('/sms')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Sms/Index')
+                ->has('messages')
+            );
     }
 }

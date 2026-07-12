@@ -40,7 +40,10 @@ class MonitorPageTest extends TestCase
             'from_number' => '+15551234567',
         ]);
 
-        $this->actingAs($this->user)->get('/monitor')->assertOk();
+        $this->actingAs($this->user)
+            ->get('/monitor')
+            ->assertOk()
+            ->assertSee('+15551234567');
     }
 
     public function test_index_scoped_to_tenant(): void
@@ -66,7 +69,10 @@ class MonitorPageTest extends TestCase
             'from_number' => '+15551234567',
         ]);
 
-        $this->actingAs($this->user)->get('/monitor')->assertOk();
+        $this->actingAs($this->user)
+            ->get('/monitor')
+            ->assertOk()
+            ->assertDontSee('+15551234567');
     }
 
     public function test_active_endpoint_returns_json(): void
@@ -130,7 +136,10 @@ class MonitorPageTest extends TestCase
             'flow_id' => $flow->id,
         ]);
 
-        $this->actingAs($this->user)->get('/monitor')->assertOk();
+        $this->actingAs($this->user)
+            ->get('/monitor')
+            ->assertOk()
+            ->assertSee('Support Bot');
     }
 
     public function test_active_endpoint_includes_flow_name(): void
