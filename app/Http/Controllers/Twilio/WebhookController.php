@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use App\Jobs\DownloadAndEncryptRecording;
+use App\Jobs\TranscribeRecording;
 use App\Services\UsageTrackingService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -214,6 +215,7 @@ class WebhookController extends Controller
 
                 if ($callModel !== null && $recordingUrl !== null) {
                     DownloadAndEncryptRecording::dispatch($callModel, $recordingUrl);
+                    TranscribeRecording::dispatch($callModel)->delay(now()->addSeconds(10));
                 }
 
                 Log::info('Recording stored', [

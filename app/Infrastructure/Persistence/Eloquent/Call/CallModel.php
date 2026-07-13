@@ -100,6 +100,12 @@ class CallModel extends Model
         return $this->hasOne(CallQualityScoreModel::class, 'call_id');
     }
 
+    /** @return HasMany<TranscriptModel, $this> */
+    public function transcripts(): HasMany
+    {
+        return $this->hasMany(TranscriptModel::class, 'call_id')->orderBy('start_offset_ms');
+    }
+
     protected function casts(): array
     {
         return [

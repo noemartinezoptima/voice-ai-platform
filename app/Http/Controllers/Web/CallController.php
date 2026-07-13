@@ -62,6 +62,7 @@ class CallController extends Controller
             ->select('calls.*', 'flows.name as flow_name')
             ->with('callLogs')
             ->with('retryOf')
+            ->with('transcripts')
             ->where('calls.id', $id)
             ->firstOrFail();
 

@@ -51,6 +51,14 @@ function formatDuration(seconds) {
     return m > 0 ? m + 'm ' + s + 's' : s + 's';
 }
 
+function formatTimestamp(ms) {
+    if (ms == null) return null;
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `(${minutes}:${String(seconds).padStart(2, '0')})`;
+}
+
 function StepIcon({ type, className }) {
     const iconPaths = {
         say: <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />,
@@ -157,8 +165,10 @@ export default function Show({ call }) {
     const [showRecording, setShowRecording] = useState(false);
 
     const transcript = call.context?.transcript;
+    const transcripts = call.transcripts;
     const recordingUrl = call.recording_path ? route('recordings.play', call.id) : call.recording_url;
     const hasRecording = call.recording_path || call.recording_url;
+    const hasTranscript = (transcripts && transcripts.length > 0) || call.context?.transcription_completed;
 
     const steps = useMemo(() => {
         if (call.call_logs?.length > 0) {
@@ -312,21 +322,32 @@ export default function Show({ call }) {
                     </div>
                 )}
 
-                {transcript && (
+                {hasTranscript && (
                     <div className="rounded-xl border border-zinc-950/5 bg-white p-8 dark:border-white/10 dark:bg-zinc-900">
                         <Subheading>Transcript</Subheading>
-                        <div className="mt-4 space-y-3">
-                            {transcript.map((entry, i) => (
-                                <div key={`${entry.role}-${i}`} className={'flex gap-3 ' + (entry.role === 'agent' ? '' : 'flex-row-reverse')}>
-                                    <div className={'rounded-lg px-4 py-2 text-sm ' + (entry.role === 'agent' ? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900')}>
-                                        <span className="text-xs font-semibold uppercase tracking-wider opacity-60">
-                                            {entry.role}
+                        {transcripts && transcripts.length > 0 ? (
+                            <div className="mt-4 space-y-3">
+                                {transcripts.map((entry, i) => (
+                                    <div key={entry.id || i} className="flex gap-3">
+                                        <span className="mt-0.5 shrink-0 rounded bg-zinc-100 px-2 py-0.5 text-xs font-semibold text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                                            {entry.role || 'Speaker'}
                                         </span>
-                                        <p className="mt-0.5">{entry.content}</p>
+                                        <div className="min-w-0">
+                                            <p className="text-sm text-zinc-950 dark:text-white">{entry.text}</p>
+                                            {entry.start_offset_ms != null && (
+                                                <span className="text-xs text-zinc-400">
+                                                    {formatTimestamp(entry.start_offset_ms)}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="mt-4 py-8 text-center">
+                                <Text className="text-zinc-400">Transcription is being processed...</Text>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
