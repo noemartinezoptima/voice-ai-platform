@@ -7,6 +7,14 @@ import { Button } from '@/Components/catalyst/button';
 import { index as qualityIndex } from '@/routes/quality';
 import { ArrowLeft } from 'lucide-react';
 
+const statusColors = {
+    completed: 'emerald',
+    failed: 'red',
+    in_progress: 'amber',
+    initiated: 'blue',
+    transferred: 'purple',
+};
+
 function ScoreCircle({ score, size = 120 }) {
   const r = (size / 2) - 12;
   const circ = 2 * Math.PI * r;
@@ -52,15 +60,7 @@ function ScoreBar({ label, score, color }) {
 }
 
 export default function Show({ call, score, transcriptPreview }) {
-  const statusColors = {
-    completed: 'emerald',
-    failed: 'red',
-    in_progress: 'amber',
-    initiated: 'blue',
-    transferred: 'purple',
-  };
-
-  return (
+    return (
     <AuthenticatedLayout>
       <Head title={`Quality Score - ${call.from_number}`} />
 

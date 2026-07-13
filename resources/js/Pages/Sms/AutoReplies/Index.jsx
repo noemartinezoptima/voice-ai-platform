@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Heading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
 import { Badge } from '@/Components/catalyst/badge';
@@ -26,7 +26,7 @@ export default function Index({ autoReplies }) {
 
     const toggleForm = useForm({ is_active: false });
 
-    function handleSubmit(e) {
+    const handleSubmit = useCallback((e) => {
         e.preventDefault();
         if (editingRule) {
             patch(`/sms/auto-replies/${editingRule.id}`, {
@@ -48,7 +48,7 @@ export default function Index({ autoReplies }) {
                 },
             });
         }
-    }
+    }, [editingRule, data, patch, post, reset, setShowForm, setEditingRule]);
 
     function handleEdit(rule) {
         setEditingRule(rule);
@@ -67,19 +67,19 @@ export default function Index({ autoReplies }) {
         });
     }
 
-    function handleDelete() {
+    const handleDelete = useCallback(() => {
         if (!deleteTarget) return;
         toggleForm.delete(`/sms/auto-replies/${deleteTarget.id}`, {
             preserveScroll: true,
             onSuccess: () => setDeleteTarget(null),
         });
-    }
+    }, [deleteTarget, toggleForm]);
 
-    function openNew() {
+    const openNew = useCallback(() => {
         setEditingRule(null);
         reset();
         setShowForm(true);
-    }
+    }, [reset, setEditingRule, setShowForm]);
 
     const matchTypeLabels = {
         exact: 'Exact',

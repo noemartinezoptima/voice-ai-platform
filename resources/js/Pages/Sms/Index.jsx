@@ -15,6 +15,16 @@ import { Textarea } from '@/Components/catalyst/textarea';
 import { MessageCircle, MessageSquare, Plus, Reply, Megaphone } from 'lucide-react';
 import { send } from '@/actions/App/Http/Controllers/Web/SmsController';
 
+const directionColors = {
+    inbound: 'blue',
+    outbound: 'emerald',
+};
+
+const channelConfig = {
+    sms: { icon: MessageSquare, color: 'blue', label: 'SMS' },
+    whatsapp: { icon: MessageCircle, color: 'emerald', label: 'WhatsApp' },
+};
+
 export default function Index({ messages, whatsapp_phone_number }) {
     const [showSend, setShowSend] = useState(false);
 
@@ -23,16 +33,6 @@ export default function Index({ messages, whatsapp_phone_number }) {
         body: '',
         channel: 'sms',
     });
-
-    const directionColors = {
-        inbound: 'blue',
-        outbound: 'emerald',
-    };
-
-    const channelConfig = {
-        sms: { icon: MessageSquare, color: 'blue', label: 'SMS' },
-        whatsapp: { icon: MessageCircle, color: 'emerald', label: 'WhatsApp' },
-    };
 
     function handleSend(e) {
         e.preventDefault();

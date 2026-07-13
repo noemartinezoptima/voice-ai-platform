@@ -9,6 +9,12 @@ import { show } from '@/actions/App/Http/Controllers/Web/CallController';
 import { active } from '@/actions/App/Http/Controllers/Web/MonitorController';
 import { Headphones, ChevronDown, ChevronRight } from 'lucide-react';
 
+const statusColors = {
+    initiated: 'blue',
+    in_progress: 'amber',
+    ringing: 'blue',
+};
+
 function elapsed(startedAt, now) {
     const diff = Math.floor((now - new Date(startedAt).getTime()) / 1000);
     if (diff < 0) return '0s';
@@ -84,7 +90,7 @@ export default function Monitor({ activeCalls: initial, tenantId }) {
         return () => clearInterval(t);
     }, []);
 
-    async function toggleExpand(call) {
+    const toggleExpand = useCallback(async (call) => {
         if (expandedId === call.id) {
             setExpandedId(null);
             return;
@@ -103,17 +109,11 @@ export default function Monitor({ activeCalls: initial, tenantId }) {
                 setFetchingId(null);
             }
         }
-    }
+    }, [expandedId, transcripts]);
 
     const avgDuration = calls.length > 0
         ? Math.round(calls.reduce((s, c) => s + (c.duration_seconds || 0), 0) / calls.length)
         : 0;
-
-    const statusColors = {
-        initiated: 'blue',
-        in_progress: 'amber',
-        ringing: 'blue',
-    };
 
     const completedInLast24h = calls.filter(
         (c) => c.status === 'completed' && new Date(c.started_at) > Date.now() - 86400000

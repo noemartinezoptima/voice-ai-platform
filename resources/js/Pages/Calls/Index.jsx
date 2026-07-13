@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Heading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
 import { Input } from '@/Components/catalyst/input';
@@ -11,16 +11,24 @@ import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@
 import { Pagination, PaginationList, PaginationPage, PaginationGap, PaginationNext, PaginationPrevious } from '@/Components/catalyst/pagination';
 import { index, show, retry, exportCsv } from '@/actions/App/Http/Controllers/Web/CallController';
 
+const statusColors = {
+    initiated: 'blue',
+    in_progress: 'amber',
+    completed: 'emerald',
+    failed: 'red',
+    transferred: 'purple',
+};
+
 export default function Index({ calls, filters }) {
     const [search, setSearch] = useState(filters.search ?? '');
     const [status, setStatus] = useState(filters.status ?? '');
 
-    function applyFilters() {
+    const applyFilters = useCallback(() => {
         router.get(index().url, {
             search: search || undefined,
             status: status || undefined,
         }, { preserveState: true, replace: true });
-    }
+    }, [search, status]);
 
     function formatDuration(seconds) {
         if (!seconds) return '\u2014';
@@ -28,14 +36,6 @@ export default function Index({ calls, filters }) {
         const s = seconds % 60;
         return m > 0 ? m + 'm ' + s + 's' : s + 's';
     }
-
-    const statusColors = {
-        initiated: 'blue',
-        in_progress: 'amber',
-        completed: 'emerald',
-        failed: 'red',
-        transferred: 'purple',
-    };
 
     return (
         <AuthenticatedLayout>

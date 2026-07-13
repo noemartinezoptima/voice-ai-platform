@@ -8,6 +8,12 @@ import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@
 import { Pagination, PaginationPrevious, PaginationNext, PaginationList, PaginationPage } from '@/Components/catalyst/pagination';
 import { AlertTriangle, CheckCircle2, Clock } from 'lucide-react';
 
+const filters = [
+    { key: 'all', label: 'All' },
+    { key: 'unresolved', label: 'Unresolved' },
+    { key: 'resolved', label: 'Resolved' },
+];
+
 function StatCard({ label, value, icon: Icon }) {
     return (
         <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-white/10 dark:bg-white/5">
@@ -21,12 +27,6 @@ function StatCard({ label, value, icon: Icon }) {
 }
 
 export default function Index({ errors, stats, filter }) {
-    const filters = [
-        { key: 'all', label: 'All' },
-        { key: 'unresolved', label: 'Unresolved' },
-        { key: 'resolved', label: 'Resolved' },
-    ];
-
     function resolve(hash) {
         router.patch(`/settings/errors/${hash}/resolve`, {}, {
             preserveScroll: true,

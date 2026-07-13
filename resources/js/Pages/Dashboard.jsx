@@ -13,7 +13,7 @@ import {
   Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart,
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 
 const PRESETS = [
   { label: '7 days', days: 7 },
@@ -82,25 +82,25 @@ export default function Dashboard({
   const [customStart, setCustomStart] = useState('');
   const [customEnd, setCustomEnd] = useState('');
 
-  function applyPreset(days) {
-    setLoading(true);
-    router.get('/dashboard', { start: dateDaysAgo(days), end: todayStr() }, {
-      preserveState: true,
-      preserveScroll: true,
-      onFinish: () => setLoading(false),
-    });
-  }
+    const applyPreset = useCallback((days) => {
+        setLoading(true);
+        router.get('/dashboard', { start: dateDaysAgo(days), end: todayStr() }, {
+            preserveState: true,
+            preserveScroll: true,
+            onFinish: () => setLoading(false),
+        });
+    }, []);
 
-  function applyCustom(e) {
-    e.preventDefault();
-    if (!customStart || !customEnd) return;
-    setLoading(true);
-    router.get('/dashboard', { start: customStart, end: customEnd }, {
-      preserveState: true,
-      preserveScroll: true,
-      onFinish: () => setLoading(false),
-    });
-  }
+    const applyCustom = useCallback((e) => {
+        e.preventDefault();
+        if (!customStart || !customEnd) return;
+        setLoading(true);
+        router.get('/dashboard', { start: customStart, end: customEnd }, {
+            preserveState: true,
+            preserveScroll: true,
+            onFinish: () => setLoading(false),
+        });
+    }, [customStart, customEnd]);
 
   function getActivePreset() {
     if (!activeStart) return 7;

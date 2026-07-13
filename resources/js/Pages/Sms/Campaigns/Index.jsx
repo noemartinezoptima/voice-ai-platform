@@ -12,6 +12,20 @@ import { Input } from '@/Components/catalyst/input';
 import { Textarea } from '@/Components/catalyst/textarea';
 import { ArrowLeft, Megaphone, Send, Trash2 } from 'lucide-react';
 
+const statusColors = {
+    draft: 'zinc',
+    sending: 'amber',
+    completed: 'emerald',
+    failed: 'red',
+};
+
+const statusLabels = {
+    draft: 'Draft',
+    sending: 'Sending',
+    completed: 'Completed',
+    failed: 'Failed',
+};
+
 export default function Index({ campaigns }) {
     const [showForm, setShowForm] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
@@ -48,20 +62,6 @@ export default function Index({ campaigns }) {
             onSuccess: () => setDeleteTarget(null),
         });
     }
-
-    const statusColors = {
-        draft: 'zinc',
-        sending: 'amber',
-        completed: 'emerald',
-        failed: 'red',
-    };
-
-    const statusLabels = {
-        draft: 'Draft',
-        sending: 'Sending',
-        completed: 'Completed',
-        failed: 'Failed',
-    };
 
     return (
         <AuthenticatedLayout>
