@@ -25,6 +25,7 @@ use App\Http\Controllers\Web\SmsController;
 use App\Http\Controllers\Web\SystemHealthController;
 use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\TenantSettingsController;
+use App\Http\Controllers\Web\TranscriptSearchController;
 use App\Http\Controllers\Web\TwilioOAuthController;
 use App\Http\Controllers\Web\VoiceController;
 use App\Http\Controllers\Web\VoiceSettingsController;
@@ -78,6 +79,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/flows/{flow}/export', [FlowController::class, 'export'])->name('flows.export');
     Route::post('/flows/import', [FlowController::class, 'import'])->name('flows.import');
     Route::delete('/flows/{flow}', [FlowController::class, 'destroy'])->name('flows.destroy');
+
+    Route::get('/transcripts', [TranscriptSearchController::class, 'index'])->name('transcripts.index');
+    Route::get('/transcripts/export/csv', [TranscriptSearchController::class, 'export'])->name('transcripts.export');
 
     Route::get('/calls', [CallController::class, 'index'])->name('calls.index');
     Route::get('/calls/export/csv', [CallController::class, 'exportCsv'])->name('calls.export');

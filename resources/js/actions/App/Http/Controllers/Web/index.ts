@@ -1,5 +1,6 @@
 import DashboardController from './DashboardController'
 import FlowController from './FlowController'
+import TranscriptSearchController from './TranscriptSearchController'
 import CallController from './CallController'
 import RecordingController from './RecordingController'
 import MonitorController from './MonitorController'
@@ -26,6 +27,7 @@ import AcceptInviteController from './AcceptInviteController'
 const Web = {
     DashboardController: Object.assign(DashboardController, DashboardController),
     FlowController: Object.assign(FlowController, FlowController),
+    TranscriptSearchController: Object.assign(TranscriptSearchController, TranscriptSearchController),
     CallController: Object.assign(CallController, CallController),
     RecordingController: Object.assign(RecordingController, RecordingController),
     MonitorController: Object.assign(MonitorController, MonitorController),
