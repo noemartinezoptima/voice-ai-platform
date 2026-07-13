@@ -86,6 +86,11 @@ const navItems = [
 function AccountDropdownMenu({ anchor }) {
     const user = usePage().props.auth.user
 
+    function handleLogout(e) {
+        e.preventDefault()
+        router.post(logout().url)
+    }
+
     return (
         <DropdownMenu className="min-w-64" anchor={anchor}>
             <DropdownItem href={profileEdit().url}>
@@ -93,7 +98,7 @@ function AccountDropdownMenu({ anchor }) {
                 <DropdownLabel>Profile</DropdownLabel>
             </DropdownItem>
             <DropdownDivider />
-            <DropdownItem href={logout().url}>
+            <DropdownItem onClick={handleLogout}>
                 <LogOut data-slot="icon" />
                 <DropdownLabel>Sign out</DropdownLabel>
             </DropdownItem>
