@@ -128,6 +128,12 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-v2-flows--id-">
                                 <a href="#endpoints-DELETEapi-v2-flows--id-">DELETE api/v2/flows/{id}</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-calls-search">
+                                <a href="#endpoints-GETapi-v2-calls-search">GET api/v2/calls/search</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-calls--call--quality">
+                                <a href="#endpoints-GETapi-v2-calls--call--quality">GET api/v2/calls/{call}/quality</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-calls">
                                 <a href="#endpoints-GETapi-v2-calls">GET api/v2/calls</a>
                             </li>
@@ -137,17 +143,17 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-calls--call--transcript">
                                 <a href="#endpoints-GETapi-v2-calls--call--transcript">GET api/v2/calls/{call}/transcript</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-calls-search">
-                                <a href="#endpoints-GETapi-v2-calls-search">GET api/v2/calls/search</a>
-                            </li>
-                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-calls--call--quality">
-                                <a href="#endpoints-GETapi-v2-calls--call--quality">GET api/v2/calls/{call}/quality</a>
-                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-transcripts-search">
                                 <a href="#endpoints-GETapi-v2-transcripts-search">GET api/v2/transcripts/search</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-analytics-summary">
                                 <a href="#endpoints-GETapi-v2-analytics-summary">GET api/v2/analytics/summary</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-monitoring-health">
+                                <a href="#endpoints-GETapi-v2-monitoring-health">GET api/v2/monitoring/health</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-monitoring-system">
+                                <a href="#endpoints-GETapi-v2-monitoring-system">GET api/v2/monitoring/system</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v2-tenants">
                                 <a href="#endpoints-GETapi-v2-tenants">GET api/v2/tenants</a>
@@ -261,7 +267,7 @@ access-control-allow-origin: *
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;status&quot;: &quot;ok&quot;,
-    &quot;timestamp&quot;: &quot;2026-07-13T08:04:05+00:00&quot;,
+    &quot;timestamp&quot;: &quot;2026-07-13T15:51:18+00:00&quot;,
     &quot;services&quot;: {
         &quot;database&quot;: &quot;ok&quot;,
         &quot;redis&quot;: &quot;ok&quot;,
@@ -3090,6 +3096,273 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
+                    <h2 id="endpoints-GETapi-v2-calls-search">GET api/v2/calls/search</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v2-calls-search">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "https://voice-ai-platform.test/api/v2/calls/search" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://voice-ai-platform.test/api/v2/calls/search"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v2-calls-search">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v2-calls-search" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v2-calls-search"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v2-calls-search"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v2-calls-search" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v2-calls-search">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v2-calls-search" data-method="GET"
+      data-path="api/v2/calls/search"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v2-calls-search', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v2-calls-search"
+                    onclick="tryItOut('GETapi-v2-calls-search');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v2-calls-search"
+                    onclick="cancelTryOut('GETapi-v2-calls-search');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v2-calls-search"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v2/calls/search</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v2-calls-search"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v2-calls-search"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="endpoints-GETapi-v2-calls--call--quality">GET api/v2/calls/{call}/quality</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v2-calls--call--quality">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "https://voice-ai-platform.test/api/v2/calls/architecto/quality" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://voice-ai-platform.test/api/v2/calls/architecto/quality"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v2-calls--call--quality">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v2-calls--call--quality" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v2-calls--call--quality"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v2-calls--call--quality"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v2-calls--call--quality" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v2-calls--call--quality">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v2-calls--call--quality" data-method="GET"
+      data-path="api/v2/calls/{call}/quality"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v2-calls--call--quality', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v2-calls--call--quality"
+                    onclick="tryItOut('GETapi-v2-calls--call--quality');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v2-calls--call--quality"
+                    onclick="cancelTryOut('GETapi-v2-calls--call--quality');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v2-calls--call--quality"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v2/calls/{call}/quality</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v2-calls--call--quality"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v2-calls--call--quality"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>call</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="call"                data-endpoint="GETapi-v2-calls--call--quality"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The call. Example: <code>architecto</code></p>
+            </div>
+                    </form>
+
                     <h2 id="endpoints-GETapi-v2-calls">GET api/v2/calls</h2>
 
 <p>
@@ -3497,273 +3770,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
-                    <h2 id="endpoints-GETapi-v2-calls-search">GET api/v2/calls/search</h2>
-
-<p>
-</p>
-
-
-
-<span id="example-requests-GETapi-v2-calls-search">
-<blockquote>Example request:</blockquote>
-
-
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request GET \
-    --get "https://voice-ai-platform.test/api/v2/calls/search" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
-
-
-<div class="javascript-example">
-    <pre><code class="language-javascript">const url = new URL(
-    "https://voice-ai-platform.test/api/v2/calls/search"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre></div>
-
-</span>
-
-<span id="example-responses-GETapi-v2-calls-search">
-            <blockquote>
-            <p>Example response (401):</p>
-        </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Unauthenticated.&quot;
-}</code>
- </pre>
-    </span>
-<span id="execution-results-GETapi-v2-calls-search" hidden>
-    <blockquote>Received response<span
-                id="execution-response-status-GETapi-v2-calls-search"></span>:
-    </blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-v2-calls-search"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-</span>
-<span id="execution-error-GETapi-v2-calls-search" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-v2-calls-search">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-</span>
-<form id="form-GETapi-v2-calls-search" data-method="GET"
-      data-path="api/v2/calls/search"
-      data-authed="0"
-      data-hasfiles="0"
-      data-isarraybody="0"
-      autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('GETapi-v2-calls-search', this);">
-    <h3>
-        Request&nbsp;&nbsp;&nbsp;
-                    <button type="button"
-                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-GETapi-v2-calls-search"
-                    onclick="tryItOut('GETapi-v2-calls-search');">Try it out ⚡
-            </button>
-            <button type="button"
-                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-GETapi-v2-calls-search"
-                    onclick="cancelTryOut('GETapi-v2-calls-search');" hidden>Cancel 🛑
-            </button>&nbsp;&nbsp;
-            <button type="submit"
-                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-GETapi-v2-calls-search"
-                    data-initial-text="Send Request 💥"
-                    data-loading-text="⏱ Sending..."
-                    hidden>Send Request 💥
-            </button>
-            </h3>
-            <p>
-            <small class="badge badge-green">GET</small>
-            <b><code>api/v2/calls/search</code></b>
-        </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="GETapi-v2-calls-search"
-               value="application/json"
-               data-component="header">
-    <br>
-<p>Example: <code>application/json</code></p>
-            </div>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="GETapi-v2-calls-search"
-               value="application/json"
-               data-component="header">
-    <br>
-<p>Example: <code>application/json</code></p>
-            </div>
-                        </form>
-
-                    <h2 id="endpoints-GETapi-v2-calls--call--quality">GET api/v2/calls/{call}/quality</h2>
-
-<p>
-</p>
-
-
-
-<span id="example-requests-GETapi-v2-calls--call--quality">
-<blockquote>Example request:</blockquote>
-
-
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request GET \
-    --get "https://voice-ai-platform.test/api/v2/calls/architecto/quality" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
-
-
-<div class="javascript-example">
-    <pre><code class="language-javascript">const url = new URL(
-    "https://voice-ai-platform.test/api/v2/calls/architecto/quality"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre></div>
-
-</span>
-
-<span id="example-responses-GETapi-v2-calls--call--quality">
-            <blockquote>
-            <p>Example response (401):</p>
-        </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Unauthenticated.&quot;
-}</code>
- </pre>
-    </span>
-<span id="execution-results-GETapi-v2-calls--call--quality" hidden>
-    <blockquote>Received response<span
-                id="execution-response-status-GETapi-v2-calls--call--quality"></span>:
-    </blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-v2-calls--call--quality"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-</span>
-<span id="execution-error-GETapi-v2-calls--call--quality" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-v2-calls--call--quality">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-</span>
-<form id="form-GETapi-v2-calls--call--quality" data-method="GET"
-      data-path="api/v2/calls/{call}/quality"
-      data-authed="0"
-      data-hasfiles="0"
-      data-isarraybody="0"
-      autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('GETapi-v2-calls--call--quality', this);">
-    <h3>
-        Request&nbsp;&nbsp;&nbsp;
-                    <button type="button"
-                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-GETapi-v2-calls--call--quality"
-                    onclick="tryItOut('GETapi-v2-calls--call--quality');">Try it out ⚡
-            </button>
-            <button type="button"
-                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-GETapi-v2-calls--call--quality"
-                    onclick="cancelTryOut('GETapi-v2-calls--call--quality');" hidden>Cancel 🛑
-            </button>&nbsp;&nbsp;
-            <button type="submit"
-                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-GETapi-v2-calls--call--quality"
-                    data-initial-text="Send Request 💥"
-                    data-loading-text="⏱ Sending..."
-                    hidden>Send Request 💥
-            </button>
-            </h3>
-            <p>
-            <small class="badge badge-green">GET</small>
-            <b><code>api/v2/calls/{call}/quality</code></b>
-        </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="GETapi-v2-calls--call--quality"
-               value="application/json"
-               data-component="header">
-    <br>
-<p>Example: <code>application/json</code></p>
-            </div>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="GETapi-v2-calls--call--quality"
-               value="application/json"
-               data-component="header">
-    <br>
-<p>Example: <code>application/json</code></p>
-            </div>
-                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>call</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="call"                data-endpoint="GETapi-v2-calls--call--quality"
-               value="architecto"
-               data-component="url">
-    <br>
-<p>The call. Example: <code>architecto</code></p>
-            </div>
-                    </form>
-
                     <h2 id="endpoints-GETapi-v2-transcripts-search">GET api/v2/transcripts/search</h2>
 
 <p>
@@ -4011,6 +4017,274 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Accept"                data-endpoint="GETapi-v2-analytics-summary"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="endpoints-GETapi-v2-monitoring-health">GET api/v2/monitoring/health</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v2-monitoring-health">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "https://voice-ai-platform.test/api/v2/monitoring/health" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://voice-ai-platform.test/api/v2/monitoring/health"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v2-monitoring-health">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+strict-transport-security: max-age=31536000; includeSubDomains
+x-content-type-options: nosniff
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+permissions-policy: geolocation=(self), microphone=(self)
+content-security-policy: default-src &#039;self&#039;; script-src &#039;self&#039; &#039;unsafe-inline&#039; &#039;unsafe-eval&#039;; style-src &#039;self&#039; &#039;unsafe-inline&#039;; img-src &#039;self&#039; data: https:; font-src &#039;self&#039; data:; connect-src &#039;self&#039; https:; media-src &#039;self&#039; https:;
+x-ratelimit-limit: 100
+x-ratelimit-remaining: 98
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;ok&quot;,
+    &quot;timestamp&quot;: &quot;2026-07-13T15:51:18+00:00&quot;,
+    &quot;services&quot;: {
+        &quot;cache&quot;: &quot;ok&quot;,
+        &quot;database&quot;: &quot;ok&quot;,
+        &quot;queue&quot;: &quot;ok&quot;
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v2-monitoring-health" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v2-monitoring-health"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v2-monitoring-health"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v2-monitoring-health" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v2-monitoring-health">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v2-monitoring-health" data-method="GET"
+      data-path="api/v2/monitoring/health"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v2-monitoring-health', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v2-monitoring-health"
+                    onclick="tryItOut('GETapi-v2-monitoring-health');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v2-monitoring-health"
+                    onclick="cancelTryOut('GETapi-v2-monitoring-health');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v2-monitoring-health"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v2/monitoring/health</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v2-monitoring-health"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v2-monitoring-health"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="endpoints-GETapi-v2-monitoring-system">GET api/v2/monitoring/system</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v2-monitoring-system">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "https://voice-ai-platform.test/api/v2/monitoring/system" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://voice-ai-platform.test/api/v2/monitoring/system"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v2-monitoring-system">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v2-monitoring-system" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v2-monitoring-system"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v2-monitoring-system"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v2-monitoring-system" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v2-monitoring-system">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v2-monitoring-system" data-method="GET"
+      data-path="api/v2/monitoring/system"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v2-monitoring-system', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v2-monitoring-system"
+                    onclick="tryItOut('GETapi-v2-monitoring-system');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v2-monitoring-system"
+                    onclick="cancelTryOut('GETapi-v2-monitoring-system');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v2-monitoring-system"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v2/monitoring/system</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v2-monitoring-system"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v2-monitoring-system"
                value="application/json"
                data-component="header">
     <br>
@@ -4898,7 +5172,7 @@ fetch(url, {
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 access-control-allow-origin: *
-set-cookie: XSRF-TOKEN=eyJpdiI6IjdLZG9CaDdleEpWQi8yVjl1RGZhalE9PSIsInZhbHVlIjoiSkVLblBNYjUrSTZJNTNZZWE3b3RvWUVSbzFRNTJ1VHpHTXNEdWJUYW85TDhVaW5pNEQ5K0pkQjFwSVdlbW1henp5QkNXNm96NjcrZzBBWXN2bC9qdXNyWDZYY3B4YUk3bGhBSStYL3NubHlSSHYyYXlWTmtMZG9MOUN4cGs5OFciLCJtYWMiOiJhNmY2MGUxZWE3YmJmMGFiOThkZTQ5YmQwZjI3YzJmNmU5Y2NmY2IyMmQ3NWM4M2ViMDM2NzgzMmZjZGEzY2E4IiwidGFnIjoiIn0%3D; expires=Mon, 13 Jul 2026 10:04:05 GMT; Max-Age=7200; path=/; secure; samesite=lax; zerovoice-session=eyJpdiI6InZEVjMwcnpYVStGTHpSZlRUbTBjeEE9PSIsInZhbHVlIjoiQVFHdVJ1TnV4TjgyQ0NZeXpZeGlTOTV6OVNkems5RytTb3lKNEFhbWlMRmlUeFdyZXErbWRXQkZ3R01qTHBnazhSdklRYmRzcURBbjhwSnlCSWpoc0dpVHVGb1lYMTJFQUZOcUtyOUJnS3FaY3hiOFZyRmVmcWhYK1VXK3dHQ3giLCJtYWMiOiJhMjAxMjNjYjJlMjI5NDEwNGY4Y2VmNWNiNzNkMTVhZjZmY2EwZDAxNDA4Njc3ZDcxMDc4MGY2Yjg3ZTc5MmJhIiwidGFnIjoiIn0%3D; expires=Mon, 13 Jul 2026 10:04:05 GMT; Max-Age=7200; path=/; secure; httponly; samesite=lax
+set-cookie: XSRF-TOKEN=eyJpdiI6ImtNaE5xWkNvaW0xOGh5ckdsbEhxSXc9PSIsInZhbHVlIjoiOVd1ay9sUUdQMlIyVG1oTjgrbWhraStuekswclQ1YjQrdHBudWozTjg2ZEpyWVFLcTkyaTQwRnRTVXl5eitzcnhKa2FJSXAxWVpiK3haRVQzTGNuc0JiMTU3MERTR1Y2TlhkRUJtMm5QZWpXL0kxVXRreXJGUklZZzVFWVVUMGoiLCJtYWMiOiJkZjBkNjgwMTEzYjYyOTE1MmExNTA1NDZjZTY2N2EwZTNlNmI2ZDBhNWQxOTRiNzk5YTBiYjNlYTM3ZTQ2ZTkzIiwidGFnIjoiIn0%3D; expires=Mon, 13 Jul 2026 17:51:18 GMT; Max-Age=7200; path=/; secure; samesite=lax; zerovoice-session=eyJpdiI6InJPVjFvckVibzh4Uy9Xd3FPUENUd3c9PSIsInZhbHVlIjoiTHU5UW1FK3hhSmtFQTJRZ29zZmsxNmhIQ0V6Y2cwUlNGQ1E3cFlxNjBwT3hOR2FrMnVQN1duSGxxeU81bllOL05KTTNZRU9waGxwQ090YmM1NXZ6VlJsZ0FXNWlxU1BDQzJUdzVzMkFoSTZhT290ay95WitPeVBqSnJCWHUvVkYiLCJtYWMiOiI0YjA0NWFiOTM3MmEwYmUyNTZlM2ZkMWFiYzEwMGJjOWVmMTg3NTg2MTM0YzYwOWU4ZDk2MTM3MDU3MTllNjBhIiwidGFnIjoiIn0%3D; expires=Mon, 13 Jul 2026 17:51:18 GMT; Max-Age=7200; path=/; secure; httponly; samesite=lax
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{

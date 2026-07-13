@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import {
     BarChart3,
     Bell,
+    BookOpen,
     Globe,
     LayoutDashboard,
     Phone,
@@ -66,6 +67,7 @@ const navItems = [
     { label: 'Quality', href: '/quality', icon: Award, active: 'quality.*' },
     { label: 'Monitor', href: monitorIndex().url, icon: Radio, active: 'monitor.*' },
     { label: 'SMS', href: smsIndex().url, icon: MessageSquare, active: 'sms.*' },
+    { label: 'API Docs', href: '/docs', icon: BookOpen, active: 'docs' },
     { label: 'Team', href: teamIndex().url, icon: Users, active: 'team.*' },
     { label: 'API Tokens', href: apiTokensIndex().url, icon: Key, active: 'api-tokens.*' },
     { label: 'Settings', href: settingsTenant().url, icon: Settings, active: 'settings.tenant' },
