@@ -136,7 +136,7 @@ export default function PropertiesPanel({ node, onUpdate, nodes, validationError
         {nodeErrors.length > 0 && (
           <div className="mt-2 rounded-lg border border-red-200 bg-red-50 p-2 dark:border-red-800 dark:bg-red-950/30">
             {nodeErrors.map((e, i) => (
-              <p key={i} className="text-[10px] leading-relaxed text-red-600 dark:text-red-400">
+              <p key={e.field || i} className="text-[10px] leading-relaxed text-red-600 dark:text-red-400">
                 {e.message}
               </p>
             ))}
@@ -241,7 +241,7 @@ function BranchesEditor({ branches, nodes, onChange }) {
       </div>
       <div className="space-y-2">
         {branches.map((b, i) => (
-          <div key={i} className="rounded-lg border border-zinc-200 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-800/50">
+          <div key={`${b.label || 'branch'}-${i}`} className="rounded-lg border border-zinc-200 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-800/50">
             <div className="mb-1 flex items-center justify-between">
               <input
                 value={b.label || ''}

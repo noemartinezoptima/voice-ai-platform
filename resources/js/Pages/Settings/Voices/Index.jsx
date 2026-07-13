@@ -179,7 +179,7 @@ export default function Index({ voices }) {
                             {data.files.length > 0 && (
                                 <div className="mt-3 space-y-2">
                                     {data.files.map((file, i) => (
-                                        <div key={i} className="flex items-center justify-between rounded-md border border-zinc-950/10 px-3 py-2 dark:border-white/10">
+                                        <div key={`${file.name}-${i}`} className="flex items-center justify-between rounded-md border border-zinc-950/10 px-3 py-2 dark:border-white/10">
                                             <span className="truncate text-sm">{file.name}</span>
                                             <Button plain onClick={() => removeFile(i)}><Trash2 className="size-4 text-red-500" /></Button>
                                         </div>

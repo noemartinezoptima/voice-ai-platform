@@ -82,7 +82,7 @@ function WaveformBars() {
                 const h = 20 + Math.sin((i / 32) * Math.PI * 2) * 18 + Math.random() * 15;
                 return (
                     <span
-                        key={i}
+                        key={`wave-${i}`}
                         className="w-1 rounded-full bg-blue-500 dark:bg-blue-400"
                         style={{
                             height: h + '%',
@@ -317,7 +317,7 @@ export default function Show({ call }) {
                         <Subheading>Transcript</Subheading>
                         <div className="mt-4 space-y-3">
                             {transcript.map((entry, i) => (
-                                <div key={i} className={'flex gap-3 ' + (entry.role === 'agent' ? '' : 'flex-row-reverse')}>
+                                <div key={`${entry.role}-${i}`} className={'flex gap-3 ' + (entry.role === 'agent' ? '' : 'flex-row-reverse')}>
                                     <div className={'rounded-lg px-4 py-2 text-sm ' + (entry.role === 'agent' ? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900')}>
                                         <span className="text-xs font-semibold uppercase tracking-wider opacity-60">
                                             {entry.role}

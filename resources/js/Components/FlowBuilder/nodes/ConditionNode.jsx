@@ -18,7 +18,7 @@ function ConditionNode({ data }) {
           <p className="text-xs text-zinc-400 italic">No branches</p>
         )}
         {branches.map((b, i) => (
-          <div key={i} className="flex items-center gap-1.5">
+          <div key={`${b.label || 'branch'}-${i}`} className="flex items-center gap-1.5">
             <span className="text-[10px] font-medium text-amber-600 dark:text-amber-400">{b.label || `Branch ${i + 1}`}</span>
             <span className="text-[10px] text-zinc-400 truncate">{b.expression || '...'}</span>
           </div>

@@ -80,8 +80,8 @@ export default function Index({ tokens, flash }) {
                                         <TableCell>
                                             {token.abilities?.length === 1 && token.abilities[0] === '*'
                                                 ? <Badge color="zinc">full access</Badge>
-                                                : token.abilities?.map((a, i) => (
-                                                    <Badge key={i} color="zinc" className="mr-1">{a}</Badge>
+                                                : token.abilities?.map((a) => (
+                                                    <Badge key={a} color="zinc" className="mr-1">{a}</Badge>
                                                   ))
                                             }
                                         </TableCell>

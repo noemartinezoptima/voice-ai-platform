@@ -12,7 +12,7 @@ export default function AuthLayout({ children, title, subtitle }) {
                 <div className="absolute bottom-1/3 left-1/2 flex -translate-x-1/2 items-end gap-0.5 opacity-20">
                     {Array.from({ length: 50 }).map((_, i) => (
                         <div
-                            key={i}
+                            key={`wave-${i}`}
                             className="w-1 rounded-full bg-white/60"
                             style={{
                                 height: `${Math.random() * 60 + 10}px`,
@@ -48,7 +48,7 @@ export default function AuthLayout({ children, title, subtitle }) {
                             { icon: 'M20 1.5v-.525a1.125 1.125 0 00-2.25 0V1.5M17.25 3.75h-2.25M17.25 3.75h-4.5M17.25 3.75a1.125 1.125 0 010 2.25M17.25 3.75a1.125 1.125 0 000 2.25m0 0h-4.5M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z', text: 'Monitor de llamadas en tiempo real' },
                             { icon: 'M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3', text: 'Webhooks, SMS y export de datos' },
                         ].map((item, idx) => (
-                            <div key={idx} className="flex items-start gap-3">
+                            <div key={item.text.slice(0, 30)} className="flex items-start gap-3">
                                 <div className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-md bg-white/10">
                                     <svg className="size-3.5 text-indigo-200" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />

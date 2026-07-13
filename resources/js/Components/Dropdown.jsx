@@ -23,7 +23,7 @@ const Trigger = ({ children }) => {
 
     return (
         <>
-            <div onClick={toggleOpen}>{children}</div>
+            <div role="button" tabIndex={0} onClick={toggleOpen} onKeyDown={(e) => { if (e.key === 'Enter') toggleOpen(); }}>{children}</div>
 
             {open && (
                 <div

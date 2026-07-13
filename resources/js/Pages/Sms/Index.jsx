@@ -148,12 +148,12 @@ export default function Index({ messages, whatsapp_phone_number }) {
                                 <PaginationPrevious href={messages.prev_page_url} />
                                 <PaginationList>
                                     {messages.links.map((link, i) => {
-                                        if (link.url === null) return <PaginationGap key={i} />;
+                                        if (link.url === null) return <PaginationGap key={link.label || i} />;
                                         const label = link.label.replace(/&laquo;|&raquo;/g, '').trim();
                                         const pageNum = parseInt(label);
                                         if (isNaN(pageNum)) return null;
                                         return (
-                                            <PaginationPage key={i} href={link.url} current={link.active}>
+                                            <PaginationPage key={link.url} href={link.url} current={link.active}>
                                                 {pageNum}
                                             </PaginationPage>
                                         );

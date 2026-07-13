@@ -153,13 +153,13 @@ export default function Index({ flows }) {
                                 <PaginationPrevious href={flows.prev_page_url} />
                                 <PaginationList>
                                     {flows.links.map((link, i) => {
-                                        if (link.url === null) return <PaginationGap key={i} />;
+                                        if (link.url === null) return <PaginationGap key={link.label || i} />;
                                         const label = link.label.replace(/&laquo;|&raquo;/g, '').trim();
                                         const pageNum = parseInt(label);
                                         if (isNaN(pageNum)) return null;
                                         return (
                                             <PaginationPage
-                                                key={i}
+                                                key={link.url}
                                                 href={link.url}
                                                 current={link.active}
                                             >

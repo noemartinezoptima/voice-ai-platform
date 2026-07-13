@@ -168,7 +168,7 @@ export default function Show({ call, score, transcriptPreview }) {
             ) : (
               <div className="mt-4 space-y-3">
                 {transcriptPreview.map((t, i) => (
-                  <div key={i} className="rounded-lg bg-zinc-50 dark:bg-zinc-800 p-3">
+                  <div key={`${t.role}-${t.text?.slice(0, 30) || ''}-${i}`} className="rounded-lg bg-zinc-50 dark:bg-zinc-800 p-3">
                     <Badge color={t.role === 'user' ? 'blue' : 'emerald'} className="mb-1">
                       {t.role}
                     </Badge>

@@ -80,7 +80,7 @@ export default function Show({ document, chunks }) {
                         <div className="mt-4 space-y-3">
                             {chunks.map((chunk, i) => (
                                 <div
-                                    key={i}
+                                    key={chunk.chunk_index}
                                     className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 text-sm dark:border-zinc-800 dark:bg-zinc-950/50"
                                 >
                                     <span className="mb-1 block text-xs font-semibold text-zinc-400">
