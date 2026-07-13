@@ -8,3 +8,4 @@ Schedule::command('compliance:digest')->weekly()->mondays()->at('08:00');
 Schedule::command('elevenlabs:health-check')->weekly();
 Schedule::command('system:health-check')->everyFiveMinutes();
 Schedule::command('tokens:purge-expired')->daily();
+Schedule::command('calls:execute-scheduled')->everyMinute();

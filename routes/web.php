@@ -22,6 +22,7 @@ use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\RecordingController;
 use App\Http\Controllers\Web\RoleController;
+use App\Http\Controllers\Web\ScheduledCallController;
 use App\Http\Controllers\Web\SmsAutoReplyController;
 use App\Http\Controllers\Web\SmsCampaignController;
 use App\Http\Controllers\Web\SmsController;
@@ -85,6 +86,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/transcripts', [TranscriptSearchController::class, 'index'])->name('transcripts.index');
     Route::get('/transcripts/export/csv', [TranscriptSearchController::class, 'export'])->name('transcripts.export');
+
+    Route::get('/calls/scheduled', [ScheduledCallController::class, 'index'])->name('calls.scheduled');
+    Route::post('/calls/scheduled', [ScheduledCallController::class, 'store'])->name('calls.scheduled.store');
+    Route::patch('/calls/scheduled/{scheduled_call}/cancel', [ScheduledCallController::class, 'cancel'])->name('calls.scheduled.cancel');
+    Route::delete('/calls/scheduled/{scheduled_call}', [ScheduledCallController::class, 'destroy'])->name('calls.scheduled.destroy');
 
     Route::get('/calls', [CallController::class, 'index'])->name('calls.index');
     Route::get('/calls/export/csv', [CallController::class, 'exportCsv'])->name('calls.export');

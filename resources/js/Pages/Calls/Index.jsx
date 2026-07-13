@@ -75,6 +75,9 @@ export default function Index({ calls, filters }) {
                         <option value="transferred">Transferred</option>
                     </Select>
                 </div>
+                <Link href="/calls/scheduled">
+                    <Button outline>Scheduled</Button>
+                </Link>
                 <Button
                     outline
                     aria-label="Export CSV"
