@@ -1,8 +1,9 @@
-import { Link, usePage } from '@inertiajs/react'
-import { useEffect } from 'react'
+import { Link, router, usePage } from '@inertiajs/react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
     BarChart3,
+    Bell,
     LayoutDashboard,
     Phone,
     Smartphone,
@@ -53,6 +54,7 @@ import { index as systemIndex } from '@/actions/App/Http/Controllers/Web/SystemH
 
 const navItems = [
     { label: 'Dashboard', href: dashboard().url, icon: LayoutDashboard, active: 'dashboard' },
+    { label: 'Notifications', href: '/notifications', icon: Bell, active: 'notifications.*' },
     { label: 'Analytics', href: analyticsIndex().url, icon: BarChart3, active: 'analytics.*' },
     { label: 'Flows', href: flowsIndex().url, icon: GitBranch, active: 'flows.*' },
     { label: 'Calls', href: callsIndex().url, icon: Phone, active: 'calls.*' },
@@ -97,6 +99,7 @@ export default function AuthenticatedLayout({ children }) {
     const user = usePage().props.auth.user
     const flash = usePage().props.flash
     const pathname = window.location.pathname
+    const [unreadCount, setUnreadCount] = useState(0)
 
     useEffect(() => {
         if (flash?.success) {
@@ -107,12 +110,36 @@ export default function AuthenticatedLayout({ children }) {
         }
     }, [flash?.success, flash?.error])
 
+    useEffect(() => {
+        let cancelled = false
+        function fetchUnread() {
+            fetch('/notifications/unread')
+                .then((r) => r.json())
+                .then((data) => { if (!cancelled) setUnreadCount(data.count ?? 0) })
+                .catch(() => {})
+        }
+        fetchUnread()
+        const interval = setInterval(fetchUnread, 30000)
+        return () => { cancelled = true; clearInterval(interval) }
+    }, [])
+
     return (
         <SidebarLayout
             navbar={
                 <Navbar>
                     <NavbarSpacer />
                     <NavbarSection>
+                        <Link
+                            href="/notifications"
+                            className="relative inline-flex items-center justify-center rounded-md p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                        >
+                            <Bell className="size-5" />
+                            {unreadCount > 0 && (
+                                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[10px] font-bold leading-none text-white">
+                                    {unreadCount > 99 ? '99+' : unreadCount}
+                                </span>
+                            )}
+                        </Link>
                         <Dropdown>
                             <DropdownButton as={NavbarItem_}>
                                 <Avatar src={null} initials={user.name.charAt(0).toUpperCase()} square />

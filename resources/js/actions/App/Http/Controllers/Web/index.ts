@@ -31,6 +31,7 @@ import AnalyticsController from './AnalyticsController'
 import RoleController from './RoleController'
 import QualityController from './QualityController'
 import GettingStartedController from './GettingStartedController'
+import NotificationController from './NotificationController'
 import AcceptInviteController from './AcceptInviteController'
 
 const Web = {
@@ -67,6 +68,7 @@ const Web = {
     RoleController: Object.assign(RoleController, RoleController),
     QualityController: Object.assign(QualityController, QualityController),
     GettingStartedController: Object.assign(GettingStartedController, GettingStartedController),
+    NotificationController: Object.assign(NotificationController, NotificationController),
     AcceptInviteController: Object.assign(AcceptInviteController, AcceptInviteController),
 }
 

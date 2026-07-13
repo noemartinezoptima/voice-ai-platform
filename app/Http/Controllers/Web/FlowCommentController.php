@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowCommentModel;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
+use App\Infrastructure\Persistence\Eloquent\UserNotificationModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -49,6 +50,17 @@ class FlowCommentController
 
         if ($request->parent_id) {
             $comment->load('parent.user:id,name,email');
+
+            $parentAuthor = $comment->parent?->user;
+            if ($parentAuthor !== null && $parentAuthor->id !== $request->user()->id) {
+                UserNotificationModel::send(
+                    $parentAuthor->id,
+                    'comment',
+                    "{$request->user()->name} replied to your comment",
+                    "Flow: {$flowModel->name}",
+                    ['flow_id' => $flowModel->id, 'comment_id' => $comment->id],
+                );
+            }
         }
 
         return response()->json($comment, 201);

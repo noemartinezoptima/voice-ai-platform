@@ -20,6 +20,7 @@ use App\Http\Controllers\Web\FlowCommentController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\GettingStartedController;
 use App\Http\Controllers\Web\MonitorController;
+use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\PhoneNumberController;
 use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\QualityController;
@@ -216,6 +217,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('getting-started');
     Route::post('/getting-started/completed', [GettingStartedController::class, 'complete'])
         ->name('getting-started.complete');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/unread', [NotificationController::class, 'unread'])->name('notifications.unread');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markRead'])->name('notifications.read');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.mark-all-read');
 
     Route::delete('/api/tenant/data', [DataDeletionController::class, 'destroy'])
         ->name('api.tenant.data.delete');
