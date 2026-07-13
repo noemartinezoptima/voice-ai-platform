@@ -9,6 +9,7 @@ use App\Domain\Flow\ValueObjects\FlowConfig;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FlowRequest;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
+use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -48,6 +49,20 @@ class FlowController extends Controller
 
     public function store(FlowRequest $request): RedirectResponse
     {
+        $tenant = TenantModel::findOrFail($request->user()->tenant_id);
+
+        $activeFlows = FlowModel::where('tenant_id', $tenant->id)
+            ->where('is_active', true)
+            ->count();
+
+        $limits = ['free' => 3, 'pro' => 10, 'enterprise' => 999];
+        $limit = $limits[$tenant->plan] ?? 3;
+
+        if ($activeFlows >= $limit) {
+            return redirect()->route('flows.index')
+                ->with('error', "Plan limit: {$activeFlows}/{$limit} active flows. Upgrade to add more.");
+        }
+
         $templateId = $request->input('template_id');
         $configArray = null;
 

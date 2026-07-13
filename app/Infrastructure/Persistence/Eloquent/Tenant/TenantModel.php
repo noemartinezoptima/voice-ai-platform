@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Laravel\Cashier\Billable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -32,7 +33,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class TenantModel extends Model
 {
     /** @use HasFactory<TenantFactory> */
-    use HasFactory, HasUuids, LogsActivity;
+    use Billable, HasFactory, HasUuids, LogsActivity;
 
     protected $table = 'tenants';
 
@@ -57,6 +58,10 @@ class TenantModel extends Model
         'is_active',
         'plan',
         'stripe_customer_id',
+        'stripe_id',
+        'pm_type',
+        'pm_last_four',
+        'trial_ends_at',
     ];
 
     protected function casts(): array
@@ -65,6 +70,7 @@ class TenantModel extends Model
             'settings' => 'array',
             'is_active' => 'boolean',
             'plan' => 'string',
+            'trial_ends_at' => 'datetime',
         ];
     }
 
@@ -126,5 +132,10 @@ class TenantModel extends Model
     public function documents(): HasMany
     {
         return $this->hasMany(DocumentModel::class, 'tenant_id');
+    }
+
+    public function stripeEmail(): ?string
+    {
+        return null;
     }
 }

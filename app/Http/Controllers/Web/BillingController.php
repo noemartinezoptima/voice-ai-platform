@@ -26,6 +26,7 @@ class BillingController extends Controller
             'tenant' => $tenant,
             'currentPlan' => $currentPlan,
             'plans' => $allPlans,
+            'checkout' => $request->query('checkout'),
         ]);
     }
 

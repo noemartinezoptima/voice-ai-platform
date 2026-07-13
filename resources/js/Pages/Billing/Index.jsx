@@ -1,15 +1,24 @@
+import { useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { Heading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
 import { Button } from '@/Components/catalyst/button';
 import { Badge } from '@/Components/catalyst/badge';
-import { index, updatePlan } from '@/actions/App/Http/Controllers/Web/BillingController';
 
-export default function Index({ tenant, currentPlan, plans }) {
-    function switchPlan(planId) {
-        if (planId === tenant.plan) return;
-        router.patch(updatePlan().url, { plan: planId });
+export default function Index({ tenant, currentPlan, plans, checkout, flash = null }) {
+    useEffect(() => {
+        if (flash?.success || checkout === 'success') {
+            // Flash is handled by Inertia; checkout param shows success message
+        }
+    }, []);
+
+    function upgrade(planId) {
+        router.post('/billing/checkout', { plan: planId });
+    }
+
+    function manageBilling() {
+        router.post('/billing/portal');
     }
 
     function isCurrent(planId) {
@@ -26,6 +35,22 @@ export default function Index({ tenant, currentPlan, plans }) {
                     You are currently on the <strong>{currentPlan.name}</strong> plan.
                 </Text>
             </div>
+
+            {checkout === 'success' && (
+                <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-950">
+                    <Text className="text-emerald-700 dark:text-emerald-300">
+                        Subscription updated! Changes may take a moment to appear.
+                    </Text>
+                </div>
+            )}
+
+            {checkout === 'cancelled' && (
+                <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950">
+                    <Text className="text-amber-700 dark:text-amber-300">
+                        Checkout was cancelled. Your plan has not been changed.
+                    </Text>
+                </div>
+            )}
 
             <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {plans.map((plan) => (
@@ -73,17 +98,34 @@ export default function Index({ tenant, currentPlan, plans }) {
                         </ul>
 
                         <div className="mt-6">
-                            <Button
-                                className="w-full"
-                                color={isCurrent(plan.id) ? 'zinc' : 'indigo'}
-                                disabled={isCurrent(plan.id)}
-                                onClick={() => switchPlan(plan.id)}
-                            >
-                                {isCurrent(plan.id) ? 'Current Plan' : plan.price === '$0' ? 'Downgrade' : 'Upgrade'}
-                            </Button>
+                            {plan.id === 'free' ? (
+                                isCurrent('free') ? (
+                                    <Button className="w-full" color="zinc" disabled>
+                                        Current Plan
+                                    </Button>
+                                ) : (
+                                    <Button className="w-full" color="zinc" onClick={() => manageBilling()}>
+                                        Downgrade via Portal
+                                    </Button>
+                                )
+                            ) : isCurrent(plan.id) ? (
+                                <Button className="w-full" color="zinc" onClick={() => manageBilling()}>
+                                    Manage Billing
+                                </Button>
+                            ) : (
+                                <Button className="w-full" color="indigo" onClick={() => upgrade(plan.id)}>
+                                    Upgrade to {plan.name}
+                                </Button>
+                            )}
                         </div>
                     </div>
                 ))}
+            </div>
+
+            <div className="mt-6 text-center">
+                <Button color="zinc/25" onClick={() => manageBilling()}>
+                    Manage Payment Methods &amp; Invoices
+                </Button>
             </div>
         </AuthenticatedLayout>
     );

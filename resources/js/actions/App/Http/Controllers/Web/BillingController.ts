@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\BillingController::updatePlan
-* @see app/Http/Controllers/Web/BillingController.php:32
+* @see app/Http/Controllers/Web/BillingController.php:33
 * @route '/billing/plan'
 */
 export const updatePlan = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -60,7 +60,7 @@ updatePlan.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\BillingController::updatePlan
-* @see app/Http/Controllers/Web/BillingController.php:32
+* @see app/Http/Controllers/Web/BillingController.php:33
 * @route '/billing/plan'
 */
 updatePlan.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ updatePlan.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\BillingController::updatePlan
-* @see app/Http/Controllers/Web/BillingController.php:32
+* @see app/Http/Controllers/Web/BillingController.php:33
 * @route '/billing/plan'
 */
 updatePlan.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({

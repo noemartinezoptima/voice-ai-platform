@@ -27,6 +27,8 @@ use App\Http\Controllers\Web\ScheduledCallController;
 use App\Http\Controllers\Web\SmsAutoReplyController;
 use App\Http\Controllers\Web\SmsCampaignController;
 use App\Http\Controllers\Web\SmsController;
+use App\Http\Controllers\Web\StripeController;
+use App\Http\Controllers\Web\StripeWebhookController;
 use App\Http\Controllers\Web\SystemHealthController;
 use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\TenantSettingsController;
@@ -48,6 +50,8 @@ Route::post('twilio/consent-callback', [WebhookController::class, 'consentCallba
     ->middleware('twilio.verify')
     ->name('twilio.consent-callback');
 Route::post('twilio/sms/inbound', [TwilioSmsController::class, 'inbound'])->middleware('throttle:twilio');
+
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])->name('stripe.webhook');
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -119,6 +123,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/billing', [BillingController::class, 'index'])->name('billing.index');
     Route::patch('/billing/plan', [BillingController::class, 'updatePlan'])->name('billing.update');
+    Route::post('/billing/checkout', [StripeController::class, 'checkout'])->name('billing.checkout');
+    Route::post('/billing/portal', [StripeController::class, 'portal'])->name('billing.portal');
 
     Route::get('/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');

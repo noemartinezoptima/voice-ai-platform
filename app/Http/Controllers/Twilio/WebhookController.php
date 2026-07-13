@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use App\Jobs\DownloadAndEncryptRecording;
+use App\Services\UsageTrackingService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -26,6 +27,7 @@ class WebhookController extends Controller
         private readonly CallRepositoryInterface $callRepository,
         private readonly FlowExecutor $flowExecutor,
         private readonly WebhookDispatcher $webhookDispatcher,
+        private readonly UsageTrackingService $usageTracker,
     ) {}
 
     public function inbound(Request $request): Response
@@ -54,6 +56,10 @@ class WebhookController extends Controller
 
             $data = InboundCallData::fromTwilio($request->all());
             $call = $this->handleInboundCall->execute($data);
+
+            if ($tenantModel !== null) {
+                $this->usageTracker->incrementCallCount($tenantModel);
+            }
 
             $flow = $this->flowRepository->findById($call->getFlowId() ?? '');
 

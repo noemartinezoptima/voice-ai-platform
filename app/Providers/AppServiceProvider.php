@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -110,6 +111,8 @@ class AppServiceProvider extends ServiceProvider
         Event::subscribe(UserActivitySubscriber::class);
 
         TenantModel::observe(TenantObserver::class);
+
+        Cashier::useCustomerModel(TenantModel::class);
 
         Vite::prefetch(concurrency: 3);
 

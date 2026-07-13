@@ -1,3 +1,4 @@
+import StripeWebhookController from './StripeWebhookController'
 import DashboardController from './DashboardController'
 import FlowController from './FlowController'
 import TranscriptSearchController from './TranscriptSearchController'
@@ -9,6 +10,7 @@ import SmsController from './SmsController'
 import SmsAutoReplyController from './SmsAutoReplyController'
 import SmsCampaignController from './SmsCampaignController'
 import BillingController from './BillingController'
+import StripeController from './StripeController'
 import ApiTokenController from './ApiTokenController'
 import TenantSettingsController from './TenantSettingsController'
 import TwilioOAuthController from './TwilioOAuthController'
@@ -30,6 +32,7 @@ import GettingStartedController from './GettingStartedController'
 import AcceptInviteController from './AcceptInviteController'
 
 const Web = {
+    StripeWebhookController: Object.assign(StripeWebhookController, StripeWebhookController),
     DashboardController: Object.assign(DashboardController, DashboardController),
     FlowController: Object.assign(FlowController, FlowController),
     TranscriptSearchController: Object.assign(TranscriptSearchController, TranscriptSearchController),
@@ -41,6 +44,7 @@ const Web = {
     SmsAutoReplyController: Object.assign(SmsAutoReplyController, SmsAutoReplyController),
     SmsCampaignController: Object.assign(SmsCampaignController, SmsCampaignController),
     BillingController: Object.assign(BillingController, BillingController),
+    StripeController: Object.assign(StripeController, StripeController),
     ApiTokenController: Object.assign(ApiTokenController, ApiTokenController),
     TenantSettingsController: Object.assign(TenantSettingsController, TenantSettingsController),
     TwilioOAuthController: Object.assign(TwilioOAuthController, TwilioOAuthController),

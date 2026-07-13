@@ -38,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->validateCsrfTokens(except: [
             'twilio/*',
+            'stripe/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
