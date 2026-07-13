@@ -19,6 +19,7 @@ use App\Http\Controllers\Web\ElevenLabsConnectController;
 use App\Http\Controllers\Web\ErrorMonitoringController;
 use App\Http\Controllers\Web\FlowCommentController;
 use App\Http\Controllers\Web\FlowController;
+use App\Http\Controllers\Web\FlowTestController;
 use App\Http\Controllers\Web\GettingStartedController;
 use App\Http\Controllers\Web\ImpersonationController;
 use App\Http\Controllers\Web\MonitorController;
@@ -99,6 +100,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/flows/{flow}', [FlowController::class, 'show'])->name('flows.show');
     Route::patch('/flows/{flow}', [FlowController::class, 'update'])->name('flows.update');
     Route::post('/flows/{flow}/test', [FlowController::class, 'test'])->name('flows.test');
+    Route::get('/flows/{flow}/simulate', [FlowTestController::class, 'simulate'])->name('flows.simulate');
     Route::post('/flows/{flow}/duplicate', [FlowController::class, 'duplicate'])->name('flows.duplicate');
     Route::get('/flows/{flow}/export', [FlowController::class, 'export'])->name('flows.export');
     Route::post('/flows/import', [FlowController::class, 'import'])->name('flows.import');

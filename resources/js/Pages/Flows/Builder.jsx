@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { ArrowLeft, Phone, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Phone, AlertTriangle, Play } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -10,6 +10,7 @@ import FlowVersionPanel from '@/Components/FlowVersionPanel';
 import { Heading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
 import { Button } from '@/Components/catalyst/button';
+import { Badge } from '@/Components/catalyst/badge';
 import { Input } from '@/Components/catalyst/input';
 import { Alert, AlertTitle, AlertDescription, AlertActions, AlertBody } from '@/Components/catalyst/alert';
 import { update } from '@/actions/App/Http/Controllers/Web/FlowController';
@@ -26,6 +27,8 @@ export default function Builder({ flow }) {
   const [testing, setTesting] = useState(false);
   const [testPhone, setTestPhone] = useState('');
   const [showTestModal, setShowTestModal] = useState(false);
+  const [simulating, setSimulating] = useState(false);
+  const [simulateResults, setSimulateResults] = useState(null);
   const [dirty, setDirty] = useState(false);
   const [activeTab, setActiveTab] = useState('builder');
   const dirtyRef = useRef(false);
@@ -95,6 +98,18 @@ export default function Builder({ flow }) {
     }
   }, [flow.id, testPhone]);
 
+  const handleSimulate = useCallback(async () => {
+    setSimulating(true);
+    try {
+      const res = await axios.get(`/flows/${flow.id}/simulate`);
+      setSimulateResults(res.data);
+    } catch {
+      toast.error('Simulation failed');
+    } finally {
+      setSimulating(false);
+    }
+  }, [flow.id]);
+
   return (
     <AuthenticatedLayout>
       <Head title={flow.name} />
@@ -139,6 +154,10 @@ export default function Builder({ flow }) {
                 <Button outline onClick={() => setShowTestModal(true)}>
                   <Phone className="size-4" />
                   Test Flow
+                </Button>
+                <Button outline onClick={handleSimulate} disabled={simulating}>
+                  <Play className="size-4" />
+                  {simulating ? 'Simulating...' : 'Simulate'}
                 </Button>
                 <Button onClick={handleSave} disabled={saving}>
                   {saving ? 'Saving...' : 'Save Flow'}
@@ -193,6 +212,36 @@ export default function Builder({ flow }) {
           </Button>
         </AlertActions>
       </Alert>
+
+      {simulateResults && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="max-h-[80vh] w-full max-w-lg overflow-auto rounded-xl bg-white p-6 shadow-xl dark:bg-zinc-900">
+            <h3 className="text-lg font-semibold">Simulation Results</h3>
+            <Text className="mt-1">{simulateResults.steps_count} steps simulated</Text>
+            <div className="mt-4 space-y-2">
+              {simulateResults.results.map((r, i) => (
+                <div key={i} className={`rounded-lg border p-3 ${
+                  r.status === 'error' ? 'border-red-200 bg-red-50 dark:border-red-800/50 dark:bg-red-900/20' :
+                  'border-zinc-950/10 dark:border-white/10'
+                }`}>
+                  <div className="flex items-center gap-2">
+                    <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-mono text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                      {r.step_id}
+                    </span>
+                    <Badge color={r.status === 'error' ? 'red' : 'zinc'}>{r.type}</Badge>
+                  </div>
+                  <p className="mt-1 text-sm">{r.output}</p>
+                  {r.error && <p className="mt-0.5 text-xs text-red-600">{r.error}</p>}
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex justify-end">
+              <Button onClick={() => setSimulateResults(null)}>Close</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </AuthenticatedLayout>
   );
 }
