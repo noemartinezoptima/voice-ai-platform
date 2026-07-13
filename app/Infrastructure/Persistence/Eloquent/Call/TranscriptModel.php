@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property array<string, mixed>|null $metadata
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property string|null $started_at
  * @property string|null $from_number
  * @property string|null $to_number
  * @property string|null $call_status

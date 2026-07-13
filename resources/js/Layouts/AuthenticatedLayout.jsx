@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 import {
+    BarChart3,
     LayoutDashboard,
     Phone,
     GitBranch,
@@ -30,6 +31,7 @@ import { Navbar, NavbarSpacer, NavbarSection } from '@/Components/catalyst/navba
 import { Avatar, AvatarButton } from '@/Components/catalyst/avatar'
 import { Dropdown, DropdownButton, DropdownMenu, DropdownItem, DropdownDivider, DropdownLabel } from '@/Components/catalyst/dropdown'
 import { dashboard, logout } from '@/routes'
+import { index as analyticsIndex } from '@/actions/App/Http/Controllers/Web/AnalyticsController'
 import { index as flowsIndex } from '@/actions/App/Http/Controllers/Web/FlowController'
 import { index as callsIndex } from '@/actions/App/Http/Controllers/Web/CallController'
 import { index as monitorIndex } from '@/actions/App/Http/Controllers/Web/MonitorController'
@@ -49,6 +51,7 @@ import { index as systemIndex } from '@/actions/App/Http/Controllers/Web/SystemH
 
 const navItems = [
     { label: 'Dashboard', href: dashboard().url, icon: LayoutDashboard, active: 'dashboard' },
+    { label: 'Analytics', href: analyticsIndex().url, icon: BarChart3, active: 'analytics.*' },
     { label: 'Flows', href: flowsIndex().url, icon: GitBranch, active: 'flows.*' },
     { label: 'Calls', href: callsIndex().url, icon: Phone, active: 'calls.*' },
     { label: 'Transcripts', href: '/transcripts', icon: MessageSquareText, active: 'transcripts.*' },

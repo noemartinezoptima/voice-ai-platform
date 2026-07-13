@@ -7,6 +7,7 @@ use App\Http\Controllers\Twilio\SmsController as TwilioSmsController;
 use App\Http\Controllers\Twilio\WebhookController;
 use App\Http\Controllers\Web\AcceptInviteController;
 use App\Http\Controllers\Web\ActivityLogController;
+use App\Http\Controllers\Web\AnalyticsController;
 use App\Http\Controllers\Web\ApiTokenController;
 use App\Http\Controllers\Web\BillingController;
 use App\Http\Controllers\Web\CallController;
@@ -162,6 +163,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/settings/system', [SystemHealthController::class, 'index'])
         ->name('settings.system');
+
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+    Route::get('/analytics/export/csv', [AnalyticsController::class, 'export'])->name('analytics.export');
 
     Route::get('/settings/roles', [RoleController::class, 'index'])
         ->name('settings.roles');
