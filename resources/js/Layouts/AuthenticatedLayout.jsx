@@ -104,6 +104,7 @@ export default function AuthenticatedLayout({ children }) {
     const flash = usePage().props.flash
     const isImpersonating = usePage().props.isImpersonating
     const impersonatedUser = usePage().props.impersonatedUser
+    const locale = usePage().props.locale
     const pathname = window.location.pathname
     const [unreadCount, setUnreadCount] = useState(0)
 
@@ -158,7 +159,7 @@ export default function AuthenticatedLayout({ children }) {
                             title={usePage().props.locale === 'en' ? 'Español' : 'English'}
                         >
                             <Globe className="size-5" />
-                            <span className="ml-1 text-xs font-medium uppercase">{usePage().props.locale === 'en' ? 'ES' : 'EN'}</span>
+                            <span className="ml-1 text-xs font-medium uppercase">{locale === 'en' ? 'ES' : 'EN'}</span>
                         </a>
                         <Dropdown>
                             <DropdownButton as={NavbarItem_}>
