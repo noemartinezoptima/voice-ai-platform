@@ -21,6 +21,7 @@ class SmsController extends Controller
     public function index(Request $request): Response
     {
         $messages = SmsMessageModel::where('tenant_id', $request->user()->tenant_id)
+            ->with('tenant')
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 

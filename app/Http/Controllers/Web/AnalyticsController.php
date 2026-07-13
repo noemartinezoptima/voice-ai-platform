@@ -8,6 +8,7 @@ use App\Services\ConversationAnalyticsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 
@@ -22,89 +23,104 @@ class AnalyticsController extends Controller
         $tenantId = $request->user()->tenant_id;
         $since = now()->subDays(90)->startOfDay();
 
-        $transcripts = TranscriptModel::query()
+        $latestTranscript = TranscriptModel::query()
             ->join('calls', 'transcripts.call_id', '=', 'calls.id')
             ->where('calls.tenant_id', $tenantId)
             ->where('calls.started_at', '>=', $since)
-            ->select('transcripts.*', 'calls.from_number', 'calls.started_at')
-            ->orderBy('calls.started_at')
-            ->get();
+            ->max('transcripts.created_at');
 
-        $allTexts = $transcripts->pluck('text')->filter()->all();
+        $cacheKey = "analytics:{$tenantId}";
+        if ($latestTranscript !== null) {
+            $cacheKey .= ":{$latestTranscript}";
+        }
 
-        $sentiments = [];
-        $callerSentiment = [];
-        $dailyScores = [];
+        $data = Cache::remember($cacheKey, 600, function () use ($tenantId, $since) {
+            $transcripts = TranscriptModel::query()
+                ->join('calls', 'transcripts.call_id', '=', 'calls.id')
+                ->where('calls.tenant_id', $tenantId)
+                ->where('calls.started_at', '>=', $since)
+                ->select('transcripts.*', 'calls.from_number', 'calls.started_at')
+                ->orderBy('calls.started_at')
+                ->get();
 
-        foreach ($transcripts as $t) {
-            $result = $this->analytics->analyzeSentiment($t->text ?? '');
-            $sentiments[] = $result;
+            $allTexts = $transcripts->pluck('text')->filter()->all();
 
-            $date = $t->started_at
-                ? Carbon::parse($t->started_at)->toDateString()
-                : 'unknown';
+            $sentiments = [];
+            $callerSentiment = [];
+            $dailyScores = [];
 
-            if (! isset($dailyScores[$date])) {
-                $dailyScores[$date] = [];
-            }
-            $dailyScores[$date][] = $result['score'];
+            foreach ($transcripts as $t) {
+                $result = $this->analytics->analyzeSentiment($t->text ?? '');
+                $sentiments[] = $result;
 
-            if ($t->from_number) {
-                if (! isset($callerSentiment[$t->from_number])) {
-                    $callerSentiment[$t->from_number] = ['scores' => [], 'calls' => 0];
+                $date = $t->started_at
+                    ? Carbon::parse($t->started_at)->toDateString()
+                    : 'unknown';
+
+                if (! isset($dailyScores[$date])) {
+                    $dailyScores[$date] = [];
                 }
-                $callerSentiment[$t->from_number]['scores'][] = $result['score'];
-                $callerSentiment[$t->from_number]['calls']++;
+                $dailyScores[$date][] = $result['score'];
+
+                if ($t->from_number) {
+                    if (! isset($callerSentiment[$t->from_number])) {
+                        $callerSentiment[$t->from_number] = ['scores' => [], 'calls' => 0];
+                    }
+                    $callerSentiment[$t->from_number]['scores'][] = $result['score'];
+                    $callerSentiment[$t->from_number]['calls']++;
+                }
             }
-        }
 
-        $sentimentDistribution = [
-            'positive' => count(array_filter($sentiments, fn ($s) => $s['label'] === 'positive')),
-            'neutral' => count(array_filter($sentiments, fn ($s) => $s['label'] === 'neutral')),
-            'negative' => count(array_filter($sentiments, fn ($s) => $s['label'] === 'negative')),
-        ];
-
-        $sentimentOverTime = [];
-        foreach ($dailyScores as $date => $scores) {
-            $sentimentOverTime[] = [
-                'date' => $date,
-                'avg_score' => round(array_sum($scores) / count($scores), 4),
+            $sentimentDistribution = [
+                'positive' => count(array_filter($sentiments, fn ($s) => $s['label'] === 'positive')),
+                'neutral' => count(array_filter($sentiments, fn ($s) => $s['label'] === 'neutral')),
+                'negative' => count(array_filter($sentiments, fn ($s) => $s['label'] === 'negative')),
             ];
-        }
-        usort($sentimentOverTime, fn ($a, $b) => $a['date'] <=> $b['date']);
 
-        $topKeywords = $this->analytics->extractKeywords($allTexts, 15);
+            $sentimentOverTime = [];
+            foreach ($dailyScores as $date => $scores) {
+                $sentimentOverTime[] = [
+                    'date' => $date,
+                    'avg_score' => round(array_sum($scores) / count($scores), 4),
+                ];
+            }
+            usort($sentimentOverTime, fn ($a, $b) => $a['date'] <=> $b['date']);
 
-        $topicBreakdown = $this->analytics->clusterTopics($allTexts);
+            $topKeywords = $this->analytics->extractKeywords($allTexts, 15);
 
-        $callerSentimentData = [];
-        foreach ($callerSentiment as $caller => $data) {
-            $callerSentimentData[] = [
-                'caller' => $caller,
-                'avg_score' => round(array_sum($data['scores']) / count($data['scores']), 4),
-                'calls' => $data['calls'],
+            $topicBreakdown = $this->analytics->clusterTopics($allTexts);
+
+            $callerSentimentData = [];
+            foreach ($callerSentiment as $caller => $d) {
+                $callerSentimentData[] = [
+                    'caller' => $caller,
+                    'avg_score' => round(array_sum($d['scores']) / count($d['scores']), 4),
+                    'calls' => $d['calls'],
+                ];
+            }
+            usort($callerSentimentData, fn ($a, $b) => $b['avg_score'] <=> $a['avg_score']);
+            $callerSentimentData = array_slice($callerSentimentData, 0, 10);
+
+            $totalTranscripts = count($transcripts);
+            $avgSentiment = $totalTranscripts > 0
+                ? round(array_sum(array_column($sentiments, 'score')) / $totalTranscripts, 4)
+                : 0;
+
+            $topTopic = count($topicBreakdown) > 0 ? $topicBreakdown[0]['topic'] : 'N/A';
+
+            return [
+                'sentimentDistribution' => $sentimentDistribution,
+                'sentimentOverTime' => $sentimentOverTime,
+                'topKeywords' => $topKeywords,
+                'topicBreakdown' => $topicBreakdown,
+                'callerSentiment' => $callerSentimentData,
+                'totalTranscripts' => $totalTranscripts,
+                'avgSentiment' => $avgSentiment,
+                'topTopic' => $topTopic,
             ];
-        }
-        usort($callerSentimentData, fn ($a, $b) => $b['avg_score'] <=> $a['avg_score']);
-        $callerSentimentData = array_slice($callerSentimentData, 0, 10);
+        });
 
-        $totalTranscripts = count($transcripts);
-        $avgSentiment = $totalTranscripts > 0
-            ? round(array_sum(array_column($sentiments, 'score')) / $totalTranscripts, 4)
-            : 0;
-
-        $topTopic = count($topicBreakdown) > 0 ? $topicBreakdown[0]['topic'] : 'N/A';
-
-        return Inertia::render('Analytics/Index', [
-            'sentimentDistribution' => $sentimentDistribution,
-            'sentimentOverTime' => $sentimentOverTime,
-            'topKeywords' => $topKeywords,
-            'topicBreakdown' => $topicBreakdown,
-            'callerSentiment' => $callerSentimentData,
-            'totalTranscripts' => $totalTranscripts,
-            'avgSentiment' => $avgSentiment,
-            'topTopic' => $topTopic,
-        ]);
+        return Inertia::render('Analytics/Index', $data);
     }
 
     public function export(Request $request): Response

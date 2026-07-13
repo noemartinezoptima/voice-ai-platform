@@ -7,6 +7,7 @@ use App\Domain\Flow\Repositories\FlowRepositoryInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 
@@ -23,17 +24,30 @@ class DashboardController extends Controller
         $start = $request->query('start');
         $end = $request->query('end');
 
+        $cacheKey = "dashboard:{$tenantId}:{$start}:{$end}";
+
+        $data = Cache::remember($cacheKey, 300, function () use ($tenantId, $start, $end) {
+            return [
+                'stats' => $this->buildStats($tenantId, $start, $end),
+                'callsByDay' => $this->callRepository->callsByDay($tenantId, $start, $end),
+                'callsByStatus' => $this->callRepository->callsByStatus($tenantId, $start, $end),
+                'avgDurationByDay' => $this->callRepository->avgDurationByDay($tenantId, $start, $end),
+                'callsByFlow' => $this->callRepository->callsByFlow($tenantId, 5, $start, $end),
+                'callsByFlowWithMetrics' => $this->callRepository->callsByFlowWithMetrics($tenantId, $start, $end),
+            ];
+        });
+
         return Inertia::render('Dashboard', [
-            'stats' => $this->buildStats($tenantId, $start, $end),
+            'stats' => $data['stats'],
             'range' => [
                 'start' => $start ?? now()->subDays(7)->toDateString(),
                 'end' => $end ?? now()->toDateString(),
             ],
-            'callsByDay' => $this->callRepository->callsByDay($tenantId, $start, $end),
-            'callsByStatus' => $this->callRepository->callsByStatus($tenantId, $start, $end),
-            'avgDurationByDay' => $this->callRepository->avgDurationByDay($tenantId, $start, $end),
-            'callsByFlow' => $this->callRepository->callsByFlow($tenantId, 5, $start, $end),
-            'callsByFlowWithMetrics' => $this->callRepository->callsByFlowWithMetrics($tenantId, $start, $end),
+            'callsByDay' => $data['callsByDay'],
+            'callsByStatus' => $data['callsByStatus'],
+            'avgDurationByDay' => $data['avgDurationByDay'],
+            'callsByFlow' => $data['callsByFlow'],
+            'callsByFlowWithMetrics' => $data['callsByFlowWithMetrics'],
         ]);
     }
 

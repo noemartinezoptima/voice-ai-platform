@@ -20,6 +20,7 @@ class TeamMemberController extends Controller
         $tenantId = $request->user()->tenant_id;
 
         $members = User::where('tenant_id', $tenantId)
+            ->with('roles')
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(fn (User $user) => [

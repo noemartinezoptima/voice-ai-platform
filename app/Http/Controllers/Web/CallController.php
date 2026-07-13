@@ -20,7 +20,20 @@ class CallController extends Controller
         $query = CallModel::query()
             ->where('calls.tenant_id', $request->user()->tenant_id)
             ->leftJoin('flows', 'calls.flow_id', '=', 'flows.id')
-            ->select('calls.*', 'flows.name as flow_name')
+            ->select(
+                'calls.id',
+                'calls.call_sid',
+                'calls.from_number',
+                'calls.to_number',
+                'calls.flow_id',
+                'calls.status',
+                'calls.duration_seconds',
+                'calls.started_at',
+                'calls.ended_at',
+                'calls.recording_url',
+                'calls.created_at',
+                'flows.name as flow_name',
+            )
             ->orderBy('calls.created_at', 'desc');
 
         if ($status = $request->get('status')) {

@@ -2,12 +2,14 @@
 
 namespace App\Domain\Flow\Services;
 
+use Illuminate\Support\Facades\Cache;
+
 class FlowTemplates
 {
     /** @return array<int, array{id: string, name: string, description: string, icon: string, config: array{start_step: string, steps: array<string, array<string, mixed>>}}> */
     public static function all(): array
     {
-        return [
+        return Cache::rememberForever('flow_templates', fn () => [
             self::customerSupport(),
             self::appointmentReminder(),
             self::survey(),
@@ -16,7 +18,7 @@ class FlowTemplates
             self::knowledgeBase(),
             self::webhookNotification(),
             self::whatsappBot(),
-        ];
+        ]);
     }
 
     /** @return array{id: string, name: string, description: string, icon: string, config: array{start_step: string, steps: array<string, array<string, mixed>>}} */

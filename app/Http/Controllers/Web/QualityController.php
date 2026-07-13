@@ -7,6 +7,7 @@ use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
 use App\Infrastructure\Persistence\Eloquent\Call\CallQualityScoreModel;
 use App\Infrastructure\Persistence\Eloquent\Call\TranscriptModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -17,22 +18,55 @@ class QualityController extends Controller
     {
         $tenantId = $request->user()->tenant_id;
 
-        $stats = DB::table('call_quality_scores')
-            ->where('tenant_id', $tenantId)
-            ->selectRaw('
-                COALESCE(AVG(total_score), 0) as avg_score,
-                COUNT(*) as total_scored
-            ')
-            ->first();
+        $cacheKey = "quality:stats:{$tenantId}";
 
-        $topFlow = DB::table('call_quality_scores')
-            ->where('call_quality_scores.tenant_id', $tenantId)
-            ->join('calls', 'call_quality_scores.call_id', '=', 'calls.id')
-            ->leftJoin('flows', 'calls.flow_id', '=', 'flows.id')
-            ->selectRaw("COALESCE(flows.name, 'No Flow') as flow_name, AVG(call_quality_scores.total_score) as avg_score")
-            ->groupBy('flows.id', 'flows.name')
-            ->orderByDesc('avg_score')
-            ->first();
+        $cachedStats = Cache::remember($cacheKey, 300, function () use ($tenantId) {
+            $stats = DB::table('call_quality_scores')
+                ->where('tenant_id', $tenantId)
+                ->selectRaw('
+                    COALESCE(AVG(total_score), 0) as avg_score,
+                    COUNT(*) as total_scored
+                ')
+                ->first();
+
+            $topFlow = DB::table('call_quality_scores')
+                ->where('call_quality_scores.tenant_id', $tenantId)
+                ->join('calls', 'call_quality_scores.call_id', '=', 'calls.id')
+                ->leftJoin('flows', 'calls.flow_id', '=', 'flows.id')
+                ->selectRaw("COALESCE(flows.name, 'No Flow') as flow_name, AVG(call_quality_scores.total_score) as avg_score")
+                ->groupBy('flows.id', 'flows.name')
+                ->orderByDesc('avg_score')
+                ->first();
+
+            $topFlows = DB::table('call_quality_scores')
+                ->where('call_quality_scores.tenant_id', $tenantId)
+                ->join('calls', 'call_quality_scores.call_id', '=', 'calls.id')
+                ->leftJoin('flows', 'calls.flow_id', '=', 'flows.id')
+                ->selectRaw("COALESCE(flows.name, 'No Flow') as flow_name, ROUND(AVG(call_quality_scores.total_score), 1) as avg_score, COUNT(*) as call_count")
+                ->groupBy('flows.id', 'flows.name')
+                ->orderByDesc('avg_score')
+                ->limit(5)
+                ->get();
+
+            $scoreDistribution = DB::table('call_quality_scores')
+                ->where('tenant_id', $tenantId)
+                ->selectRaw('
+                    COUNT(*) FILTER (WHERE total_score >= 80) as excellent,
+                    COUNT(*) FILTER (WHERE total_score >= 60 AND total_score < 80) as good,
+                    COUNT(*) FILTER (WHERE total_score >= 40 AND total_score < 60) as fair,
+                    COUNT(*) FILTER (WHERE total_score < 40) as poor
+                ')
+                ->first();
+
+            return [
+                'avgScore' => $stats ? round((float) $stats->avg_score, 1) : 0.0,
+                'totalScored' => $stats ? (int) $stats->total_scored : 0,
+                'topFlow' => $topFlow->flow_name ?? 'N/A',
+                'topFlowScore' => $topFlow ? round((float) ($topFlow->avg_score ?? 0), 1) : 0,
+                'topFlows' => $topFlows,
+                'scoreDistribution' => $scoreDistribution,
+            ];
+        });
 
         $callsWithScores = CallQualityScoreModel::query()
             ->where('call_quality_scores.tenant_id', $tenantId)
@@ -48,16 +82,6 @@ class QualityController extends Controller
             ->selectRaw('COALESCE(flows.name, \'No Flow\') as flow_name')
             ->orderByDesc('call_quality_scores.created_at')
             ->paginate(15);
-
-        $topFlows = DB::table('call_quality_scores')
-            ->where('call_quality_scores.tenant_id', $tenantId)
-            ->join('calls', 'call_quality_scores.call_id', '=', 'calls.id')
-            ->leftJoin('flows', 'calls.flow_id', '=', 'flows.id')
-            ->selectRaw("COALESCE(flows.name, 'No Flow') as flow_name, ROUND(AVG(call_quality_scores.total_score), 1) as avg_score, COUNT(*) as call_count")
-            ->groupBy('flows.id', 'flows.name')
-            ->orderByDesc('avg_score')
-            ->limit(5)
-            ->get();
 
         $recentScored = CallQualityScoreModel::query()
             ->where('call_quality_scores.tenant_id', $tenantId)
@@ -76,25 +100,15 @@ class QualityController extends Controller
             ->limit(10)
             ->get();
 
-        $scoreDistribution = DB::table('call_quality_scores')
-            ->where('tenant_id', $tenantId)
-            ->selectRaw('
-                COUNT(*) FILTER (WHERE total_score >= 80) as excellent,
-                COUNT(*) FILTER (WHERE total_score >= 60 AND total_score < 80) as good,
-                COUNT(*) FILTER (WHERE total_score >= 40 AND total_score < 60) as fair,
-                COUNT(*) FILTER (WHERE total_score < 40) as poor
-            ')
-            ->first();
-
         return Inertia::render('Quality/Index', [
-            'avgScore' => $stats ? round((float) $stats->avg_score, 1) : 0.0,
-            'totalScored' => $stats ? (int) $stats->total_scored : 0,
-            'topFlow' => $topFlow->flow_name ?? 'N/A',
-            'topFlowScore' => $topFlow ? round((float) ($topFlow->avg_score ?? 0), 1) : 0,
+            'avgScore' => $cachedStats['avgScore'],
+            'totalScored' => $cachedStats['totalScored'],
+            'topFlow' => $cachedStats['topFlow'],
+            'topFlowScore' => $cachedStats['topFlowScore'],
             'callsWithScores' => $callsWithScores,
-            'topFlows' => $topFlows,
+            'topFlows' => $cachedStats['topFlows'],
             'recentScored' => $recentScored,
-            'scoreDistribution' => $scoreDistribution,
+            'scoreDistribution' => $cachedStats['scoreDistribution'],
         ]);
     }
 

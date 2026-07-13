@@ -30,6 +30,7 @@ class FlowController extends Controller
         Gate::authorize('manageFlows');
         $flows = FlowModel::query()
             ->where('tenant_id', $request->user()->tenant_id)
+            ->select(['id', 'name', 'description', 'phone_number', 'is_active', 'version', 'tenant_id', 'created_at'])
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 

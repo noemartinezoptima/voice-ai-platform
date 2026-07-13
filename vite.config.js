@@ -23,4 +23,24 @@ export default defineConfig({
             ignored: ['**/storage/framework/views/**'],
         },
     },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: (id) => {
+                    if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+                        return 'vendor';
+                    }
+                    if (id.includes('node_modules/recharts')) {
+                        return 'recharts';
+                    }
+                    if (id.includes('node_modules/@xyflow/react')) {
+                        return 'flow';
+                    }
+                    if (id.includes('node_modules/@inertiajs/react')) {
+                        return 'inertia';
+                    }
+                },
+            },
+        },
+    },
 });

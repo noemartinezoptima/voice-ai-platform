@@ -31,6 +31,7 @@ use App\Observers\TenantObserver;
 use App\Services\TenantEncryptionService;
 use App\Services\TwilioOAuthService;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
@@ -127,5 +128,9 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('web', function (Request $request) {
             return Limit::perMinute(120)->by($request->user()?->id ?: $request->ip());
         });
+
+        if (app()->environment('local', 'development')) {
+            Model::preventLazyLoading();
+        }
     }
 }
