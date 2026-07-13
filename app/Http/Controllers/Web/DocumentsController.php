@@ -9,6 +9,7 @@ use App\Domain\Knowledge\ValueObjects\DocumentStatus;
 use App\Domain\Knowledge\ValueObjects\ResourceType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DocumentUploadRequest;
+use App\Infrastructure\Persistence\Eloquent\Knowledge\ChunkModel;
 use App\Infrastructure\Persistence\Eloquent\Knowledge\DocumentModel;
 use App\Jobs\ProcessDocumentJob;
 use Illuminate\Http\JsonResponse;
@@ -28,12 +29,23 @@ class DocumentsController extends Controller
 
     public function index(Request $request): Response
     {
-        $docs = DocumentModel::where('tenant_id', $request->user()->tenant_id)
+        $tenantId = $request->user()->tenant_id;
+
+        $docs = DocumentModel::where('tenant_id', $tenantId)
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
+        $totalDocs = DocumentModel::where('tenant_id', $tenantId)->count();
+        $totalChunks = ChunkModel::where('tenant_id', $tenantId)->count();
+        $avgChunks = $totalDocs > 0 ? round($totalChunks / $totalDocs, 1) : 0;
+
         return Inertia::render('Settings/Documents/Index', [
             'documents' => $docs,
+            'stats' => [
+                'total_documents' => $totalDocs,
+                'total_chunks' => $totalChunks,
+                'avg_chunks_per_doc' => $avgChunks,
+            ],
         ]);
     }
 
@@ -70,7 +82,7 @@ class DocumentsController extends Controller
 
         ProcessDocumentJob::dispatch($doc->id());
 
-        return redirect()->route('settings.documents.index')
+        return redirect()->route('settings.documents.show', $doc->id())
             ->with('success', "Document '{$name}' uploaded and queued for processing.");
     }
 

@@ -45,7 +45,29 @@ class DocumentsPageTest extends TestCase
         $this->actingAs($this->user)->get('/settings/documents/create')->assertOk();
     }
 
-    public function test_store_creates_document(): void
+    public function test_store_redirects_to_show_page(): void
+    {
+        $file = UploadedFile::fake()->create('test.txt', 100);
+
+        $response = $this->actingAs($this->user)
+            ->post('/settings/documents', [
+                'file' => $file,
+                'resource_type' => 'text',
+                'name' => 'Test Document',
+            ]);
+
+        $response->assertSessionHas('success');
+        $response->assertRedirect();
+
+        $location = (string) $response->headers->get('Location');
+        $this->assertMatchesRegularExpression(
+            '#/settings/documents/[0-9a-f-]{36}$#',
+            $location,
+            "Redirect should point to document show page, got: {$location}"
+        );
+    }
+
+    public function test_store_creates_document_in_database(): void
     {
         $file = UploadedFile::fake()->create('test.txt', 100);
 
@@ -54,9 +76,7 @@ class DocumentsPageTest extends TestCase
                 'file' => $file,
                 'resource_type' => 'text',
                 'name' => 'Test Document',
-            ])
-            ->assertRedirect(route('settings.documents.index'))
-            ->assertSessionHas('success');
+            ]);
 
         $this->assertDatabaseHas('documents', [
             'tenant_id' => $this->user->tenant_id,
@@ -95,12 +115,21 @@ class DocumentsPageTest extends TestCase
     {
         $file = UploadedFile::fake()->create('original-name.txt', 100);
 
-        $this->actingAs($this->user)
+        $response = $this->actingAs($this->user)
             ->post('/settings/documents', [
                 'file' => $file,
                 'resource_type' => 'text',
-            ])
-            ->assertRedirect(route('settings.documents.index'));
+            ]);
+
+        $response->assertSessionHas('success');
+        $response->assertRedirect();
+
+        $location = (string) $response->headers->get('Location');
+        $this->assertMatchesRegularExpression(
+            '#/settings/documents/[0-9a-f-]{36}$#',
+            $location,
+            "Redirect should point to document show page, got: {$location}"
+        );
 
         $this->assertDatabaseHas('documents', [
             'tenant_id' => $this->user->tenant_id,

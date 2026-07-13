@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { Heading } from '@/Components/catalyst/heading';
@@ -10,20 +10,47 @@ import { Select } from '@/Components/catalyst/select';
 import { TextLink } from '@/Components/catalyst/text';
 import { store, index } from '@/actions/App/Http/Controllers/Web/DocumentsController';
 
+const ACCEPTED_FILE_TYPES = '.pdf,.txt,.csv,.png,.jpg,.jpeg,.gif,.bmp,.webp';
+
 export default function Create({ resourceTypes }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, progress } = useForm({
         resource_type: 'pdf',
         name: '',
         file: null,
     });
 
     const [fileName, setFileName] = useState('');
+    const [dragActive, setDragActive] = useState(false);
 
     function submit(e) {
         e.preventDefault();
         post(store().url, {
             forceFormData: true,
         });
+    }
+
+    function handleFile(file) {
+        setData('file', file);
+        setFileName(file?.name ?? '');
+    }
+
+    function handleDrag(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === 'dragenter' || e.type === 'dragover') {
+            setDragActive(true);
+        } else if (e.type === 'dragleave') {
+            setDragActive(false);
+        }
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            handleFile(e.dataTransfer.files[0]);
+        }
     }
 
     return (
@@ -64,24 +91,70 @@ export default function Create({ resourceTypes }) {
 
                 <Field>
                     <Label>File</Label>
-                    <div className="mt-1 flex items-center gap-4">
-                        <label className="cursor-pointer rounded-lg border border-dashed border-zinc-950/20 px-4 py-6 text-center text-sm text-zinc-500 hover:border-zinc-950/40 dark:border-white/10 dark:hover:border-white/30">
-                            <input
-                                type="file"
-                                className="hidden"
-                                onChange={(e) => {
-                                    setData('file', e.target.files[0]);
-                                    setFileName(e.target.files[0]?.name ?? '');
-                                }}
-                            />
-                            {fileName || 'Click to choose file...'}
-                        </label>
+                    <Text className="mb-2">Accepted: PDF, TXT, CSV, Images (PNG, JPG, GIF, BMP, WebP). Max 100 MB.</Text>
+                    <div
+                        className={`mt-1 flex flex-col items-center justify-center rounded-lg border-2 border-dashed px-6 py-10 text-center transition-colors ${
+                            dragActive
+                                ? 'border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-950/30'
+                                : 'border-zinc-950/20 hover:border-zinc-950/40 dark:border-white/10 dark:hover:border-white/30'
+                        }`}
+                        onDragEnter={handleDrag}
+                        onDragOver={handleDrag}
+                        onDragLeave={handleDrag}
+                        onDrop={handleDrop}
+                    >
+                        <input
+                            type="file"
+                            className="hidden"
+                            id="file-input"
+                            accept={ACCEPTED_FILE_TYPES}
+                            onChange={(e) => handleFile(e.target.files[0])}
+                        />
+                        {fileName ? (
+                            <div className="space-y-1">
+                                <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{fileName}</p>
+                                <p className="text-xs text-zinc-500">
+                                    {(data.file.size / 1024).toFixed(1)} KB
+                                </p>
+                                <button
+                                    type="button"
+                                    onClick={() => handleFile(null)}
+                                    className="text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        ) : (
+                            <>
+                                <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                                    Drag and drop your file here, or
+                                </p>
+                                <label
+                                    htmlFor="file-input"
+                                    className="mt-2 cursor-pointer text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                                >
+                                    click to browse
+                                </label>
+                            </>
+                        )}
                     </div>
-                    {data.file && (
-                        <Text className="mt-2">Selected: {data.file.name} ({(data.file.size / 1024).toFixed(1)} KB)</Text>
-                    )}
                     {errors.file && <ErrorMessage>{errors.file}</ErrorMessage>}
                 </Field>
+
+                {progress && (
+                    <div className="space-y-1">
+                        <div className="flex justify-between text-xs text-zinc-500">
+                            <span>Uploading...</span>
+                            <span>{progress.percentage}%</span>
+                        </div>
+                        <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
+                            <div
+                                className="h-full rounded-full bg-blue-600 transition-all duration-300 dark:bg-blue-400"
+                                style={{ width: `${progress.percentage}%` }}
+                            />
+                        </div>
+                    </div>
+                )}
 
                 <div className="flex items-center gap-3">
                     <Button type="submit" disabled={processing || !data.file}>
