@@ -26,6 +26,7 @@ import {
     Mic,
     Shield,
     Award,
+    AlertTriangle,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -71,6 +72,7 @@ const navItems = [
     { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
     { label: 'Billing', href: billingIndex().url, icon: CreditCard, active: 'billing.*' },
     { label: 'Activity Log', href: activityIndex().url, icon: Activity, active: 'settings.activity.*' },
+    { label: 'Errors', href: '/settings/errors', icon: AlertTriangle, active: 'settings.errors.*' },
     { label: 'Agents', href: agentsIndex().url, icon: Bot, active: 'settings.agents.*' },
     { label: 'Phone Numbers', href: '/settings/phone-numbers', icon: Smartphone, active: 'settings.phone-numbers' },
     { label: 'System', href: systemIndex().url, icon: Server, active: 'settings.system' },

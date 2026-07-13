@@ -4,12 +4,15 @@ use App\Http\Middleware\CheckTokenExpiry;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\ValidateTwilioRequest;
+use App\Infrastructure\Persistence\Eloquent\ErrorEventModel;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -52,5 +55,17 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             return null;
+        });
+
+        $exceptions->reportable(function (Throwable $e) {
+            if ($e instanceof HttpResponseException) {
+                return;
+            }
+
+            if ($e instanceof ValidationException) {
+                return;
+            }
+
+            ErrorEventModel::record($e);
         });
     })->create();

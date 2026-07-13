@@ -16,6 +16,7 @@ use App\Http\Controllers\Web\DataProtectionController;
 use App\Http\Controllers\Web\DocumentsController;
 use App\Http\Controllers\Web\ElevenLabsAgentController;
 use App\Http\Controllers\Web\ElevenLabsConnectController;
+use App\Http\Controllers\Web\ErrorMonitoringController;
 use App\Http\Controllers\Web\FlowCommentController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\GettingStartedController;
@@ -169,6 +170,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/settings/webhooks/{webhook}/test', [WebhookDestinationController::class, 'test'])->name('settings.webhooks.test');
 
     Route::get('/settings/activity', [ActivityLogController::class, 'index'])->name('settings.activity.index');
+
+    Route::get('/settings/errors', [ErrorMonitoringController::class, 'index'])->name('settings.errors.index');
+    Route::get('/settings/errors/{hash}', [ErrorMonitoringController::class, 'show'])->name('settings.errors.show');
+    Route::patch('/settings/errors/{hash}/resolve', [ErrorMonitoringController::class, 'resolve'])->name('settings.errors.resolve');
 
     Route::post('/settings/elevenlabs/connect', [ElevenLabsConnectController::class, 'connect'])
         ->name('settings.elevenlabs.connect');

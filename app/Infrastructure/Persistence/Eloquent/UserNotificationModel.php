@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
  * @property string $type
  * @property string $title
  * @property string|null $body
- * @property array|null $data
+ * @property array<string, mixed>|null $data
  * @property string|null $read_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -32,12 +32,16 @@ class UserNotificationModel extends Model
         return ['data' => 'array', 'read_at' => 'datetime'];
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public static function send(string $userId, string $type, string $title, ?string $body = null, ?array $data = null): self
+    /**
+     * @param array<string, mixed>|null $data
+     */
+    public static function send(int $userId, string $type, string $title, ?string $body = null, ?array $data = null): self
     {
         return self::create([
             'user_id' => $userId,
