@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\QualityController::index
-* @see app/Http/Controllers/Web/QualityController.php:16
+* @see app/Http/Controllers/Web/QualityController.php:17
 * @route '/quality'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\QualityController::index
-* @see app/Http/Controllers/Web/QualityController.php:16
+* @see app/Http/Controllers/Web/QualityController.php:17
 * @route '/quality'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\QualityController::index
-* @see app/Http/Controllers/Web/QualityController.php:16
+* @see app/Http/Controllers/Web/QualityController.php:17
 * @route '/quality'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\QualityController::index
-* @see app/Http/Controllers/Web/QualityController.php:16
+* @see app/Http/Controllers/Web/QualityController.php:17
 * @route '/quality'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\QualityController::show
-* @see app/Http/Controllers/Web/QualityController.php:101
+* @see app/Http/Controllers/Web/QualityController.php:115
 * @route '/quality/{call}'
 */
 export const show = (args: { call: string | { id: string } } | [call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -60,7 +60,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\QualityController::show
-* @see app/Http/Controllers/Web/QualityController.php:101
+* @see app/Http/Controllers/Web/QualityController.php:115
 * @route '/quality/{call}'
 */
 show.url = (args: { call: string | { id: string } } | [call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -93,7 +93,7 @@ show.url = (args: { call: string | { id: string } } | [call: string | { id: stri
 
 /**
 * @see \App\Http\Controllers\Web\QualityController::show
-* @see app/Http/Controllers/Web/QualityController.php:101
+* @see app/Http/Controllers/Web/QualityController.php:115
 * @route '/quality/{call}'
 */
 show.get = (args: { call: string | { id: string } } | [call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -103,7 +103,7 @@ show.get = (args: { call: string | { id: string } } | [call: string | { id: stri
 
 /**
 * @see \App\Http\Controllers\Web\QualityController::show
-* @see app/Http/Controllers/Web/QualityController.php:101
+* @see app/Http/Controllers/Web/QualityController.php:115
 * @route '/quality/{call}'
 */
 show.head = (args: { call: string | { id: string } } | [call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({

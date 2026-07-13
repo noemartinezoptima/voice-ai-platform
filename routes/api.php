@@ -4,6 +4,10 @@ use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\FlowController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\TenantController;
+use App\Http\Controllers\Api\V2\AnalyticsController as V2AnalyticsController;
+use App\Http\Controllers\Api\V2\CallQualityController as V2CallQualityController;
+use App\Http\Controllers\Api\V2\CallSearchController as V2CallSearchController;
+use App\Http\Controllers\Api\V2\TranscriptSearchController as V2TranscriptSearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', HealthController::class)->withoutMiddleware(['auth:sanctum', 'throttle:api']);
@@ -12,5 +16,16 @@ Route::middleware(['token.expiry', 'auth:sanctum', 'throttle:api_tenant'])->pref
     Route::apiResource('flows', FlowController::class);
     Route::apiResource('calls', CallController::class)->only(['index', 'show']);
     Route::get('calls/{call}/transcript', [CallController::class, 'transcript']);
+    Route::apiResource('tenants', TenantController::class);
+});
+
+Route::middleware(['token.expiry', 'auth:sanctum', 'throttle:api_tenant'])->prefix('v2')->group(function () {
+    Route::apiResource('flows', FlowController::class);
+    Route::get('calls/search', [V2CallSearchController::class, 'index']);
+    Route::get('calls/{call}/quality', [V2CallQualityController::class, 'show']);
+    Route::apiResource('calls', CallController::class)->only(['index', 'show']);
+    Route::get('calls/{call}/transcript', [CallController::class, 'transcript']);
+    Route::get('transcripts/search', [V2TranscriptSearchController::class, 'index']);
+    Route::get('analytics/summary', [V2AnalyticsController::class, 'summary']);
     Route::apiResource('tenants', TenantController::class);
 });

@@ -38,7 +38,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 * @see app/Http/Controllers/Web/ScheduledCallController.php:69
 * @route '/calls/scheduled/{scheduled_call}/cancel'
 */
-export const cancel = (args: { scheduled_call: string | number | { id: string | number } } | [scheduled_call: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+export const cancel = (args: { scheduled_call: string | { id: string } } | [scheduled_call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: cancel.url(args, options),
     method: 'patch',
 })
@@ -53,7 +53,7 @@ cancel.definition = {
 * @see app/Http/Controllers/Web/ScheduledCallController.php:69
 * @route '/calls/scheduled/{scheduled_call}/cancel'
 */
-cancel.url = (args: { scheduled_call: string | number | { id: string | number } } | [scheduled_call: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+cancel.url = (args: { scheduled_call: string | { id: string } } | [scheduled_call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { scheduled_call: args }
     }
@@ -86,7 +86,7 @@ cancel.url = (args: { scheduled_call: string | number | { id: string | number } 
 * @see app/Http/Controllers/Web/ScheduledCallController.php:69
 * @route '/calls/scheduled/{scheduled_call}/cancel'
 */
-cancel.patch = (args: { scheduled_call: string | number | { id: string | number } } | [scheduled_call: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+cancel.patch = (args: { scheduled_call: string | { id: string } } | [scheduled_call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: cancel.url(args, options),
     method: 'patch',
 })
@@ -96,7 +96,7 @@ cancel.patch = (args: { scheduled_call: string | number | { id: string | number 
 * @see app/Http/Controllers/Web/ScheduledCallController.php:84
 * @route '/calls/scheduled/{scheduled_call}'
 */
-export const destroy = (args: { scheduled_call: string | number | { id: string | number } } | [scheduled_call: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { scheduled_call: string | { id: string } } | [scheduled_call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -111,7 +111,7 @@ destroy.definition = {
 * @see app/Http/Controllers/Web/ScheduledCallController.php:84
 * @route '/calls/scheduled/{scheduled_call}'
 */
-destroy.url = (args: { scheduled_call: string | number | { id: string | number } } | [scheduled_call: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { scheduled_call: string | { id: string } } | [scheduled_call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { scheduled_call: args }
     }
@@ -144,7 +144,7 @@ destroy.url = (args: { scheduled_call: string | number | { id: string | number }
 * @see app/Http/Controllers/Web/ScheduledCallController.php:84
 * @route '/calls/scheduled/{scheduled_call}'
 */
-destroy.delete = (args: { scheduled_call: string | number | { id: string | number } } | [scheduled_call: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { scheduled_call: string | { id: string } } | [scheduled_call: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })

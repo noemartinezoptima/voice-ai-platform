@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\DashboardController::index
-* @see app/Http/Controllers/Web/DashboardController.php:20
+* @see app/Http/Controllers/Web/DashboardController.php:21
 * @route '/dashboard'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::index
-* @see app/Http/Controllers/Web/DashboardController.php:20
+* @see app/Http/Controllers/Web/DashboardController.php:21
 * @route '/dashboard'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::index
-* @see app/Http/Controllers/Web/DashboardController.php:20
+* @see app/Http/Controllers/Web/DashboardController.php:21
 * @route '/dashboard'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::index
-* @see app/Http/Controllers/Web/DashboardController.php:20
+* @see app/Http/Controllers/Web/DashboardController.php:21
 * @route '/dashboard'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::exportAnalytics
-* @see app/Http/Controllers/Web/DashboardController.php:53
+* @see app/Http/Controllers/Web/DashboardController.php:67
 * @route '/dashboard/export/csv'
 */
 export const exportAnalytics = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -60,7 +60,7 @@ exportAnalytics.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::exportAnalytics
-* @see app/Http/Controllers/Web/DashboardController.php:53
+* @see app/Http/Controllers/Web/DashboardController.php:67
 * @route '/dashboard/export/csv'
 */
 exportAnalytics.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ exportAnalytics.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::exportAnalytics
-* @see app/Http/Controllers/Web/DashboardController.php:53
+* @see app/Http/Controllers/Web/DashboardController.php:67
 * @route '/dashboard/export/csv'
 */
 exportAnalytics.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -79,7 +79,7 @@ exportAnalytics.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::exportAnalytics
-* @see app/Http/Controllers/Web/DashboardController.php:53
+* @see app/Http/Controllers/Web/DashboardController.php:67
 * @route '/dashboard/export/csv'
 */
 exportAnalytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({

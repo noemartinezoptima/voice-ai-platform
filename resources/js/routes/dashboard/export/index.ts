@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\DashboardController::analytics
-* @see app/Http/Controllers/Web/DashboardController.php:53
+* @see app/Http/Controllers/Web/DashboardController.php:67
 * @route '/dashboard/export/csv'
 */
 export const analytics = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ analytics.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::analytics
-* @see app/Http/Controllers/Web/DashboardController.php:53
+* @see app/Http/Controllers/Web/DashboardController.php:67
 * @route '/dashboard/export/csv'
 */
 analytics.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ analytics.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::analytics
-* @see app/Http/Controllers/Web/DashboardController.php:53
+* @see app/Http/Controllers/Web/DashboardController.php:67
 * @route '/dashboard/export/csv'
 */
 analytics.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ analytics.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\DashboardController::analytics
-* @see app/Http/Controllers/Web/DashboardController.php:53
+* @see app/Http/Controllers/Web/DashboardController.php:67
 * @route '/dashboard/export/csv'
 */
 analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
