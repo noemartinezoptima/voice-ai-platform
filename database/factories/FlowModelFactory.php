@@ -44,4 +44,40 @@ class FlowModelFactory extends Factory
             'phone_number' => $phone,
         ]);
     }
+
+    public function withConfig(array $config): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'config' => $config,
+        ]);
+    }
+
+    public function knowledge(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'config' => [
+                'start_step' => 'welcome',
+                'steps' => [
+                    'welcome' => ['id' => 'welcome', 'type' => 'say', 'config' => ['text' => 'Hello! I can answer questions about our products.'], 'next' => 'knowledge_lookup'],
+                    'knowledge_lookup' => ['id' => 'knowledge_lookup', 'type' => 'knowledge', 'config' => ['query' => '{{user_input}}', 'topK' => 3], 'next' => 'llm_response'],
+                    'llm_response' => ['id' => 'llm_response', 'type' => 'llm', 'config' => ['systemPrompt' => 'Answer based on the provided knowledge.', 'userPromptTemplate' => '{{knowledge_results}}', 'model' => 'gpt-4o'], 'next' => 'hangup_step'],
+                    'hangup_step' => ['id' => 'hangup_step', 'type' => 'hangup', 'config' => []],
+                ],
+            ],
+        ]);
+    }
+
+    public function webhook(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'config' => [
+                'start_step' => 'webhook_call',
+                'steps' => [
+                    'webhook_call' => ['id' => 'webhook_call', 'type' => 'webhook', 'config' => ['url' => 'https://example.com/callback', 'method' => 'POST', 'headers' => ['Content-Type' => 'application/json']], 'next' => 'say_result'],
+                    'say_result' => ['id' => 'say_result', 'type' => 'say', 'config' => ['text' => 'Your request has been processed.'], 'next' => 'hangup_step'],
+                    'hangup_step' => ['id' => 'hangup_step', 'type' => 'hangup', 'config' => []],
+                ],
+            ],
+        ]);
+    }
 }

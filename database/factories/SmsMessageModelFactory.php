@@ -21,4 +21,32 @@ class SmsMessageModelFactory extends Factory
             'status' => 'received',
         ];
     }
+
+    public function whatsapp(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'channel' => 'whatsapp',
+        ]);
+    }
+
+    public function outbound(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'direction' => 'outbound',
+        ]);
+    }
+
+    public function received(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'received',
+        ]);
+    }
+
+    public function withTenantId(string $tenantId): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'tenant_id' => $tenantId,
+        ]);
+    }
 }

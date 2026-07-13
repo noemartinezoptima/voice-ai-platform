@@ -9,7 +9,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(
+        $carlos = User::firstOrCreate(
             ['email' => 'carlos@acmecorp.com'],
             [
                 'name' => 'Carlos Mendoza',
@@ -19,8 +19,9 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+        $carlos->assignRole('owner');
 
-        User::firstOrCreate(
+        $ana = User::firstOrCreate(
             ['email' => 'ana@acmecorp.com'],
             [
                 'name' => 'Ana López',
@@ -30,8 +31,9 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+        $ana->assignRole('admin');
 
-        User::firstOrCreate(
+        $pedro = User::firstOrCreate(
             ['email' => 'pedro@acmecorp.com'],
             [
                 'name' => 'Pedro García',
@@ -41,8 +43,9 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+        $pedro->assignRole('member');
 
-        User::firstOrCreate(
+        $john = User::firstOrCreate(
             ['email' => 'john@devtest.io'],
             [
                 'name' => 'John Developer',
@@ -52,5 +55,6 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+        $john->assignRole('owner');
     }
 }
