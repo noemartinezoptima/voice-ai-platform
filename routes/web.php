@@ -41,9 +41,19 @@ use App\Http\Controllers\Web\TwilioOAuthController;
 use App\Http\Controllers\Web\VoiceController;
 use App\Http\Controllers\Web\VoiceSettingsController;
 use App\Http\Controllers\Web\WebhookDestinationController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('/locale/{locale}', function (string $locale) {
+    if (in_array($locale, ['en', 'es'])) {
+        session(['locale' => $locale]);
+        App::setLocale($locale);
+    }
+
+    return redirect()->back();
+})->name('locale.switch');
 
 Route::post('twilio/inbound', [WebhookController::class, 'inbound'])->middleware('twilio.verify');
 Route::post('twilio/step', [WebhookController::class, 'step'])->middleware('twilio.verify');

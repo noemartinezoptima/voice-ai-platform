@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import {
     BarChart3,
     Bell,
+    Globe,
     LayoutDashboard,
     Phone,
     Smartphone,
@@ -142,6 +143,14 @@ export default function AuthenticatedLayout({ children }) {
                                 </span>
                             )}
                         </Link>
+                        <a
+                            href={route().current() ? '/locale/' + (usePage().props.locale === 'en' ? 'es' : 'en') : '/locale/es'}
+                            className="inline-flex items-center justify-center rounded-md p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                            title={usePage().props.locale === 'en' ? 'Español' : 'English'}
+                        >
+                            <Globe className="size-5" />
+                            <span className="ml-1 text-xs font-medium uppercase">{usePage().props.locale === 'en' ? 'ES' : 'EN'}</span>
+                        </a>
                         <Dropdown>
                             <DropdownButton as={NavbarItem_}>
                                 <Avatar src={null} initials={user.name.charAt(0).toUpperCase()} square />

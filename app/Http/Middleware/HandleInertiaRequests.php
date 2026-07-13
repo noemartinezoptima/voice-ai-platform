@@ -17,7 +17,8 @@ class HandleInertiaRequests extends Middleware
 
     public function share(Request $request): array
     {
-        $locale = App::getLocale();
+        $locale = session('locale', 'en');
+        App::setLocale($locale);
         $translations = $this->loadTranslations($locale);
 
         return [
@@ -31,6 +32,7 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
             ],
             'locale' => $locale,
+            'availableLocales' => ['en' => 'English', 'es' => 'Español'],
             'translations' => $translations,
         ];
     }

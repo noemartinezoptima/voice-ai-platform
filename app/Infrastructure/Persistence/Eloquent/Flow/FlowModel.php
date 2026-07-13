@@ -20,6 +20,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string $name
  * @property string|null $description
  * @property string|null $phone_number
+ * @property string $language
  * @property array<string, mixed> $config
  * @property bool $is_active
  * @property int $version
@@ -51,6 +52,7 @@ class FlowModel extends Model
         'name',
         'description',
         'phone_number',
+        'language',
         'config',
         'is_active',
         'version',

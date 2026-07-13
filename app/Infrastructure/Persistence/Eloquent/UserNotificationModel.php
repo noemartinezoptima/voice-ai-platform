@@ -39,7 +39,7 @@ class UserNotificationModel extends Model
     }
 
     /**
-     * @param array<string, mixed>|null $data
+     * @param  array<string, mixed>|null  $data
      */
     public static function send(int $userId, string $type, string $title, ?string $body = null, ?array $data = null): self
     {
