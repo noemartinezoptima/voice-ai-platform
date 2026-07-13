@@ -6,7 +6,6 @@ use App\Events\TeamActivity;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowCommentModel;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
 use App\Infrastructure\Persistence\Eloquent\UserNotificationModel;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

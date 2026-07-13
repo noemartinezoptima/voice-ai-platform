@@ -131,6 +131,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/monitor/calls/{call}/transcript', [MonitorController::class, 'transcript'])->name('monitor.transcript');
 
     Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
+    Route::get('/sms/conversation/{contactNumber}', [SmsController::class, 'conversation'])->name('sms.conversation');
     Route::post('/sms/send', [SmsController::class, 'send'])->name('sms.send');
 
     Route::get('/sms/auto-replies', [SmsAutoReplyController::class, 'index'])->name('sms.auto-replies.index');

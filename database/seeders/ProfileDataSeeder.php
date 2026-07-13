@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Infrastructure\Persistence\Eloquent\Call\CallModel;
-use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
-use App\Infrastructure\Persistence\Eloquent\Sms\SmsMessageModel;
-use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Database\Factories\CallModelFactory;
 use Database\Factories\FlowModelFactory;
 use Database\Factories\SmsMessageModelFactory;

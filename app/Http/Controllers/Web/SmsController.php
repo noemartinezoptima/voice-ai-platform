@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Domain\Tenant\Repositories\TenantRepositoryInterface;
 use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Sms\SmsMessageModel;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -20,18 +21,68 @@ class SmsController extends Controller
 
     public function index(Request $request): Response
     {
-        $messages = SmsMessageModel::where('tenant_id', $request->user()->tenant_id)
-            ->with('tenant')
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $tenantId = $request->user()->tenant_id;
 
-        $tenant = $this->tenantRepository->findById($request->user()->tenant_id);
+        $query = SmsMessageModel::where('tenant_id', $tenantId)
+            ->with('tenant');
+
+        if ($search = $request->get('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('from_number', 'like', "%{$search}%")
+                    ->orWhere('to_number', 'like', "%{$search}%")
+                    ->orWhere('body', 'like', "%{$search}%");
+            });
+        }
+
+        if ($direction = $request->get('direction')) {
+            $query->where('direction', $direction);
+        }
+
+        if ($channel = $request->get('channel')) {
+            $query->where('channel', $channel);
+        }
+
+        $messages = $query->orderBy('created_at', 'desc')->paginate(50);
+
+        $tenant = $this->tenantRepository->findById($tenantId);
         $settings = $tenant?->settings() ?? [];
+
+        $conversations = SmsMessageModel::where('tenant_id', $tenantId)
+            ->selectRaw('
+                CASE
+                    WHEN direction = "inbound" THEN from_number
+                    ELSE to_number
+                END as contact_number,
+                MAX(created_at) as last_message_at,
+                COUNT(*) as message_count
+            ')
+            ->groupBy('contact_number')
+            ->orderBy('last_message_at', 'desc')
+            ->limit(50)
+            ->get();
 
         return Inertia::render('Sms/Index', [
             'messages' => $messages,
+            'conversations' => $conversations,
+            'filters' => $request->only(['search', 'direction', 'channel']),
             'whatsapp_phone_number' => $settings['whatsapp_phone_number'] ?? null,
         ]);
+    }
+
+    public function conversation(Request $request, string $contactNumber): JsonResponse
+    {
+        $tenantId = $request->user()->tenant_id;
+
+        $messages = SmsMessageModel::where('tenant_id', $tenantId)
+            ->where(function ($q) use ($contactNumber) {
+                $q->where('from_number', $contactNumber)
+                    ->orWhere('to_number', $contactNumber);
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(100)
+            ->get();
+
+        return response()->json($messages);
     }
 
     public function send(Request $request): RedirectResponse

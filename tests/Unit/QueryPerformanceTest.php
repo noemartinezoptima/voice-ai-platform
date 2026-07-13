@@ -2,13 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\Infrastructure\Persistence\Eloquent\Sms\SmsMessageModel;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
-use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
+use App\Infrastructure\Persistence\Eloquent\Sms\SmsMessageModel;
 use Database\Factories\TenantFactory;
-use Database\Seeders\ProfileDataSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /** @group performance */
@@ -81,14 +80,14 @@ class QueryPerformanceTest extends TestCase
         $records = [];
         for ($i = 0; $i < 50; $i++) {
             $records[] = [
-                'id' => (string) \Illuminate\Support\Str::uuid(),
+                'id' => (string) Str::uuid(),
                 'tenant_id' => $this->tenantId,
-                'from_number' => '+1555' . str_pad((string) $i, 7, '0'),
+                'from_number' => '+1555'.str_pad((string) $i, 7, '0'),
                 'to_number' => '+15550000000',
                 'body' => fake()->sentence(),
                 'direction' => 'inbound',
                 'status' => 'received',
-                'message_sid' => 'SM' . \Illuminate\Support\Str::random(32),
+                'message_sid' => 'SM'.Str::random(32),
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -104,14 +103,14 @@ class QueryPerformanceTest extends TestCase
         $records = [];
         for ($i = 0; $i < 200; $i++) {
             $records[] = [
-                'id' => (string) \Illuminate\Support\Str::uuid(),
+                'id' => (string) Str::uuid(),
                 'tenant_id' => $this->tenantId,
-                'from_number' => '+1555' . str_pad((string) $i, 7, '0'),
+                'from_number' => '+1555'.str_pad((string) $i, 7, '0'),
                 'to_number' => '+15550000000',
                 'body' => fake()->sentence(),
                 'direction' => $i % 2 === 0 ? 'inbound' : 'outbound',
                 'status' => 'received',
-                'message_sid' => 'SM' . \Illuminate\Support\Str::random(32),
+                'message_sid' => 'SM'.Str::random(32),
                 'created_at' => now()->subDays(rand(0, 30)),
                 'updated_at' => now(),
             ];

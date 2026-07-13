@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Integration;
 
-use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
-use App\Infrastructure\Persistence\Eloquent\Sms\SmsMessageModel;
-use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
+use App\Domain\Flow\ValueObjects\FlowConfig;
 use App\Services\FlowSimulator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -31,7 +29,7 @@ class FlowSimulationIntegrationTest extends TestCase
         ];
 
         $simulator = new FlowSimulator;
-        $results = $simulator->simulate(\App\Domain\Flow\ValueObjects\FlowConfig::fromArray($config));
+        $results = $simulator->simulate(FlowConfig::fromArray($config));
 
         $this->assertGreaterThan(2, count($results));
         $this->assertEquals('say', $results[0]['type']);
@@ -49,7 +47,7 @@ class FlowSimulationIntegrationTest extends TestCase
         ];
 
         $simulator = new FlowSimulator;
-        $results = $simulator->simulate(\App\Domain\Flow\ValueObjects\FlowConfig::fromArray($config));
+        $results = $simulator->simulate(FlowConfig::fromArray($config));
 
         $lastResult = $results[count($results) - 1];
         $this->assertStringContainsString('loop', strtolower($lastResult['error'] ?? ''));
@@ -66,6 +64,6 @@ class FlowSimulationIntegrationTest extends TestCase
         $this->expectExceptionMessage('not found');
 
         $simulator = new FlowSimulator;
-        $simulator->simulate(\App\Domain\Flow\ValueObjects\FlowConfig::fromArray($config));
+        $simulator->simulate(FlowConfig::fromArray($config));
     }
 }

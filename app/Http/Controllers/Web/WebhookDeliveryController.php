@@ -15,7 +15,7 @@ class WebhookDeliveryController extends Controller
     public function index(Request $request): Response
     {
         $query = WebhookDeliveryModel::query()
-            ->whereHas('webhookDestination', fn($q) => $q->where('tenant_id', $request->user()->tenant_id))
+            ->whereHas('webhookDestination', fn ($q) => $q->where('tenant_id', $request->user()->tenant_id))
             ->with('webhookDestination')
             ->orderBy('created_at', 'desc');
 
@@ -47,7 +47,7 @@ class WebhookDeliveryController extends Controller
     {
         $delivery = WebhookDeliveryModel::whereHas(
             'webhookDestination',
-            fn($q) => $q->where('tenant_id', $request->user()->tenant_id)
+            fn ($q) => $q->where('tenant_id', $request->user()->tenant_id)
         )->with('webhookDestination')->findOrFail($id);
 
         return response()->json($delivery);

@@ -5,8 +5,8 @@ namespace Tests\Feature\Integration;
 use App\Infrastructure\Persistence\Eloquent\Webhook\WebhookDeliveryModel;
 use App\Infrastructure\Persistence\Eloquent\Webhook\WebhookDestinationModel;
 use App\Jobs\DispatchWebhookJob;
+use Database\Factories\TenantFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
@@ -18,7 +18,7 @@ class WebhookIntegrationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $tenant = \Database\Factories\TenantFactory::new()->create();
+        $tenant = TenantFactory::new()->create();
         $this->tenantId = $tenant->id;
     }
 

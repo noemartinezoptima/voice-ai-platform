@@ -9,6 +9,7 @@ use App\Infrastructure\Persistence\Eloquent\Webhook\WebhookDeliveryModel;
 use App\Infrastructure\Persistence\Eloquent\Webhook\WebhookDestinationModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class MonitoringController extends Controller
 {
@@ -47,7 +48,7 @@ class MonitoringController extends Controller
 
         $webhookStats = WebhookDeliveryModel::whereHas(
             'webhookDestination',
-            fn($q) => $q->where('tenant_id', $tenantId)
+            fn ($q) => $q->where('tenant_id', $tenantId)
         )->selectRaw("
             COUNT(*) as total_deliveries,
             SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) as successful,
@@ -69,6 +70,7 @@ class MonitoringController extends Controller
     {
         try {
             cache()->store()->set('health_check', true);
+
             return cache()->store()->get('health_check') === true ? 'ok' : 'degraded';
         } catch (\Exception) {
             return 'down';
@@ -79,6 +81,7 @@ class MonitoringController extends Controller
     {
         try {
             \DB::select('SELECT 1');
+
             return 'ok';
         } catch (\Exception) {
             return 'down';
@@ -89,7 +92,8 @@ class MonitoringController extends Controller
     {
         try {
             $queue = config('queue.default');
-            $connected = !in_array($queue, ['redis', 'database']) || \Illuminate\Support\Facades\Redis::connection()->ping();
+            $connected = ! in_array($queue, ['redis', 'database']) || Redis::connection()->ping();
+
             return $connected ? 'ok' : 'degraded';
         } catch (\Exception) {
             return 'down';

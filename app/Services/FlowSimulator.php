@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Domain\Flow\ValueObjects\FlowConfig;
-use App\Infrastructure\Services\FakeAiService;
 
 class FlowSimulator
 {
@@ -99,11 +98,11 @@ class FlowSimulator
                 'status' => 'ok',
             ],
             'transfer' => [
-                'output' => "Transfer to {$config['destination']}: " . ($config['value'] ?? ''),
+                'output' => "Transfer to {$config['destination']}: ".($config['value'] ?? ''),
                 'status' => 'ok',
             ],
             'webhook' => [
-                'output' => "{" . ($config['method'] ?? 'POST') . "} {$config['url']} — body: ".($config['body'] ?? '{}'),
+                'output' => '{'.($config['method'] ?? 'POST')."} {$config['url']} — body: ".($config['body'] ?? '{}'),
                 'status' => 'ok',
             ],
             'knowledge' => [
