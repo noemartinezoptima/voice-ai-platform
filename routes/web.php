@@ -19,6 +19,7 @@ use App\Http\Controllers\Web\ElevenLabsConnectController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\GettingStartedController;
 use App\Http\Controllers\Web\MonitorController;
+use App\Http\Controllers\Web\PhoneNumberController;
 use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\QualityController;
 use App\Http\Controllers\Web\RecordingController;
@@ -186,6 +187,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/settings/privacy', [PrivacyController::class, 'index'])
         ->name('settings.privacy');
+
+    Route::get('/settings/phone-numbers', [PhoneNumberController::class, 'index'])->name('settings.phone-numbers');
+    Route::get('/settings/phone-numbers/search', [PhoneNumberController::class, 'search'])->name('settings.phone-numbers.search');
+    Route::post('/settings/phone-numbers/buy', [PhoneNumberController::class, 'buy'])->name('settings.phone-numbers.buy');
+    Route::delete('/settings/phone-numbers/release', [PhoneNumberController::class, 'release'])->name('settings.phone-numbers.release');
 
     Route::get('/settings/system', [SystemHealthController::class, 'index'])
         ->name('settings.system');

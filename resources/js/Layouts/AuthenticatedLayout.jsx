@@ -5,6 +5,7 @@ import {
     BarChart3,
     LayoutDashboard,
     Phone,
+    Smartphone,
     GitBranch,
     Key,
     Users,
@@ -69,6 +70,7 @@ const navItems = [
     { label: 'Billing', href: billingIndex().url, icon: CreditCard, active: 'billing.*' },
     { label: 'Activity Log', href: activityIndex().url, icon: Activity, active: 'settings.activity.*' },
     { label: 'Agents', href: agentsIndex().url, icon: Bot, active: 'settings.agents.*' },
+    { label: 'Phone Numbers', href: '/settings/phone-numbers', icon: Smartphone, active: 'settings.phone-numbers' },
     { label: 'System', href: systemIndex().url, icon: Server, active: 'settings.system' },
     { label: 'Roles', href: '/settings/roles', icon: Shield, active: 'settings.roles' },
 ]

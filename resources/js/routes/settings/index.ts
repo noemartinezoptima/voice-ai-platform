@@ -8,6 +8,7 @@ import activity from './activity'
 import elevenlabs from './elevenlabs'
 import agents from './agents'
 import dataProtection0a045c from './data-protection'
+import phoneNumbersCd7706 from './phone-numbers'
 import rolesF85c84 from './roles'
 /**
 * @see \App\Http\Controllers\Web\TenantSettingsController::tenant
@@ -186,6 +187,50 @@ privacy.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
+* @see \App\Http\Controllers\Web\PhoneNumberController::phoneNumbers
+* @see app/Http/Controllers/Web/PhoneNumberController.php:18
+* @route '/settings/phone-numbers'
+*/
+export const phoneNumbers = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: phoneNumbers.url(options),
+    method: 'get',
+})
+
+phoneNumbers.definition = {
+    methods: ["get","head"],
+    url: '/settings/phone-numbers',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\PhoneNumberController::phoneNumbers
+* @see app/Http/Controllers/Web/PhoneNumberController.php:18
+* @route '/settings/phone-numbers'
+*/
+phoneNumbers.url = (options?: RouteQueryOptions) => {
+    return phoneNumbers.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\PhoneNumberController::phoneNumbers
+* @see app/Http/Controllers/Web/PhoneNumberController.php:18
+* @route '/settings/phone-numbers'
+*/
+phoneNumbers.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: phoneNumbers.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\PhoneNumberController::phoneNumbers
+* @see app/Http/Controllers/Web/PhoneNumberController.php:18
+* @route '/settings/phone-numbers'
+*/
+phoneNumbers.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: phoneNumbers.url(options),
+    method: 'head',
+})
+
+/**
 * @see \App\Http\Controllers\Web\SystemHealthController::system
 * @see app/Http/Controllers/Web/SystemHealthController.php:16
 * @route '/settings/system'
@@ -284,6 +329,7 @@ const settings = {
     agents: Object.assign(agents, agents),
     dataProtection: Object.assign(dataProtection, dataProtection0a045c),
     privacy: Object.assign(privacy, privacy),
+    phoneNumbers: Object.assign(phoneNumbers, phoneNumbersCd7706),
     system: Object.assign(system, system),
     roles: Object.assign(roles, rolesF85c84),
 }
