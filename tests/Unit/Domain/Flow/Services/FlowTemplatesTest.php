@@ -11,7 +11,7 @@ class FlowTemplatesTest extends TestCase
     #[Test]
     public function all_returns_five_templates(): void
     {
-        $this->assertCount(5, FlowTemplates::all());
+        $this->assertCount(8, FlowTemplates::all());
     }
 
     #[Test]
@@ -92,7 +92,7 @@ class FlowTemplatesTest extends TestCase
     #[Test]
     public function every_step_type_is_valid(): void
     {
-        $validTypes = ['say', 'llm', 'condition', 'transfer', 'ask', 'hangup'];
+        $validTypes = ['say', 'llm', 'condition', 'transfer', 'ask', 'hangup', 'knowledge', 'webhook'];
 
         foreach (FlowTemplates::all() as $template) {
             foreach ($template['config']['steps'] as $step) {

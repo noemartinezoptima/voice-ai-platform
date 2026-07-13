@@ -13,6 +13,9 @@ class FlowTemplates
             self::survey(),
             self::ivrMenu(),
             self::aiAssistant(),
+            self::knowledgeBase(),
+            self::webhookNotification(),
+            self::whatsappBot(),
         ];
     }
 
@@ -124,6 +127,74 @@ class FlowTemplates
                     'welcome' => ['id' => 'welcome', 'type' => 'say', 'config' => ['text' => 'Hello, I am your AI assistant. How can I help you today?'], 'next' => 'ai_loop'],
                     'ai_loop' => ['id' => 'ai_loop', 'type' => 'llm', 'config' => ['systemPrompt' => 'You are a helpful AI voice assistant. Be concise and friendly. If the caller mentions specific topics, ask clarifying questions.', 'userPromptTemplate' => '', 'model' => 'gpt-4o'], 'next' => 'gather_input'],
                     'gather_input' => ['id' => 'gather_input', 'type' => 'ask', 'config' => ['prompt' => '', 'inputType' => 'speech', 'variable' => 'user_input', 'timeoutSec' => 10], 'next' => 'ai_loop'],
+                ],
+            ],
+        ];
+    }
+
+    /** @return array{id: string, name: string, description: string, icon: string, config: array{start_step: string, steps: array<string, array<string, mixed>>}} */
+    public static function knowledgeBase(): array
+    {
+        return [
+            'id' => 'knowledge-base',
+            'name' => 'Knowledge Base Q&A',
+            'description' => 'Answer caller questions using your uploaded documents with RAG.',
+            'icon' => 'FileText',
+            'config' => [
+                'start_step' => 'welcome',
+                'steps' => [
+                    'welcome' => ['id' => 'welcome', 'type' => 'say', 'config' => ['text' => 'Hello. I can answer questions about our products, pricing, and policies. What would you like to know?'], 'next' => 'gather_question'],
+                    'gather_question' => ['id' => 'gather_question', 'type' => 'ask', 'config' => ['prompt' => 'Ask your question after the beep.', 'inputType' => 'speech', 'variable' => 'query', 'timeoutSec' => 15], 'next' => 'search_knowledge'],
+                    'search_knowledge' => ['id' => 'search_knowledge', 'type' => 'knowledge', 'config' => ['query' => '{{query}}', 'topK' => 3, 'retrievalType' => 'semantic', 'systemPrompt' => 'Answer using only the retrieved information. If you cannot find the answer, say so politely.'], 'next' => 'follow_up'],
+                    'follow_up' => ['id' => 'follow_up', 'type' => 'ask', 'config' => ['prompt' => 'Is there anything else I can help with? Say yes or no.', 'inputType' => 'speech', 'variable' => 'more_help', 'timeoutSec' => 10], 'next' => 'check_follow_up'],
+                    'check_follow_up' => ['id' => 'check_follow_up', 'type' => 'condition', 'config' => ['branches' => [['label' => 'Yes', 'expression' => '{{more_help contains yes}}', 'next' => 'gather_question']], 'elseNext' => 'goodbye'], 'next' => null],
+                    'goodbye' => ['id' => 'goodbye', 'type' => 'say', 'config' => ['text' => 'Thank you for using our knowledge base. Goodbye!'], 'next' => 'hangup_step'],
+                    'hangup_step' => ['id' => 'hangup_step', 'type' => 'hangup', 'config' => []],
+                ],
+            ],
+        ];
+    }
+
+    /** @return array{id: string, name: string, description: string, icon: string, config: array{start_step: string, steps: array<string, array<string, mixed>>}} */
+    public static function webhookNotification(): array
+    {
+        return [
+            'id' => 'webhook-notification',
+            'name' => 'Webhook Notification',
+            'description' => 'Notify external systems about call events via webhooks.',
+            'icon' => 'Webhook',
+            'config' => [
+                'start_step' => 'greeting',
+                'steps' => [
+                    'greeting' => ['id' => 'greeting', 'type' => 'say', 'config' => ['text' => 'Please hold while we process your request.'], 'next' => 'notify_crm'],
+                    'notify_crm' => ['id' => 'notify_crm', 'type' => 'webhook', 'config' => ['url' => 'https://example.com/webhook/call-start', 'method' => 'POST', 'body' => '{"call_sid":"{{call_sid}}","from":"{{from}}","to":"{{to}}"}'], 'next' => 'thank_you'],
+                    'thank_you' => ['id' => 'thank_you', 'type' => 'say', 'config' => ['text' => 'Your request has been received. We will get back to you shortly.'], 'next' => 'hangup_step'],
+                    'hangup_step' => ['id' => 'hangup_step', 'type' => 'hangup', 'config' => []],
+                ],
+            ],
+        ];
+    }
+
+    /** @return array{id: string, name: string, description: string, icon: string, config: array{start_step: string, steps: array<string, array<string, mixed>>}} */
+    public static function whatsappBot(): array
+    {
+        return [
+            'id' => 'whatsapp-bot',
+            'name' => 'WhatsApp Auto-Reply',
+            'description' => 'Smart WhatsApp bot with keyword matching and AI responses.',
+            'icon' => 'MessageCircle',
+            'category' => 'messaging',
+            'config' => [
+                'start_step' => 'greeting',
+                'steps' => [
+                    'greeting' => ['id' => 'greeting', 'type' => 'say', 'config' => ['text' => 'Welcome! Reply with HELP, HOURS, or PRICING for quick info, or type any question for AI assistance.'], 'next' => 'gather_message'],
+                    'gather_message' => ['id' => 'gather_message', 'type' => 'ask', 'config' => ['prompt' => '', 'inputType' => 'speech', 'variable' => 'message', 'timeoutSec' => 20], 'next' => 'keyword_check'],
+                    'keyword_check' => ['id' => 'keyword_check', 'type' => 'condition', 'config' => ['branches' => [['label' => 'HELP', 'expression' => '{{message contains help}}', 'next' => 'help_response'], ['label' => 'HOURS', 'expression' => '{{message contains hours}}', 'next' => 'hours_response'], ['label' => 'PRICING', 'expression' => '{{message contains pricing}}', 'next' => 'pricing_response']], 'elseNext' => 'ai_fallback'], 'next' => null],
+                    'help_response' => ['id' => 'help_response', 'type' => 'say', 'config' => ['text' => 'Support is available Mon-Fri 9am-6pm. Call +525512345678 for urgent issues.'], 'next' => 'hangup_step'],
+                    'hours_response' => ['id' => 'hours_response', 'type' => 'say', 'config' => ['text' => 'Business hours: Mon-Fri 9:00 AM to 6:00 PM CST. Closed weekends.'], 'next' => 'hangup_step'],
+                    'pricing_response' => ['id' => 'pricing_response', 'type' => 'say', 'config' => ['text' => 'Plans start at $49/month with unlimited flows. Visit our website for details.'], 'next' => 'hangup_step'],
+                    'ai_fallback' => ['id' => 'ai_fallback', 'type' => 'llm', 'config' => ['systemPrompt' => 'You are a helpful assistant. Answer the question concisely. If you do not know, say you will connect them with a human.', 'userPromptTemplate' => '{{message}}', 'model' => 'gpt-4o-mini'], 'next' => 'hangup_step'],
+                    'hangup_step' => ['id' => 'hangup_step', 'type' => 'hangup', 'config' => []],
                 ],
             ],
         ];

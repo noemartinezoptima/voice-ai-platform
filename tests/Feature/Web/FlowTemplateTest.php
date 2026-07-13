@@ -30,7 +30,7 @@ class FlowTemplateTest extends TestCase
             ->get('/flows/create')
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Flows/Create')
-                ->has('templates', 5)
+                ->has('templates', 8)
             );
     }
 
