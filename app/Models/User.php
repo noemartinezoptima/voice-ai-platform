@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
+use App\Infrastructure\Persistence\Eloquent\UserPermissionOverrideModel;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -15,6 +16,7 @@ use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Contracts\Permission;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -53,6 +55,39 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isOwnerOrAdmin(): bool
     {
         return $this->isOwner() || $this->isAdmin();
+    }
+
+    public function canImpersonate(): bool
+    {
+        return $this->isOwnerOrAdmin();
+    }
+
+    public function canBeImpersonated(): bool
+    {
+        return ! $this->isOwner();
+    }
+
+    public function isImpersonating(): bool
+    {
+        return session()->has('impersonator_id');
+    }
+
+    /**
+     * @param  string|int|Permission|\BackedEnum  $permission
+     */
+    public function hasPermissionTo($permission, ?string $guardName = null): bool
+    {
+        $override = UserPermissionOverrideModel::where('user_id', $this->id)
+            ->where('permission', $permission)
+            ->first();
+
+        if ($override !== null) {
+            return $override->granted;
+        }
+
+        $permission = $this->filterPermission($permission, $guardName);
+
+        return $this->hasDirectPermission($permission) || $this->hasPermissionViaRole($permission);
     }
 
     protected function casts(): array

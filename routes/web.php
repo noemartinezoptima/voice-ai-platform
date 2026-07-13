@@ -20,6 +20,7 @@ use App\Http\Controllers\Web\ErrorMonitoringController;
 use App\Http\Controllers\Web\FlowCommentController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\GettingStartedController;
+use App\Http\Controllers\Web\ImpersonationController;
 use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\PhoneNumberController;
@@ -200,6 +201,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/team/invite', [TeamMemberController::class, 'invite'])->name('team.invite');
     Route::patch('/team/{user}/role', [TeamMemberController::class, 'update'])->name('team.update');
     Route::delete('/team/{user}', [TeamMemberController::class, 'destroy'])->name('team.destroy');
+    Route::get('/team/{user}/permissions', [TeamMemberController::class, 'permissions'])->name('team.permissions');
+    Route::patch('/team/{user}/permissions', [TeamMemberController::class, 'updatePermissions'])->name('team.permissions.update');
+
+    Route::post('/admin/impersonate/{user}', [ImpersonationController::class, 'start'])->name('admin.impersonate.start');
+    Route::post('/admin/stop-impersonating', [ImpersonationController::class, 'stop'])->name('admin.impersonate.stop');
 
     Route::get('/settings/data-protection', [DataProtectionController::class, 'edit'])
         ->name('settings.data-protection');

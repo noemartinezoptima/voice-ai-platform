@@ -24,6 +24,7 @@ import ErrorMonitoringController from './ErrorMonitoringController'
 import ElevenLabsConnectController from './ElevenLabsConnectController'
 import ElevenLabsAgentController from './ElevenLabsAgentController'
 import TeamMemberController from './TeamMemberController'
+import ImpersonationController from './ImpersonationController'
 import DataProtectionController from './DataProtectionController'
 import PrivacyController from './PrivacyController'
 import PhoneNumberController from './PhoneNumberController'
@@ -62,6 +63,7 @@ const Web = {
     ElevenLabsConnectController: Object.assign(ElevenLabsConnectController, ElevenLabsConnectController),
     ElevenLabsAgentController: Object.assign(ElevenLabsAgentController, ElevenLabsAgentController),
     TeamMemberController: Object.assign(TeamMemberController, TeamMemberController),
+    ImpersonationController: Object.assign(ImpersonationController, ImpersonationController),
     DataProtectionController: Object.assign(DataProtectionController, DataProtectionController),
     PrivacyController: Object.assign(PrivacyController, PrivacyController),
     PhoneNumberController: Object.assign(PhoneNumberController, PhoneNumberController),

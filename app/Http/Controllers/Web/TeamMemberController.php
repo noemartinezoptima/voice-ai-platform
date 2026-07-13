@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamRequest;
 use App\Infrastructure\Persistence\Eloquent\Team\TenantInvitationModel;
+use App\Infrastructure\Persistence\Eloquent\UserPermissionOverrideModel;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Permission;
 
 class TeamMemberController extends Controller
 {
@@ -48,6 +51,7 @@ class TeamMemberController extends Controller
             'currentUser' => [
                 'id' => $request->user()->id,
                 'role' => $request->user()->getRoleNames()->first() ?? 'member',
+                'canImpersonate' => $request->user()->canImpersonate(),
             ],
         ]);
     }
@@ -131,5 +135,44 @@ class TeamMemberController extends Controller
             ->log(":causer.name eliminó a {$userName} del equipo");
 
         return back()->with('success', 'Member removed from tenant.');
+    }
+
+    public function permissions(Request $request, User $user): JsonResponse
+    {
+        abort_if(! $request->user()->isOwnerOrAdmin(), 403);
+        abort_if($user->tenant_id !== $request->user()->tenant_id, 403);
+
+        $overrides = UserPermissionOverrideModel::where('user_id', $user->id)->get();
+        $allPermissions = Permission::all()->pluck('name');
+
+        return response()->json([
+            'user' => ['id' => $user->id, 'name' => $user->name],
+            'overrides' => $overrides->map(fn ($o) => ['permission' => $o->permission, 'granted' => $o->granted]),
+            'availablePermissions' => $allPermissions,
+        ]);
+    }
+
+    public function updatePermissions(Request $request, User $user): JsonResponse
+    {
+        abort_if(! $request->user()->isOwnerOrAdmin(), 403);
+        abort_if($user->tenant_id !== $request->user()->tenant_id, 403);
+
+        $validated = $request->validate([
+            'overrides' => ['array'],
+            'overrides.*.permission' => ['string', 'exists:permissions,name'],
+            'overrides.*.granted' => ['boolean'],
+        ]);
+
+        UserPermissionOverrideModel::where('user_id', $user->id)->delete();
+
+        foreach ($validated['overrides'] ?? [] as $override) {
+            UserPermissionOverrideModel::create([
+                'user_id' => $user->id,
+                'permission' => $override['permission'],
+                'granted' => $override['granted'],
+            ]);
+        }
+
+        return response()->json(['ok' => true]);
     }
 }

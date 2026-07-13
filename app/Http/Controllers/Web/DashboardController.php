@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Domain\Call\Repositories\CallRepositoryInterface;
 use App\Domain\Flow\Repositories\FlowRepositoryInterface;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
@@ -20,15 +21,26 @@ class DashboardController extends Controller
 
     public function index(Request $request): InertiaResponse
     {
-        $tenantId = $request->user()->tenant_id;
+        $user = $request->user();
+        $tenantId = $user->tenant_id;
         $start = $request->query('start');
         $end = $request->query('end');
 
-        $cacheKey = "dashboard:{$tenantId}:{$start}:{$end}";
+        $cacheKey = "dashboard:{$tenantId}:{$user->id}:{$start}:{$end}";
 
-        $data = Cache::remember($cacheKey, 300, function () use ($tenantId, $start, $end) {
+        if ($user->isOwner()) {
+            $dashboardView = 'owner';
+        } elseif ($user->isAdmin()) {
+            $dashboardView = 'admin';
+        } else {
+            $dashboardView = 'member';
+        }
+
+        $data = Cache::remember($cacheKey, 300, function () use ($tenantId, $user, $dashboardView, $start, $end) {
+            $stats = $this->buildStats($tenantId, $user, $dashboardView, $start, $end);
+
             return [
-                'stats' => $this->buildStats($tenantId, $start, $end),
+                'stats' => $stats,
                 'callsByDay' => $this->callRepository->callsByDay($tenantId, $start, $end),
                 'callsByStatus' => $this->callRepository->callsByStatus($tenantId, $start, $end),
                 'avgDurationByDay' => $this->callRepository->avgDurationByDay($tenantId, $start, $end),
@@ -39,6 +51,7 @@ class DashboardController extends Controller
 
         return Inertia::render('Dashboard', [
             'stats' => $data['stats'],
+            'dashboardView' => $dashboardView,
             'range' => [
                 'start' => $start ?? now()->subDays(7)->toDateString(),
                 'end' => $end ?? now()->toDateString(),
@@ -52,9 +65,9 @@ class DashboardController extends Controller
     }
 
     /** @return array<string, int> */
-    private function buildStats(string $tenantId, ?string $start, ?string $end): array
+    private function buildStats(string $tenantId, User $user, string $dashboardView, ?string $start, ?string $end): array
     {
-        return [
+        $stats = [
             'total_flows' => $this->flowRepository->countByTenant($tenantId),
             'active_flows' => $this->flowRepository->countActiveByTenant($tenantId),
             'total_calls' => $this->callRepository->countInRange($tenantId, $start, $end),
@@ -62,6 +75,12 @@ class DashboardController extends Controller
             'active_calls' => $this->callRepository->countActiveByTenant($tenantId),
             'avg_duration_seconds' => $this->callRepository->avgDurationInRange($tenantId, $start, $end),
         ];
+
+        if ($dashboardView === 'owner') {
+            $stats['team_size'] = User::where('tenant_id', $tenantId)->count();
+        }
+
+        return $stats;
     }
 
     public function exportAnalytics(Request $request): Response

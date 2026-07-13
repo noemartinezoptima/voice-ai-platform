@@ -28,6 +28,7 @@ import {
     Shield,
     Award,
     AlertTriangle,
+    UserCheck,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -101,8 +102,16 @@ function AccountDropdownMenu({ anchor }) {
 export default function AuthenticatedLayout({ children }) {
     const user = usePage().props.auth.user
     const flash = usePage().props.flash
+    const isImpersonating = usePage().props.isImpersonating
+    const impersonatedUser = usePage().props.impersonatedUser
     const pathname = window.location.pathname
     const [unreadCount, setUnreadCount] = useState(0)
+
+    function stopImpersonating() {
+        router.post('/admin/stop-impersonating', {}, {
+            preserveScroll: true,
+        })
+    }
 
     useEffect(() => {
         if (flash?.success) {
@@ -215,6 +224,20 @@ export default function AuthenticatedLayout({ children }) {
                 </Sidebar>
             }
         >
+            {isImpersonating && (
+                <div className="flex items-center justify-between gap-3 rounded-lg bg-yellow-100 px-4 py-3 text-sm font-medium text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200">
+                    <div className="flex items-center gap-2">
+                        <UserCheck className="size-4" />
+                        <span>Impersonating <strong>{impersonatedUser}</strong></span>
+                    </div>
+                    <button
+                        onClick={stopImpersonating}
+                        className="rounded-md bg-yellow-200 px-3 py-1 text-xs font-semibold hover:bg-yellow-300 dark:bg-yellow-800 dark:hover:bg-yellow-700"
+                    >
+                        Stop Impersonating
+                    </button>
+                </div>
+            )}
             {children}
         </SidebarLayout>
     )

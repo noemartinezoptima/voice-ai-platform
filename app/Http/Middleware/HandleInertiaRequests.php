@@ -34,6 +34,8 @@ class HandleInertiaRequests extends Middleware
             'locale' => $locale,
             'availableLocales' => ['en' => 'English', 'es' => 'Español'],
             'translations' => $translations,
+            'isImpersonating' => session()->has('impersonator_id'),
+            'impersonatedUser' => session()->has('impersonator_id') ? $request->user()?->name : null,
         ];
     }
 

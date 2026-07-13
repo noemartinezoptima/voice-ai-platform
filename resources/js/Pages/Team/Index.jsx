@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Heading, Subheading } from '@/Components/catalyst/heading';
 import { Text, TextLink } from '@/Components/catalyst/text';
 import { Button } from '@/Components/catalyst/button';
@@ -10,7 +10,11 @@ import { Select } from '@/Components/catalyst/select';
 import { Badge } from '@/Components/catalyst/badge';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
 import { Alert, AlertTitle, AlertDescription, AlertActions } from '@/Components/catalyst/alert';
+import { Switch } from '@/Components/catalyst/switch';
 import { index, invite, update, destroy } from '@/actions/App/Http/Controllers/Web/TeamMemberController';
+import { start as impersonateStart } from '@/actions/App/Http/Controllers/Web/ImpersonationController';
+import { permissions as permissionsRoute } from '@/routes/team';
+import { update as updatePermissionsRoute } from '@/routes/team/permissions';
 
 export default function Index({ members, invitations, currentUser }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -21,6 +25,9 @@ export default function Index({ members, invitations, currentUser }) {
     const [updating, setUpdating] = useState(null);
     const [confirmingDelete, setConfirmingDelete] = useState(null);
     const [confirmingCancel, setConfirmingCancel] = useState(null);
+    const [expandedPermissions, setExpandedPermissions] = useState(null);
+    const [permissionData, setPermissionData] = useState(null);
+    const [permissionLoading, setPermissionLoading] = useState(false);
 
     function handleInvite(e) {
         e.preventDefault();
@@ -46,6 +53,59 @@ export default function Index({ members, invitations, currentUser }) {
     function cancelInvite(id) {
         setConfirmingCancel(null);
         router.delete(destroy({user: id}).url, { preserveScroll: true });
+    }
+
+    function impersonate(userId) {
+        router.post(impersonateStart({user: userId}).url, {}, {
+            preserveScroll: true,
+        });
+    }
+
+    function togglePermissions(userId) {
+        if (expandedPermissions === userId) {
+            setExpandedPermissions(null);
+            setPermissionData(null);
+            return;
+        }
+        setExpandedPermissions(userId);
+        setPermissionLoading(true);
+        fetch(permissionsRoute({user: userId}).url)
+            .then(r => r.json())
+            .then(data => {
+                setPermissionData(data);
+                setPermissionLoading(false);
+            })
+            .catch(() => {
+                setPermissionLoading(false);
+            });
+    }
+
+    function toggleOverride(permissionName, granted) {
+        if (!permissionData) return;
+        const existing = permissionData.overrides.find(o => o.permission === permissionName);
+        if (existing && existing.granted === granted) {
+            setPermissionData({
+                ...permissionData,
+                overrides: permissionData.overrides.filter(o => o.permission !== permissionName),
+            });
+        } else {
+            const filtered = permissionData.overrides.filter(o => o.permission !== permissionName);
+            setPermissionData({
+                ...permissionData,
+                overrides: [...filtered, { permission: permissionName, granted }],
+            });
+        }
+    }
+
+    function savePermissions(userId) {
+        if (!permissionData) return;
+        setPermissionLoading(true);
+        router.patch(updatePermissionsRoute({user: userId}).url, {
+            overrides: permissionData.overrides,
+        }, {
+            preserveScroll: true,
+            onFinish: () => setPermissionLoading(false),
+        });
     }
 
     const isOwner = currentUser.role === 'owner';
@@ -111,47 +171,131 @@ export default function Index({ members, invitations, currentUser }) {
                                 <TableHeader>Email</TableHeader>
                                 <TableHeader>Role</TableHeader>
                                 <TableHeader>Joined</TableHeader>
-                                {isOwner && <TableHeader />}
+                                {(isOwner || currentUser.canImpersonate) && <TableHeader />}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {members.map((member) => (
-                                <TableRow key={member.id}>
-                                    <TableCell className="font-medium">{member.name}</TableCell>
-                                    <TableCell>{member.email}</TableCell>
-                                    <TableCell>
-                                        {isOwner && member.id !== currentUser.id ? (
-                                            <Select
-                                                value={member.role}
-                                                onChange={(e) => changeRole(member.id, e.target.value)}
-                                                disabled={updating === member.id}
-                                            >
-                                                <option value="member">Member</option>
-                                                <option value="admin">Admin</option>
-                                            </Select>
-                                        ) : (
-                                            <Badge color={
-                                                member.role === 'owner' ? 'yellow' :
-                                                member.role === 'admin' ? 'blue' : 'zinc'
-                                            }>
-                                                {member.role}
-                                            </Badge>
-                                        )}
-                                    </TableCell>
-                                    <TableCell className="text-zinc-500">{member.joined_at}</TableCell>
-                                    {isOwner && (
-                                        <TableCell className="text-right">
-                                            {member.id !== currentUser.id && (
-                                                <button
-                                                    onClick={() => setConfirmingDelete(member.id)}
-                                                    className="text-sm font-medium text-red-600 hover:text-red-800"
+                                <>
+                                    <TableRow key={member.id}>
+                                        <TableCell className="font-medium">{member.name}</TableCell>
+                                        <TableCell>{member.email}</TableCell>
+                                        <TableCell>
+                                            {isOwner && member.id !== currentUser.id ? (
+                                                <Select
+                                                    value={member.role}
+                                                    onChange={(e) => changeRole(member.id, e.target.value)}
+                                                    disabled={updating === member.id}
                                                 >
-                                                    Remove
-                                                </button>
+                                                    <option value="member">Member</option>
+                                                    <option value="admin">Admin</option>
+                                                </Select>
+                                            ) : (
+                                                <Badge color={
+                                                    member.role === 'owner' ? 'yellow' :
+                                                    member.role === 'admin' ? 'blue' : 'zinc'
+                                                }>
+                                                    {member.role}
+                                                </Badge>
                                             )}
                                         </TableCell>
+                                        <TableCell className="text-zinc-500">{member.joined_at}</TableCell>
+                                        <TableCell className="text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                {currentUser.canImpersonate && member.id !== currentUser.id && (
+                                                    <button
+                                                        onClick={() => impersonate(member.id)}
+                                                        className="text-sm font-medium text-indigo-600 hover:text-indigo-800"
+                                                    >
+                                                        Impersonate
+                                                    </button>
+                                                )}
+                                                {canManage && member.id !== currentUser.id && (
+                                                    <button
+                                                        onClick={() => togglePermissions(member.id)}
+                                                        className="text-sm font-medium text-zinc-600 hover:text-zinc-800"
+                                                    >
+                                                        {expandedPermissions === member.id ? 'Close' : 'Permissions'}
+                                                    </button>
+                                                )}
+                                                {isOwner && member.id !== currentUser.id && (
+                                                    <button
+                                                        onClick={() => setConfirmingDelete(member.id)}
+                                                        className="text-sm font-medium text-red-600 hover:text-red-800"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                    {expandedPermissions === member.id && (
+                                        <TableRow key={`perm-${member.id}`}>
+                                            <TableCell colSpan={5} className="bg-zinc-50 dark:bg-zinc-800/50">
+                                                {permissionLoading ? (
+                                                    <Text className="py-2">Loading permissions...</Text>
+                                                ) : permissionData ? (
+                                                    <div className="space-y-3 py-2">
+                                                        <div className="flex items-center justify-between">
+                                                            <Subheading>
+                                                                Permission Overrides for {permissionData.user.name}
+                                                            </Subheading>
+                                                            <Button onClick={() => savePermissions(member.id)} disabled={permissionLoading}>
+                                                                Save
+                                                            </Button>
+                                                        </div>
+                                                        <div className="grid grid-cols-2 gap-2">
+                                                            {permissionData.availablePermissions.map((perm) => {
+                                                                const override = permissionData.overrides.find(o => o.permission === perm);
+                                                                const state = override ? (override.granted ? 'granted' : 'revoked') : 'inherit';
+                                                                return (
+                                                                    <div key={perm} className="flex items-center justify-between rounded-lg border border-zinc-950/5 px-3 py-2 dark:border-white/10">
+                                                                        <div>
+                                                                            <Text className="text-sm font-medium">{perm}</Text>
+                                                                            <Text className="text-xs">
+                                                                                {state === 'granted' ? (
+                                                                                    <span className="text-green-600">Granted (override)</span>
+                                                                                ) : state === 'revoked' ? (
+                                                                                    <span className="text-red-600">Revoked (override)</span>
+                                                                                ) : (
+                                                                                    <span className="text-zinc-400">Inherited</span>
+                                                                                )}
+                                                                            </Text>
+                                                                        </div>
+                                                                        <div className="flex gap-1">
+                                                                            <button
+                                                                                onClick={() => toggleOverride(perm, true)}
+                                                                                className={`rounded px-2 py-1 text-xs font-medium ${
+                                                                                    state === 'granted'
+                                                                                        ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                                                                                        : 'bg-zinc-100 text-zinc-500 hover:bg-green-50 hover:text-green-600 dark:bg-zinc-800 dark:hover:bg-green-900/20'
+                                                                                }`}
+                                                                            >
+                                                                                Grant
+                                                                            </button>
+                                                                            <button
+                                                                                onClick={() => toggleOverride(perm, false)}
+                                                                                className={`rounded px-2 py-1 text-xs font-medium ${
+                                                                                    state === 'revoked'
+                                                                                        ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
+                                                                                        : 'bg-zinc-100 text-zinc-500 hover:bg-red-50 hover:text-red-600 dark:bg-zinc-800 dark:hover:bg-red-900/20'
+                                                                                }`}
+                                                                            >
+                                                                                Revoke
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <Text className="py-2 text-red-500">Failed to load permissions.</Text>
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
                                     )}
-                                </TableRow>
+                                </>
                             ))}
                         </TableBody>
                     </Table>
