@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Infrastructure\Persistence\Eloquent\Webhook\WebhookDeliveryModel;
 use App\Infrastructure\Persistence\Eloquent\Webhook\WebhookDestinationModel;
+use App\Services\WebhookSigner;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -33,11 +34,21 @@ class DispatchWebhookJob implements ShouldQueue
 
     public function handle(): void
     {
+        $payload = json_encode($this->payload);
+        $headers = [
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'VoiceAI-Webhook/1.0',
+        ];
+
+        $secret = $this->webhook->settings['signing_secret'] ?? null;
+        if ($secret !== null) {
+            $signer = new WebhookSigner;
+            $signHeaders = $signer->signatureHeader($payload, $secret);
+            $headers = array_merge($headers, $signHeaders);
+        }
+
         $response = Http::timeout(8)
-            ->withHeaders([
-                'Content-Type' => 'application/json',
-                'User-Agent' => 'VoiceAI-Webhook/1.0',
-            ])
+            ->withHeaders($headers)
             ->post($this->webhook->url, $this->payload);
 
         WebhookDeliveryModel::create([

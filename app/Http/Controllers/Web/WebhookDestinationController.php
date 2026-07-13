@@ -37,13 +37,20 @@ class WebhookDestinationController extends Controller
             'events' => ['required', 'array', 'min:1'],
             'events.*' => ['required', 'string', 'in:call.initiated,call.in_progress,call.completed,call.failed,call.transferred'],
             'description' => ['nullable', 'string', 'max:255'],
+            'sign_secret' => ['nullable', 'string', 'max:255'],
         ]);
+
+        $settings = [];
+        if (! empty($validated['sign_secret'] ?? null)) {
+            $settings['signing_secret'] = $validated['sign_secret'];
+        }
 
         WebhookDestinationModel::create([
             'tenant_id' => $request->user()->tenant_id,
             'url' => $validated['url'],
             'events' => $validated['events'],
             'description' => $validated['description'] ?? null,
+            'settings' => $settings,
         ]);
 
         return redirect()->route('settings.webhooks.index')

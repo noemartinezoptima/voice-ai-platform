@@ -66,6 +66,7 @@ export default function Index({ webhooks }) {
     const [showForm, setShowForm] = useState(false);
     const [url, setUrl] = useState('');
     const [description, setDescription] = useState('');
+    const [signingSecret, setSigningSecret] = useState('');
     const [events, setEvents] = useState(['call.completed']);
     const [urlError, setUrlError] = useState('');
     const [expandedId, setExpandedId] = useState(null);
@@ -90,8 +91,8 @@ export default function Index({ webhooks }) {
     function handleSubmit(e) {
         e.preventDefault();
         if (urlError) return;
-        router.post(store().url, { url, description, events }, {
-            onSuccess: () => { setShowForm(false); setUrl(''); setDescription(''); setEvents(['call.completed']); setUrlError(''); },
+        router.post(store().url, { url, description, sign_secret: signingSecret, events }, {
+            onSuccess: () => { setShowForm(false); setUrl(''); setDescription(''); setSigningSecret(''); setEvents(['call.completed']); setUrlError(''); },
         });
     }
 
@@ -145,6 +146,10 @@ export default function Index({ webhooks }) {
                         <div>
                             <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">Description</label>
                             <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Optional description" />
+                        </div>
+                        <div>
+                            <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">Signing Secret</label>
+                            <Input type="password" value={signingSecret} onChange={(e) => setSigningSecret(e.target.value)} placeholder="HMAC secret for payload verification" />
                         </div>
                         <div>
                             <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">Events</label>

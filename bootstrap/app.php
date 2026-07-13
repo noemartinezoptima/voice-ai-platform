@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\CheckTokenExpiry;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\IpAllowlist;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\ValidateTwilioRequest;
 use App\Infrastructure\Persistence\Eloquent\ErrorEventModel;
@@ -37,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'twilio.verify' => ValidateTwilioRequest::class,
             'token.expiry' => CheckTokenExpiry::class,
+            'ip.allowlist' => IpAllowlist::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [
