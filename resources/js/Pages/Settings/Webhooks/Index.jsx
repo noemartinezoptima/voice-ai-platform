@@ -5,10 +5,9 @@ import { Heading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
 import { Button } from '@/Components/catalyst/button';
 import { Input } from '@/Components/catalyst/input';
-import { Select } from '@/Components/catalyst/select';
 import { Badge } from '@/Components/catalyst/badge';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
-import { index, store, update, destroy } from '@/actions/App/Http/Controllers/Web/WebhookDestinationController';
+import { index, store, update, destroy, test } from '@/actions/App/Http/Controllers/Web/WebhookDestinationController';
 
 const EVENT_OPTIONS = [
     { value: 'call.initiated', label: 'Call Initiated' },
@@ -18,12 +17,58 @@ const EVENT_OPTIONS = [
     { value: 'call.transferred', label: 'Call Transferred' },
 ];
 
+const STATUS_COLORS = {
+    success: 'emerald',
+    failed: 'red',
+    pending: 'amber',
+    dead: 'zinc',
+};
+
+function DeliveryRow({ delivery }) {
+    const [showBody, setShowBody] = useState(false);
+
+    return (
+        <>
+            <TableRow key={delivery.id}>
+                <TableCell>
+                    <Badge color={STATUS_COLORS[delivery.status] || 'zinc'}>{delivery.status}</Badge>
+                </TableCell>
+                <TableCell>{delivery.event}</TableCell>
+                <TableCell>{delivery.response_code}</TableCell>
+                <TableCell>#{delivery.attempt}</TableCell>
+                <TableCell className="text-xs text-zinc-500">{new Date(delivery.created_at).toLocaleString()}</TableCell>
+                <TableCell>
+                    {delivery.response_body && (
+                        <button
+                            type="button"
+                            onClick={() => setShowBody(!showBody)}
+                            className="text-xs text-indigo-600 hover:underline dark:text-indigo-400"
+                        >
+                            {showBody ? 'Hide' : 'View'} body
+                        </button>
+                    )}
+                </TableCell>
+            </TableRow>
+            {showBody && delivery.response_body && (
+                <TableRow>
+                    <TableCell colSpan={6} className="bg-zinc-50 dark:bg-zinc-800/50">
+                        <pre className="max-h-48 overflow-auto text-xs whitespace-pre-wrap text-zinc-700 dark:text-zinc-300">
+                            {delivery.response_body}
+                        </pre>
+                    </TableCell>
+                </TableRow>
+            )}
+        </>
+    );
+}
+
 export default function Index({ webhooks }) {
     const [showForm, setShowForm] = useState(false);
     const [url, setUrl] = useState('');
     const [description, setDescription] = useState('');
     const [events, setEvents] = useState(['call.completed']);
     const [urlError, setUrlError] = useState('');
+    const [expandedId, setExpandedId] = useState(null);
 
     function validateUrl(value) {
         setUrl(value);
@@ -63,6 +108,10 @@ export default function Index({ webhooks }) {
             description: webhook.description,
             is_active: !webhook.is_active,
         });
+    }
+
+    function handleTest(webhook) {
+        router.post(test({webhook: webhook.id}).url);
     }
 
     return (
@@ -136,36 +185,86 @@ export default function Index({ webhooks }) {
                                 <TableHeader>URL</TableHeader>
                                 <TableHeader>Events</TableHeader>
                                 <TableHeader>Status</TableHeader>
+                                <TableHeader>Deliveries</TableHeader>
                                 <TableHeader className="text-right" />
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {webhooks.map((wh) => (
-                                <TableRow key={wh.id}>
-                                    <TableCell className="max-w-xs truncate font-medium">{wh.url}</TableCell>
-                                    <TableCell>
-                                        <div className="flex flex-wrap gap-1">
-                                            {wh.events.map((e) => (
-                                                <Badge key={e} color="zinc">{e}</Badge>
-                                            ))}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Badge color={wh.is_active ? 'emerald' : 'zinc'}>
-                                            {wh.is_active ? 'Active' : 'Inactive'}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Button outline onClick={() => toggleActive(wh)}>
-                                                {wh.is_active ? 'Deactivate' : 'Activate'}
-                                            </Button>
-                                            <Button outline onClick={() => handleDelete(wh.id)}>
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
+                                <>
+                                    <TableRow key={wh.id} className={expandedId === wh.id ? 'border-b-0' : ''}>
+                                        <TableCell className="max-w-xs truncate font-medium">
+                                            <button
+                                                type="button"
+                                                onClick={() => setExpandedId(expandedId === wh.id ? null : wh.id)}
+                                                className="hover:underline text-left"
+                                            >
+                                                {wh.url}
+                                            </button>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex flex-wrap gap-1">
+                                                {wh.events.map((e) => (
+                                                    <Badge key={e} color="zinc">{e}</Badge>
+                                                ))}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge color={wh.is_active ? 'emerald' : 'zinc'}>
+                                                {wh.is_active ? 'Active' : 'Inactive'}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge color="zinc">{wh.deliveries_count ?? 0}</Badge>
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                            <div className="flex justify-end gap-2">
+                                                <Button outline onClick={() => handleTest(wh)}>
+                                                    Test
+                                                </Button>
+                                                <Button outline onClick={() => toggleActive(wh)}>
+                                                    {wh.is_active ? 'Deactivate' : 'Activate'}
+                                                </Button>
+                                                <Button outline onClick={() => handleDelete(wh.id)}>
+                                                    Delete
+                                                </Button>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                    {expandedId === wh.id && wh.deliveries && wh.deliveries.length > 0 && (
+                                        <TableRow>
+                                            <TableCell colSpan={5} className="bg-zinc-50 dark:bg-zinc-800/30 p-0">
+                                                <div className="p-3">
+                                                    <Text className="mb-2 text-xs font-semibold uppercase tracking-wider">Recent Deliveries</Text>
+                                                    <Table dense>
+                                                        <TableHead>
+                                                            <TableRow>
+                                                                <TableHeader>Status</TableHeader>
+                                                                <TableHeader>Event</TableHeader>
+                                                                <TableHeader>Code</TableHeader>
+                                                                <TableHeader>Attempt</TableHeader>
+                                                                <TableHeader>Time</TableHeader>
+                                                                <TableHeader>Body</TableHeader>
+                                                            </TableRow>
+                                                        </TableHead>
+                                                        <TableBody>
+                                                            {wh.deliveries.map((d) => (
+                                                                <DeliveryRow key={d.id} delivery={d} />
+                                                            ))}
+                                                        </TableBody>
+                                                    </Table>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                    {expandedId === wh.id && (!wh.deliveries || wh.deliveries.length === 0) && (
+                                        <TableRow>
+                                            <TableCell colSpan={5} className="bg-zinc-50 dark:bg-zinc-800/30">
+                                                <Text className="py-3 text-center text-xs text-zinc-500">No deliveries yet.</Text>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </>
                             ))}
                         </TableBody>
                     </Table>

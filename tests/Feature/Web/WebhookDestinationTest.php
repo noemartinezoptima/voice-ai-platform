@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Web;
 
+use App\Jobs\DispatchWebhookJob;
 use App\Models\User;
 use Database\Factories\TenantFactory;
 use Database\Factories\WebhookDestinationModelFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class WebhookDestinationTest extends TestCase
@@ -94,5 +96,76 @@ class WebhookDestinationTest extends TestCase
         $this->actingAs($this->user)
             ->delete("/settings/webhooks/{$webhook->id}")
             ->assertNotFound();
+    }
+
+    public function test_delivery_log_is_visible(): void
+    {
+        $webhook = WebhookDestinationModelFactory::new()->create([
+            'tenant_id' => $this->user->tenant_id,
+        ]);
+
+        $webhook->deliveries()->create([
+            'event' => 'call.completed',
+            'payload' => ['event' => 'call.completed', 'data' => []],
+            'status' => 'success',
+            'response_code' => 200,
+            'response_body' => 'ok',
+            'attempt' => 1,
+        ]);
+
+        $this->actingAs($this->user)
+            ->get('/settings/webhooks')
+            ->assertOk()
+            ->assertInertia(function ($page) {
+                $webhooks = $page->toArray()['props']['webhooks'];
+                $this->assertCount(1, $webhooks);
+                $this->assertNotEmpty($webhooks[0]['deliveries']);
+                $this->assertEquals('success', $webhooks[0]['deliveries'][0]['status']);
+            });
+    }
+
+    public function test_test_webhook_dispatches_job(): void
+    {
+        Queue::fake();
+
+        $webhook = WebhookDestinationModelFactory::new()->create([
+            'tenant_id' => $this->user->tenant_id,
+        ]);
+
+        $this->actingAs($this->user)
+            ->post("/settings/webhooks/{$webhook->id}/test")
+            ->assertRedirect('/settings/webhooks');
+
+        Queue::assertPushed(DispatchWebhookJob::class, function ($job) {
+            $ref = new \ReflectionProperty($job, 'event');
+
+            return $ref->getValue($job) === 'test.ping';
+        });
+    }
+
+    public function test_delivery_records_failure(): void
+    {
+        $webhook = WebhookDestinationModelFactory::new()->create([
+            'tenant_id' => $this->user->tenant_id,
+        ]);
+
+        $webhook->deliveries()->create([
+            'event' => 'call.completed',
+            'payload' => ['event' => 'call.completed', 'data' => []],
+            'status' => 'failed',
+            'response_code' => 500,
+            'response_body' => 'Internal Server Error',
+            'attempt' => 2,
+            'next_attempt_at' => now()->addMinutes(5),
+        ]);
+
+        $this->actingAs($this->user)
+            ->get('/settings/webhooks')
+            ->assertOk()
+            ->assertInertia(function ($page) {
+                $webhooks = $page->toArray()['props']['webhooks'];
+                $this->assertEquals('failed', $webhooks[0]['deliveries'][0]['status']);
+                $this->assertEquals(500, $webhooks[0]['deliveries'][0]['response_code']);
+            });
     }
 }

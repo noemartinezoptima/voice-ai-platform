@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Webhook\WebhookDestinationModel;
+use App\Jobs\DispatchWebhookJob;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -16,6 +17,10 @@ class WebhookDestinationController extends Controller
     {
         Gate::authorize('manageWebhooks');
         $webhooks = WebhookDestinationModel::where('tenant_id', $request->user()->tenant_id)
+            ->with(['deliveries' => function ($query) {
+                $query->latest()->limit(10);
+            }])
+            ->withCount('deliveries')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -76,5 +81,19 @@ class WebhookDestinationController extends Controller
 
         return redirect()->route('settings.webhooks.index')
             ->with('success', 'Webhook destination removed.');
+    }
+
+    public function test(Request $request, WebhookDestinationModel $webhook): RedirectResponse
+    {
+        abort_if($webhook->tenant_id !== $request->user()->tenant_id, 404);
+
+        DispatchWebhookJob::dispatch($webhook, [
+            'event' => 'test.ping',
+            'timestamp' => now()->toIso8601String(),
+            'data' => ['message' => 'Webhook test from Voice AI Platform'],
+        ], 'test.ping');
+
+        return redirect()->route('settings.webhooks.index')
+            ->with('success', 'Test webhook dispatched.');
     }
 }

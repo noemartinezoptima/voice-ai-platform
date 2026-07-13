@@ -153,6 +153,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/settings/webhooks', [WebhookDestinationController::class, 'store'])->name('settings.webhooks.store');
     Route::patch('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'update'])->name('settings.webhooks.update');
     Route::delete('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'destroy'])->name('settings.webhooks.destroy');
+    Route::post('/settings/webhooks/{webhook}/test', [WebhookDestinationController::class, 'test'])->name('settings.webhooks.test');
 
     Route::get('/settings/activity', [ActivityLogController::class, 'index'])->name('settings.activity.index');
 

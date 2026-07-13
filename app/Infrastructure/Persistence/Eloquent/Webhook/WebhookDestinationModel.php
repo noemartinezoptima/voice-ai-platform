@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -57,6 +58,12 @@ class WebhookDestinationModel extends Model
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(TenantModel::class);
+    }
+
+    /** @return HasMany<WebhookDeliveryModel, *> */
+    public function deliveries(): HasMany
+    {
+        return $this->hasMany(WebhookDeliveryModel::class, 'webhook_destination_id');
     }
 
     protected static function newFactory(): WebhookDestinationModelFactory

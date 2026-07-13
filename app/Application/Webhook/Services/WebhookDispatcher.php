@@ -21,7 +21,7 @@ class WebhookDispatcher
         ];
 
         foreach ($webhooks as $webhook) {
-            DispatchWebhookJob::dispatch($webhook, $payload);
+            DispatchWebhookJob::dispatch($webhook, $payload, $event);
         }
     }
 }
