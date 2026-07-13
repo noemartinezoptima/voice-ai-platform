@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\AnalyticsController::exportMethod
-* @see app/Http/Controllers/Web/AnalyticsController.php:108
+* @see app/Http/Controllers/Web/AnalyticsController.php:110
 * @route '/analytics/export/csv'
 */
 export const exportMethod = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -60,7 +60,7 @@ exportMethod.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\AnalyticsController::exportMethod
-* @see app/Http/Controllers/Web/AnalyticsController.php:108
+* @see app/Http/Controllers/Web/AnalyticsController.php:110
 * @route '/analytics/export/csv'
 */
 exportMethod.url = (options?: RouteQueryOptions) => {
@@ -69,7 +69,7 @@ exportMethod.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\AnalyticsController::exportMethod
-* @see app/Http/Controllers/Web/AnalyticsController.php:108
+* @see app/Http/Controllers/Web/AnalyticsController.php:110
 * @route '/analytics/export/csv'
 */
 exportMethod.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -79,7 +79,7 @@ exportMethod.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\AnalyticsController::exportMethod
-* @see app/Http/Controllers/Web/AnalyticsController.php:108
+* @see app/Http/Controllers/Web/AnalyticsController.php:110
 * @route '/analytics/export/csv'
 */
 exportMethod.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({

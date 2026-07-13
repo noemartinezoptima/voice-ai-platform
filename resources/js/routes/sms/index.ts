@@ -1,4 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../wayfinder'
+import autoReplies from './auto-replies'
+import campaigns from './campaigns'
 /**
 * @see \App\Http\Controllers\Web\SmsController::index
 * @see app/Http/Controllers/Web/SmsController.php:21
@@ -80,6 +82,8 @@ send.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 const sms = {
     index: Object.assign(index, index),
     send: Object.assign(send, send),
+    autoReplies: Object.assign(autoReplies, autoReplies),
+    campaigns: Object.assign(campaigns, campaigns),
 }
 
 export default sms

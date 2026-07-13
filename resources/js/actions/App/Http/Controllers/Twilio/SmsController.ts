@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Twilio\SmsController::inbound
-* @see app/Http/Controllers/Twilio/SmsController.php:13
+* @see app/Http/Controllers/Twilio/SmsController.php:15
 * @route '/twilio/sms/inbound'
 */
 export const inbound = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ inbound.definition = {
 
 /**
 * @see \App\Http\Controllers\Twilio\SmsController::inbound
-* @see app/Http/Controllers/Twilio/SmsController.php:13
+* @see app/Http/Controllers/Twilio/SmsController.php:15
 * @route '/twilio/sms/inbound'
 */
 inbound.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ inbound.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Twilio\SmsController::inbound
-* @see app/Http/Controllers/Twilio/SmsController.php:13
+* @see app/Http/Controllers/Twilio/SmsController.php:15
 * @route '/twilio/sms/inbound'
 */
 inbound.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

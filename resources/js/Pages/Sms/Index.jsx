@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm, router } from '@inertiajs/react';
+import { Head, useForm, router, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { Heading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
@@ -12,7 +12,7 @@ import { Field, Label, ErrorMessage } from '@/Components/catalyst/fieldset';
 import { Input } from '@/Components/catalyst/input';
 import { Select } from '@/Components/catalyst/select';
 import { Textarea } from '@/Components/catalyst/textarea';
-import { MessageCircle, MessageSquare, Plus } from 'lucide-react';
+import { MessageCircle, MessageSquare, Plus, Reply, Megaphone } from 'lucide-react';
 import { send } from '@/actions/App/Http/Controllers/Web/SmsController';
 
 export default function Index({ messages, whatsapp_phone_number }) {
@@ -69,6 +69,18 @@ export default function Index({ messages, whatsapp_phone_number }) {
                     )}
                 </div>
                 <div className="flex items-center gap-2">
+                    <Link href="/sms/auto-replies">
+                        <Button outline>
+                            <Reply className="size-4" />
+                            Auto-Replies
+                        </Button>
+                    </Link>
+                    <Link href="/sms/campaigns">
+                        <Button outline>
+                            <Megaphone className="size-4" />
+                            Campaigns
+                        </Button>
+                    </Link>
                     {whatsapp_phone_number && (
                         <Button outline onClick={() => openSend('whatsapp')}>
                             <MessageCircle className="size-4" />

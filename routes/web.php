@@ -22,6 +22,8 @@ use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\RecordingController;
 use App\Http\Controllers\Web\RoleController;
+use App\Http\Controllers\Web\SmsAutoReplyController;
+use App\Http\Controllers\Web\SmsCampaignController;
 use App\Http\Controllers\Web\SmsController;
 use App\Http\Controllers\Web\SystemHealthController;
 use App\Http\Controllers\Web\TeamMemberController;
@@ -97,6 +99,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
     Route::post('/sms/send', [SmsController::class, 'send'])->name('sms.send');
+
+    Route::get('/sms/auto-replies', [SmsAutoReplyController::class, 'index'])->name('sms.auto-replies.index');
+    Route::post('/sms/auto-replies', [SmsAutoReplyController::class, 'store'])->name('sms.auto-replies.store');
+    Route::patch('/sms/auto-replies/{sms_auto_reply}', [SmsAutoReplyController::class, 'update'])->name('sms.auto-replies.update');
+    Route::delete('/sms/auto-replies/{sms_auto_reply}', [SmsAutoReplyController::class, 'destroy'])->name('sms.auto-replies.destroy');
+
+    Route::get('/sms/campaigns', [SmsCampaignController::class, 'index'])->name('sms.campaigns.index');
+    Route::post('/sms/campaigns', [SmsCampaignController::class, 'store'])->name('sms.campaigns.store');
+    Route::post('/sms/campaigns/{sms_campaign}/send', [SmsCampaignController::class, 'send'])->name('sms.campaigns.send');
+    Route::delete('/sms/campaigns/{sms_campaign}', [SmsCampaignController::class, 'destroy'])->name('sms.campaigns.destroy');
 
     Route::get('/billing', [BillingController::class, 'index'])->name('billing.index');
     Route::patch('/billing/plan', [BillingController::class, 'updatePlan'])->name('billing.update');

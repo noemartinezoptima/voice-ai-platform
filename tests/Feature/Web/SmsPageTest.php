@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Web;
 
+use App\Infrastructure\Persistence\Eloquent\Sms\SmsAutoReplyModel;
 use App\Models\User;
 use Database\Factories\SmsMessageModelFactory;
 use Database\Factories\TenantFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class SmsPageTest extends TestCase
@@ -165,5 +167,86 @@ class SmsPageTest extends TestCase
             'channel' => 'whatsapp',
             'direction' => 'outbound',
         ]);
+    }
+
+    public function test_inbound_triggers_auto_reply(): void
+    {
+        Http::fake([
+            'api.twilio.com/*' => Http::response(['sid' => 'SM99999'], 200),
+        ]);
+
+        SmsAutoReplyModel::create([
+            'tenant_id' => $this->user->tenant_id,
+            'keyword' => 'HELP',
+            'reply_text' => 'We are here to help!',
+            'match_type' => 'contains',
+            'is_active' => true,
+        ]);
+
+        $this->post('/twilio/sms/inbound', [
+            'From' => '+15551112222',
+            'To' => '+15551234567',
+            'Body' => 'I need HELP please',
+            'MessageSid' => 'SM001',
+        ])
+            ->assertOk();
+
+        $this->assertDatabaseHas('sms_messages', [
+            'tenant_id' => $this->user->tenant_id,
+            'from_number' => '+15551112222',
+            'body' => 'I need HELP please',
+            'direction' => 'inbound',
+            'status' => 'received',
+        ]);
+
+        $this->assertDatabaseHas('sms_messages', [
+            'tenant_id' => $this->user->tenant_id,
+            'to_number' => '+15551112222',
+            'body' => 'We are here to help!',
+            'direction' => 'outbound',
+            'status' => 'sent',
+        ]);
+    }
+
+    public function test_inbound_skips_inactive_auto_reply(): void
+    {
+        Http::fake([
+            'api.twilio.com/*' => Http::response(['sid' => 'SM99999'], 200),
+        ]);
+
+        SmsAutoReplyModel::create([
+            'tenant_id' => $this->user->tenant_id,
+            'keyword' => 'HELP',
+            'reply_text' => 'Should not send',
+            'match_type' => 'contains',
+            'is_active' => false,
+        ]);
+
+        $this->post('/twilio/sms/inbound', [
+            'From' => '+15551112222',
+            'To' => '+15551234567',
+            'Body' => 'I need HELP',
+            'MessageSid' => 'SM002',
+        ])
+            ->assertOk();
+
+        $this->assertDatabaseMissing('sms_messages', [
+            'body' => 'Should not send',
+            'direction' => 'outbound',
+        ]);
+    }
+
+    public function test_auto_replies_index_renders(): void
+    {
+        $this->actingAs($this->user)
+            ->get('/sms/auto-replies')
+            ->assertOk();
+    }
+
+    public function test_campaigns_index_renders(): void
+    {
+        $this->actingAs($this->user)
+            ->get('/sms/campaigns')
+            ->assertOk();
     }
 }
