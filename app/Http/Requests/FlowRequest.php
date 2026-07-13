@@ -21,6 +21,7 @@ class FlowRequest extends FormRequest
             'is_active' => ['boolean'],
             'config' => ['nullable', 'json'],
             'template_id' => ['nullable', 'string', 'max:50'],
+            'change_description' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }

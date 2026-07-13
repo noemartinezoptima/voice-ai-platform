@@ -16,6 +16,7 @@ use App\Http\Controllers\Web\DataProtectionController;
 use App\Http\Controllers\Web\DocumentsController;
 use App\Http\Controllers\Web\ElevenLabsAgentController;
 use App\Http\Controllers\Web\ElevenLabsConnectController;
+use App\Http\Controllers\Web\FlowCommentController;
 use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\GettingStartedController;
 use App\Http\Controllers\Web\MonitorController;
@@ -89,6 +90,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/flows/{flow}/export', [FlowController::class, 'export'])->name('flows.export');
     Route::post('/flows/import', [FlowController::class, 'import'])->name('flows.import');
     Route::delete('/flows/{flow}', [FlowController::class, 'destroy'])->name('flows.destroy');
+    Route::get('/flows/{flow}/comments', [FlowCommentController::class, 'index'])->name('flows.comments.index');
+    Route::post('/flows/{flow}/comments', [FlowCommentController::class, 'store'])->name('flows.comments.store');
+    Route::get('/flows/{flow}/versions', [FlowController::class, 'versions'])->name('flows.versions');
+    Route::post('/flows/{flow}/versions/{version}/restore', [FlowController::class, 'restore'])->name('flows.versions.restore');
 
     Route::get('/transcripts', [TranscriptSearchController::class, 'index'])->name('transcripts.index');
     Route::get('/transcripts/export/csv', [TranscriptSearchController::class, 'export'])->name('transcripts.export');

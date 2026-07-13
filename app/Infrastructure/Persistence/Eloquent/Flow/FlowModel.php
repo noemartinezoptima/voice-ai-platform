@@ -33,6 +33,11 @@ class FlowModel extends Model
 
     protected $table = 'flows';
 
+    protected static function newFactory(): FlowModelFactory
+    {
+        return FlowModelFactory::new();
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

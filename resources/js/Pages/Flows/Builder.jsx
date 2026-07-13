@@ -5,12 +5,20 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FlowBuilderComponent from '@/Components/FlowBuilder';
+import FlowCommentPanel from '@/Components/FlowCommentPanel';
+import FlowVersionPanel from '@/Components/FlowVersionPanel';
 import { Heading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
 import { Button } from '@/Components/catalyst/button';
 import { Input } from '@/Components/catalyst/input';
 import { Alert, AlertTitle, AlertDescription, AlertActions, AlertBody } from '@/Components/catalyst/alert';
 import { update } from '@/actions/App/Http/Controllers/Web/FlowController';
+
+const TABS = {
+  builder: 'Builder',
+  comments: 'Comments',
+  history: 'History',
+};
 
 export default function Builder({ flow }) {
   const [config, setConfig] = useState(flow.config);
@@ -19,6 +27,7 @@ export default function Builder({ flow }) {
   const [testPhone, setTestPhone] = useState('');
   const [showTestModal, setShowTestModal] = useState(false);
   const [dirty, setDirty] = useState(false);
+  const [activeTab, setActiveTab] = useState('builder');
   const dirtyRef = useRef(false);
   const builderRef = useRef(null);
 
@@ -102,35 +111,66 @@ export default function Builder({ flow }) {
 
       <div className="mt-4 flex h-[calc(100vh-12rem)] flex-col">
         <div className="mb-3 flex items-center justify-between">
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Drag steps from the toolbox onto the canvas. Connect them by dragging from the bottom handle of a step.
-          </p>
+          <div className="flex items-center gap-1 rounded-lg bg-zinc-100 p-0.5 dark:bg-zinc-800">
+            {Object.entries(TABS).map(([key, label]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setActiveTab(key)}
+                className={`rounded-md px-4 py-1.5 text-sm font-medium transition ${
+                  activeTab === key
+                    ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-zinc-100'
+                    : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
           <div className="flex items-center gap-2">
-            {dirty && (
+            {dirty && activeTab === 'builder' && (
               <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
                 <span className="size-1.5 rounded-full bg-amber-500" />
                 Unsaved
               </span>
             )}
-            <Button outline onClick={() => setShowTestModal(true)}>
-              <Phone className="size-4" />
-              Test Flow
-            </Button>
-            <Button onClick={handleSave} disabled={saving}>
-              {saving ? 'Saving...' : 'Save Flow'}
-            </Button>
+            {activeTab === 'builder' && (
+              <>
+                <Button outline onClick={() => setShowTestModal(true)}>
+                  <Phone className="size-4" />
+                  Test Flow
+                </Button>
+                <Button onClick={handleSave} disabled={saving}>
+                  {saving ? 'Saving...' : 'Save Flow'}
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
-        <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-white/10 dark:bg-zinc-900">
-          <FlowBuilderComponent
-            ref={builderRef}
-            config={config}
-            onConfigChange={handleConfigChange}
-            onDirty={handleDirty}
-            onSave={handleSave}
-          />
-        </div>
+        {activeTab === 'builder' && (
+          <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-white/10 dark:bg-zinc-900">
+            <FlowBuilderComponent
+              ref={builderRef}
+              config={config}
+              onConfigChange={handleConfigChange}
+              onDirty={handleDirty}
+              onSave={handleSave}
+            />
+          </div>
+        )}
+
+        {activeTab === 'comments' && (
+          <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-white/10 dark:bg-zinc-900">
+            <FlowCommentPanel flowId={flow.id} />
+          </div>
+        )}
+
+        {activeTab === 'history' && (
+          <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-white/10 dark:bg-zinc-900">
+            <FlowVersionPanel flowId={flow.id} />
+          </div>
+        )}
       </div>
 
       <Alert open={showTestModal} onClose={() => setShowTestModal(false)}>

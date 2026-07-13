@@ -9,6 +9,7 @@ use App\Domain\Flow\ValueObjects\FlowConfig;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FlowRequest;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
+use App\Infrastructure\Persistence\Eloquent\Flow\FlowVersionModel;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -126,6 +127,19 @@ class FlowController extends Controller
             ? (is_string($request->config) ? json_decode($request->config, true) : $request->config)
             : $flow->getConfig();
 
+        $oldConfig = $flow->getConfig();
+        $configChanged = $request->filled('config') && $oldConfig !== $configData;
+
+        if ($configChanged) {
+            FlowVersionModel::create([
+                'flow_id' => $flow->id(),
+                'user_id' => $request->user()->id,
+                'version' => $flow->version(),
+                'config' => $oldConfig,
+                'change_description' => $request->change_description,
+            ]);
+        }
+
         $updated = new Flow(
             id: $flow->id(),
             tenantId: $flow->tenantId(),
@@ -134,7 +148,7 @@ class FlowController extends Controller
             phoneNumber: $request->phone_number,
             config: FlowConfig::fromArray($configData),
             isActive: $request->boolean('is_active'),
-            version: $flow->version() + ($request->filled('config') ? 1 : 0),
+            version: $flow->version() + ($configChanged ? 1 : 0),
         );
 
         $this->flowRepository->save($updated);
@@ -146,6 +160,61 @@ class FlowController extends Controller
 
         return redirect()->route('flows.index')
             ->with('success', "Flow '{$updated->name()}' updated.");
+    }
+
+    public function versions(Request $request, string $id): JsonResponse
+    {
+        $flow = $this->flowRepository->findById($id);
+
+        if ($flow === null || $flow->tenantId() !== $request->user()->tenant_id) {
+            abort(404);
+        }
+
+        $versions = FlowVersionModel::query()
+            ->where('flow_id', $flow->id())
+            ->with('user:id,name,email')
+            ->orderBy('version', 'desc')
+            ->get();
+
+        return response()->json($versions);
+    }
+
+    public function restore(Request $request, string $id, string $versionId): RedirectResponse
+    {
+        $flow = $this->flowRepository->findById($id);
+
+        if ($flow === null || $flow->tenantId() !== $request->user()->tenant_id) {
+            abort(404);
+        }
+
+        $version = FlowVersionModel::query()
+            ->where('id', $versionId)
+            ->where('flow_id', $id)
+            ->firstOrFail();
+
+        FlowVersionModel::create([
+            'flow_id' => $flow->id(),
+            'user_id' => $request->user()->id,
+            'version' => $flow->version(),
+            'config' => $flow->getConfig(),
+            'change_description' => 'Snapshot before restore to v'.$version->version,
+        ]);
+
+        $restored = new Flow(
+            id: $flow->id(),
+            tenantId: $flow->tenantId(),
+            name: $flow->name(),
+            description: $flow->description(),
+            phoneNumber: $flow->phoneNumber(),
+            config: FlowConfig::fromArray($version->config),
+            isActive: $flow->isActive(),
+            version: $flow->version() + 1,
+        );
+
+        $this->flowRepository->save($restored);
+
+        return redirect()->route('flows.show', $flow->id())
+            ->with('success', "Flow restored to version {$version->version}.");
     }
 
     public function destroy(Request $request, string $id): RedirectResponse
