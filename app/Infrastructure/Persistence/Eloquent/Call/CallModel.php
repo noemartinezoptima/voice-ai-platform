@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property string $id
@@ -91,6 +92,12 @@ class CallModel extends Model
     public function retries(): HasMany
     {
         return $this->hasMany(CallModel::class, 'retry_of_id');
+    }
+
+    /** @return HasOne<CallQualityScoreModel, $this> */
+    public function qualityScore(): HasOne
+    {
+        return $this->hasOne(CallQualityScoreModel::class, 'call_id');
     }
 
     protected function casts(): array

@@ -9,3 +9,4 @@ Schedule::command('elevenlabs:health-check')->weekly();
 Schedule::command('system:health-check')->everyFiveMinutes();
 Schedule::command('tokens:purge-expired')->daily();
 Schedule::command('calls:execute-scheduled')->everyMinute();
+Schedule::command('calls:score-completed')->everyFiveMinutes();

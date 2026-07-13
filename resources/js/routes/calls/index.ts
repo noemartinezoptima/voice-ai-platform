@@ -1,4 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../wayfinder'
+import scheduled89e461 from './scheduled'
 /**
 * @see \App\Http\Controllers\Api\CallController::index
 * @see app/Http/Controllers/Api/CallController.php:17
@@ -212,6 +213,50 @@ show.head = (args: { call: string | number } | [call: string | number ] | string
 })
 
 /**
+* @see \App\Http\Controllers\Web\ScheduledCallController::scheduled
+* @see app/Http/Controllers/Web/ScheduledCallController.php:16
+* @route '/calls/scheduled'
+*/
+export const scheduled = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: scheduled.url(options),
+    method: 'get',
+})
+
+scheduled.definition = {
+    methods: ["get","head"],
+    url: '/calls/scheduled',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\ScheduledCallController::scheduled
+* @see app/Http/Controllers/Web/ScheduledCallController.php:16
+* @route '/calls/scheduled'
+*/
+scheduled.url = (options?: RouteQueryOptions) => {
+    return scheduled.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\ScheduledCallController::scheduled
+* @see app/Http/Controllers/Web/ScheduledCallController.php:16
+* @route '/calls/scheduled'
+*/
+scheduled.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: scheduled.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\ScheduledCallController::scheduled
+* @see app/Http/Controllers/Web/ScheduledCallController.php:16
+* @route '/calls/scheduled'
+*/
+scheduled.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: scheduled.url(options),
+    method: 'head',
+})
+
+/**
 * @see \App\Http\Controllers\Web\CallController::exportMethod
 * @see app/Http/Controllers/Web/CallController.php:114
 * @route '/calls/export/csv'
@@ -362,6 +407,7 @@ retry.post = (args: { call: string | number } | [call: string | number ] | strin
 const calls = {
     index: Object.assign(index, index),
     show: Object.assign(show, show),
+    scheduled: Object.assign(scheduled, scheduled89e461),
     export: Object.assign(exportMethod, exportMethod),
     notes: Object.assign(notes, notes),
     retry: Object.assign(retry, retry),

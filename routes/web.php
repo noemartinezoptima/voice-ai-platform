@@ -20,6 +20,7 @@ use App\Http\Controllers\Web\FlowController;
 use App\Http\Controllers\Web\GettingStartedController;
 use App\Http\Controllers\Web\MonitorController;
 use App\Http\Controllers\Web\PrivacyController;
+use App\Http\Controllers\Web\QualityController;
 use App\Http\Controllers\Web\RecordingController;
 use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\ScheduledCallController;
@@ -189,6 +190,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('settings.roles');
     Route::patch('/settings/roles/{role}', [RoleController::class, 'update'])
         ->name('settings.roles.update');
+
+    Route::get('/quality', [QualityController::class, 'index'])->name('quality.index');
+    Route::get('/quality/{call}', [QualityController::class, 'show'])->name('quality.show');
 
     Route::get('/getting-started', [GettingStartedController::class, 'index'])
         ->name('getting-started');

@@ -23,6 +23,7 @@ import {
     Server,
     Mic,
     Shield,
+    Award,
 } from 'lucide-react'
 
 import { Sidebar, SidebarHeader, SidebarBody, SidebarFooter, SidebarSection, SidebarItem, SidebarLabel, SidebarSpacer } from '@/Components/catalyst/sidebar'
@@ -55,6 +56,7 @@ const navItems = [
     { label: 'Flows', href: flowsIndex().url, icon: GitBranch, active: 'flows.*' },
     { label: 'Calls', href: callsIndex().url, icon: Phone, active: 'calls.*' },
     { label: 'Transcripts', href: '/transcripts', icon: MessageSquareText, active: 'transcripts.*' },
+    { label: 'Quality', href: '/quality', icon: Award, active: 'quality.*' },
     { label: 'Monitor', href: monitorIndex().url, icon: Radio, active: 'monitor.*' },
     { label: 'SMS', href: smsIndex().url, icon: MessageSquare, active: 'sms.*' },
     { label: 'Team', href: teamIndex().url, icon: Users, active: 'team.*' },

@@ -1,6 +1,7 @@
 import DashboardController from './DashboardController'
 import FlowController from './FlowController'
 import TranscriptSearchController from './TranscriptSearchController'
+import ScheduledCallController from './ScheduledCallController'
 import CallController from './CallController'
 import RecordingController from './RecordingController'
 import MonitorController from './MonitorController'
@@ -24,6 +25,7 @@ import PrivacyController from './PrivacyController'
 import SystemHealthController from './SystemHealthController'
 import AnalyticsController from './AnalyticsController'
 import RoleController from './RoleController'
+import QualityController from './QualityController'
 import GettingStartedController from './GettingStartedController'
 import AcceptInviteController from './AcceptInviteController'
 
@@ -31,6 +33,7 @@ const Web = {
     DashboardController: Object.assign(DashboardController, DashboardController),
     FlowController: Object.assign(FlowController, FlowController),
     TranscriptSearchController: Object.assign(TranscriptSearchController, TranscriptSearchController),
+    ScheduledCallController: Object.assign(ScheduledCallController, ScheduledCallController),
     CallController: Object.assign(CallController, CallController),
     RecordingController: Object.assign(RecordingController, RecordingController),
     MonitorController: Object.assign(MonitorController, MonitorController),
@@ -54,6 +57,7 @@ const Web = {
     SystemHealthController: Object.assign(SystemHealthController, SystemHealthController),
     AnalyticsController: Object.assign(AnalyticsController, AnalyticsController),
     RoleController: Object.assign(RoleController, RoleController),
+    QualityController: Object.assign(QualityController, QualityController),
     GettingStartedController: Object.assign(GettingStartedController, GettingStartedController),
     AcceptInviteController: Object.assign(AcceptInviteController, AcceptInviteController),
 }
