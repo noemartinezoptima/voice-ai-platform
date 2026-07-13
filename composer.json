@@ -88,6 +88,15 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
+        "profile-seed": [
+            "@php artisan db:seed --class=ProfileDataSeeder"
+        ],
+        "perf-test": [
+            "@php artisan test --compact --group=performance"
+        ],
+        "load-test": [
+            "k6 run tests/Load/api-load-test.js"
+        ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ]

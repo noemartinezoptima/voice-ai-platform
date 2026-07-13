@@ -28,6 +28,11 @@ class SmsMessageModel extends Model
     /** @use HasFactory<SmsMessageModelFactory> */
     use HasFactory, HasUuids;
 
+    protected static function newFactory(): SmsMessageModelFactory
+    {
+        return SmsMessageModelFactory::new();
+    }
+
     protected $table = 'sms_messages';
 
     protected $fillable = [
