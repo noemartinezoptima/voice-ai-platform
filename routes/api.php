@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\TenantController;
 use App\Http\Controllers\Api\V2\AnalyticsController as V2AnalyticsController;
 use App\Http\Controllers\Api\V2\CallQualityController as V2CallQualityController;
 use App\Http\Controllers\Api\V2\CallSearchController as V2CallSearchController;
+use App\Http\Controllers\Api\V2\MonitoringController as V2MonitoringController;
 use App\Http\Controllers\Api\V2\TranscriptSearchController as V2TranscriptSearchController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,7 @@ Route::middleware(['token.expiry', 'auth:sanctum', 'throttle:api_tenant'])->pref
     Route::get('calls/{call}/transcript', [CallController::class, 'transcript']);
     Route::get('transcripts/search', [V2TranscriptSearchController::class, 'index']);
     Route::get('analytics/summary', [V2AnalyticsController::class, 'summary']);
+    Route::get('monitoring/health', [V2MonitoringController::class, 'health'])->withoutMiddleware(['auth:sanctum']);
+    Route::get('monitoring/system', [V2MonitoringController::class, 'system']);
     Route::apiResource('tenants', TenantController::class);
 });

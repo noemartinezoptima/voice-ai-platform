@@ -1,4 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
+import deliveries5c6093 from './deliveries'
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::index
 * @see app/Http/Controllers/Web/WebhookDestinationController.php:16
@@ -79,7 +80,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::update
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:53
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:60
 * @route '/settings/webhooks/{webhook}'
 */
 export const update = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -94,7 +95,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::update
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:53
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:60
 * @route '/settings/webhooks/{webhook}'
 */
 update.url = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -121,7 +122,7 @@ update.url = (args: { webhook: string | number } | [webhook: string | number ] |
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::update
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:53
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:60
 * @route '/settings/webhooks/{webhook}'
 */
 update.patch = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -131,7 +132,7 @@ update.patch = (args: { webhook: string | number } | [webhook: string | number ]
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::destroy
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:74
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:81
 * @route '/settings/webhooks/{webhook}'
 */
 export const destroy = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -146,7 +147,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::destroy
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:74
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:81
 * @route '/settings/webhooks/{webhook}'
 */
 destroy.url = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -173,7 +174,7 @@ destroy.url = (args: { webhook: string | number } | [webhook: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::destroy
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:74
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:81
 * @route '/settings/webhooks/{webhook}'
 */
 destroy.delete = (args: { webhook: string | number } | [webhook: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -183,7 +184,7 @@ destroy.delete = (args: { webhook: string | number } | [webhook: string | number
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::test
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:86
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:93
 * @route '/settings/webhooks/{webhook}/test'
 */
 export const test = (args: { webhook: string | { id: string } } | [webhook: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -198,7 +199,7 @@ test.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::test
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:86
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:93
 * @route '/settings/webhooks/{webhook}/test'
 */
 test.url = (args: { webhook: string | { id: string } } | [webhook: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -231,12 +232,56 @@ test.url = (args: { webhook: string | { id: string } } | [webhook: string | { id
 
 /**
 * @see \App\Http\Controllers\Web\WebhookDestinationController::test
-* @see app/Http/Controllers/Web/WebhookDestinationController.php:86
+* @see app/Http/Controllers/Web/WebhookDestinationController.php:93
 * @route '/settings/webhooks/{webhook}/test'
 */
 test.post = (args: { webhook: string | { id: string } } | [webhook: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: test.url(args, options),
     method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Web\WebhookDeliveryController::deliveries
+* @see app/Http/Controllers/Web/WebhookDeliveryController.php:15
+* @route '/settings/webhooks/deliveries'
+*/
+export const deliveries = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: deliveries.url(options),
+    method: 'get',
+})
+
+deliveries.definition = {
+    methods: ["get","head"],
+    url: '/settings/webhooks/deliveries',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\WebhookDeliveryController::deliveries
+* @see app/Http/Controllers/Web/WebhookDeliveryController.php:15
+* @route '/settings/webhooks/deliveries'
+*/
+deliveries.url = (options?: RouteQueryOptions) => {
+    return deliveries.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\WebhookDeliveryController::deliveries
+* @see app/Http/Controllers/Web/WebhookDeliveryController.php:15
+* @route '/settings/webhooks/deliveries'
+*/
+deliveries.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: deliveries.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Web\WebhookDeliveryController::deliveries
+* @see app/Http/Controllers/Web/WebhookDeliveryController.php:15
+* @route '/settings/webhooks/deliveries'
+*/
+deliveries.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: deliveries.url(options),
+    method: 'head',
 })
 
 const webhooks = {
@@ -245,6 +290,7 @@ const webhooks = {
     update: Object.assign(update, update),
     destroy: Object.assign(destroy, destroy),
     test: Object.assign(test, test),
+    deliveries: Object.assign(deliveries, deliveries5c6093),
 }
 
 export default webhooks

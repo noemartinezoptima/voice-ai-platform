@@ -48,6 +48,7 @@ import { tenant as settingsTenant } from '@/routes/settings'
 import { edit as settingsVoice } from '@/actions/App/Http/Controllers/Web/VoiceSettingsController'
 import { index as documentsIndex } from '@/actions/App/Http/Controllers/Web/DocumentsController'
 import { index as webhooksIndex } from '@/actions/App/Http/Controllers/Web/WebhookDestinationController'
+import { index as webhookDeliveriesIndex } from '@/actions/App/Http/Controllers/Web/WebhookDeliveryController'
 import { index as smsIndex } from '@/actions/App/Http/Controllers/Web/SmsController'
 import { index as billingIndex } from '@/actions/App/Http/Controllers/Web/BillingController'
 import { index as activityIndex } from '@/actions/App/Http/Controllers/Web/ActivityLogController'
@@ -72,6 +73,7 @@ const navItems = [
     { label: 'Voices', href: voicesIndex().url, icon: Mic, active: 'settings.voices.*' },
     { label: 'Documents', href: documentsIndex().url, icon: FileText, active: 'settings.documents.*' },
     { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
+    { label: 'Webhook Deliveries', href: webhookDeliveriesIndex().url, icon: Activity, active: 'settings.webhooks.deliveries*' },
     { label: 'Billing', href: billingIndex().url, icon: CreditCard, active: 'billing.*' },
     { label: 'Activity Log', href: activityIndex().url, icon: Activity, active: 'settings.activity.*' },
     { label: 'Errors', href: '/settings/errors', icon: AlertTriangle, active: 'settings.errors.*' },

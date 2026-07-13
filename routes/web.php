@@ -42,6 +42,7 @@ use App\Http\Controllers\Web\TranscriptSearchController;
 use App\Http\Controllers\Web\TwilioOAuthController;
 use App\Http\Controllers\Web\VoiceController;
 use App\Http\Controllers\Web\VoiceSettingsController;
+use App\Http\Controllers\Web\WebhookDeliveryController;
 use App\Http\Controllers\Web\WebhookDestinationController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -181,6 +182,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'update'])->name('settings.webhooks.update');
     Route::delete('/settings/webhooks/{webhook}', [WebhookDestinationController::class, 'destroy'])->name('settings.webhooks.destroy');
     Route::post('/settings/webhooks/{webhook}/test', [WebhookDestinationController::class, 'test'])->name('settings.webhooks.test');
+    Route::get('/settings/webhooks/deliveries', [WebhookDeliveryController::class, 'index'])->name('settings.webhooks.deliveries');
+    Route::get('/settings/webhooks/deliveries/{id}', [WebhookDeliveryController::class, 'show'])->name('settings.webhooks.deliveries.show');
 
     Route::get('/settings/activity', [ActivityLogController::class, 'index'])->name('settings.activity.index');
 

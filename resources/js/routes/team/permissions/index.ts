@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::update
-* @see app/Http/Controllers/Web/TeamMemberController.php:155
+* @see app/Http/Controllers/Web/TeamMemberController.php:174
 * @route '/team/{user}/permissions'
 */
 export const update = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +16,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::update
-* @see app/Http/Controllers/Web/TeamMemberController.php:155
+* @see app/Http/Controllers/Web/TeamMemberController.php:174
 * @route '/team/{user}/permissions'
 */
 update.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ update.url = (args: { user: number | { id: number } } | [user: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\Web\TeamMemberController::update
-* @see app/Http/Controllers/Web/TeamMemberController.php:155
+* @see app/Http/Controllers/Web/TeamMemberController.php:174
 * @route '/team/{user}/permissions'
 */
 update.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({

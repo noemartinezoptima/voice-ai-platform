@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../
 import oauth from './oauth'
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::consentCallback
-* @see app/Http/Controllers/Twilio/WebhookController.php:232
+* @see app/Http/Controllers/Twilio/WebhookController.php:234
 * @route '/twilio/consent-callback'
 */
 export const consentCallback = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -17,7 +17,7 @@ consentCallback.definition = {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::consentCallback
-* @see app/Http/Controllers/Twilio/WebhookController.php:232
+* @see app/Http/Controllers/Twilio/WebhookController.php:234
 * @route '/twilio/consent-callback'
 */
 consentCallback.url = (options?: RouteQueryOptions) => {
@@ -26,7 +26,7 @@ consentCallback.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Twilio\WebhookController::consentCallback
-* @see app/Http/Controllers/Twilio/WebhookController.php:232
+* @see app/Http/Controllers/Twilio/WebhookController.php:234
 * @route '/twilio/consent-callback'
 */
 consentCallback.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

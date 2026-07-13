@@ -1,6 +1,7 @@
 import StripeWebhookController from './StripeWebhookController'
 import DashboardController from './DashboardController'
 import FlowController from './FlowController'
+import FlowTestController from './FlowTestController'
 import FlowCommentController from './FlowCommentController'
 import TranscriptSearchController from './TranscriptSearchController'
 import ScheduledCallController from './ScheduledCallController'
@@ -19,6 +20,7 @@ import VoiceSettingsController from './VoiceSettingsController'
 import VoiceController from './VoiceController'
 import DocumentsController from './DocumentsController'
 import WebhookDestinationController from './WebhookDestinationController'
+import WebhookDeliveryController from './WebhookDeliveryController'
 import ActivityLogController from './ActivityLogController'
 import ErrorMonitoringController from './ErrorMonitoringController'
 import ElevenLabsConnectController from './ElevenLabsConnectController'
@@ -40,6 +42,7 @@ const Web = {
     StripeWebhookController: Object.assign(StripeWebhookController, StripeWebhookController),
     DashboardController: Object.assign(DashboardController, DashboardController),
     FlowController: Object.assign(FlowController, FlowController),
+    FlowTestController: Object.assign(FlowTestController, FlowTestController),
     FlowCommentController: Object.assign(FlowCommentController, FlowCommentController),
     TranscriptSearchController: Object.assign(TranscriptSearchController, TranscriptSearchController),
     ScheduledCallController: Object.assign(ScheduledCallController, ScheduledCallController),
@@ -58,6 +61,7 @@ const Web = {
     VoiceController: Object.assign(VoiceController, VoiceController),
     DocumentsController: Object.assign(DocumentsController, DocumentsController),
     WebhookDestinationController: Object.assign(WebhookDestinationController, WebhookDestinationController),
+    WebhookDeliveryController: Object.assign(WebhookDeliveryController, WebhookDeliveryController),
     ActivityLogController: Object.assign(ActivityLogController, ActivityLogController),
     ErrorMonitoringController: Object.assign(ErrorMonitoringController, ErrorMonitoringController),
     ElevenLabsConnectController: Object.assign(ElevenLabsConnectController, ElevenLabsConnectController),
