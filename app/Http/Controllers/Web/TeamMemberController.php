@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Events\TeamActivity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamRequest;
 use App\Infrastructure\Persistence\Eloquent\Team\TenantInvitationModel;
@@ -90,6 +91,15 @@ class TeamMemberController extends Controller
             ->withProperties(['email' => $request->email])
             ->log(":causer.name invitó a {$request->email}");
 
+        TeamActivity::dispatch(
+            $tenantId,
+            $request->user()->name,
+            'invite',
+            "invited {$request->email} as {$request->role}",
+            null,
+            'invite',
+        );
+
         return back()->with('success', 'Invitation sent to '.$request->email.'.');
     }
 
@@ -112,6 +122,15 @@ class TeamMemberController extends Controller
             ->event('role_changed')
             ->withProperties(['user' => $user->name, 'from' => $currentRole, 'to' => $request->role])
             ->log(":causer.name cambió el rol de {$user->name} de {$currentRole} a {$request->role}");
+
+        TeamActivity::dispatch(
+            $current->tenant_id,
+            $current->name,
+            'role_change',
+            "changed {$user->name}'s role to {$request->role}",
+            null,
+            'role_change',
+        );
 
         return back()->with('success', 'Member role updated.');
     }

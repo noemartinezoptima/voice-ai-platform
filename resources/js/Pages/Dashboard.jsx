@@ -1,4 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ActivityFeed from '@/Components/ActivityFeed';
 import { Head, router, usePage } from '@inertiajs/react';
 import { Heading, Subheading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
@@ -363,6 +364,7 @@ export default function Dashboard({
           )}
         </div>
       </div>
+      <ActivityFeed />
     </AuthenticatedLayout>
   );
 }

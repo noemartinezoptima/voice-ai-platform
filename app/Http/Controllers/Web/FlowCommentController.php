@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Events\TeamActivity;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowCommentModel;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
 use App\Infrastructure\Persistence\Eloquent\UserNotificationModel;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -47,6 +49,15 @@ class FlowCommentController
         ]);
 
         $comment->load('user:id,name,email');
+
+        TeamActivity::dispatch(
+            $request->user()->tenant_id,
+            $request->user()->name,
+            'comment',
+            "commented on {$flowModel->name}",
+            "/flows/{$flowModel->id}",
+            'comment',
+        );
 
         if ($request->parent_id) {
             $comment->load('parent.user:id,name,email');

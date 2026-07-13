@@ -6,6 +6,7 @@ use App\Domain\Flow\Entities\Flow;
 use App\Domain\Flow\Repositories\FlowRepositoryInterface;
 use App\Domain\Flow\Services\FlowTemplates;
 use App\Domain\Flow\ValueObjects\FlowConfig;
+use App\Events\TeamActivity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FlowRequest;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
