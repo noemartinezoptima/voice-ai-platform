@@ -110,8 +110,9 @@ jobs:
           DB_DATABASE: test
           DB_USERNAME: test
           DB_PASSWORD: test
+          APP_KEY: base64:bg/2bc+wbm6AkWqIDaQpKMbndn6WutEm/eL9x9wXkGU=
 
-      - run: php artisan test --compact --parallel
+      - run: php artisan test --compact
         env:
           DB_CONNECTION: pgsql
           DB_HOST: localhost
@@ -119,6 +120,7 @@ jobs:
           DB_DATABASE: test
           DB_USERNAME: test
           DB_PASSWORD: test
+          APP_KEY: base64:bg/2bc+wbm6AkWqIDaQpKMbndn6WutEm/eL9x9wXkGU=
 
       - name: Upload test artifacts
         if: failure()
