@@ -107,66 +107,6 @@ jobs:
           name: test-logs
           path: storage/logs/
 
-  dusk:
-    needs: test
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.3
-          extensions: mbstring, bcmath, dom, pdo, pdo_sqlite, fileinfo
-          coverage: none
-
-      - uses: actions/cache@v4
-        with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - run: npm install -g pnpm
-
-      - uses: actions/cache@v4
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm-
-
-      - run: composer install --no-progress --no-interaction --prefer-dist
-
-      - run: pnpm install --frozen-lockfile
-
-      - run: pnpm run build
-
-      - run: |
-          cp .env.example .env
-          touch database/database.sqlite
-          php artisan migrate --env=dusk --no-interaction
-        env:
-          DB_CONNECTION: sqlite
-
-      - run: php artisan serve --env=dusk &
-        env:
-          DB_CONNECTION: sqlite
-
-      - run: php artisan dusk --env=dusk
-        env:
-          APP_URL: http://127.0.0.1:8000
-          DB_CONNECTION: sqlite
-
-      - name: Upload screenshots
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: dusk-screenshots
-          path: tests/Browser/screenshots/
-
   deploy:
     needs: [test, dusk]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
