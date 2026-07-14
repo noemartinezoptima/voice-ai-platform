@@ -30,20 +30,33 @@ import { index as systemIndex } from '@/actions/App/Http/Controllers/Web/SystemH
 
 const NAV_PRIMARY = [
     { label: 'Dashboard', href: dashboard().url, icon: LayoutDashboard, active: 'dashboard' },
-    { label: 'Monitor', href: monitorIndex().url, icon: Radio, active: 'monitor.*' },
+    { label: 'Notifications', href: '/notifications', icon: Bell, active: 'notifications.*' },
+    { label: 'Analytics', href: analyticsIndex().url, icon: BarChart3, active: 'analytics.*' },
+    { label: 'Flows', href: flowsIndex().url, icon: GitBranch, active: 'flows.*' },
     { label: 'Calls', href: callsIndex().url, icon: Phone, active: 'calls.*' },
     { label: 'Transcripts', href: '/transcripts', icon: MessageSquareText, active: 'transcripts.*' },
-    { label: 'Flows', href: flowsIndex().url, icon: GitBranch, active: 'flows.*' },
-    { label: 'Voices', href: voicesIndex().url, icon: Mic, active: 'settings.voices.*' },
-    { label: 'Analytics', href: analyticsIndex().url, icon: BarChart3, active: 'analytics.*' },
-    { label: 'SMS', href: smsIndex().url, icon: MessageSquare, active: 'sms.*' },
     { label: 'Quality', href: '/quality', icon: Award, active: 'quality.*' },
+    { label: 'Monitor', href: monitorIndex().url, icon: Radio, active: 'monitor.*' },
+    { label: 'SMS', href: smsIndex().url, icon: MessageSquare, active: 'sms.*' },
 ]
 
 const NAV_DEVELOPMENT = [
     { label: 'API Docs', href: '/docs', icon: BookOpen, active: 'docs' },
-    { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
+    { label: 'Team', href: teamIndex().url, icon: Users, active: 'team.*' },
+    { label: 'API Tokens', href: apiTokensIndex().url, icon: Key, active: 'api-tokens.*' },
     { label: 'Settings', href: settingsTenant().url, icon: Settings, active: 'settings.tenant' },
+    { label: 'Voice & Language', href: settingsVoice().url, icon: Mic, active: 'settings.voice' },
+    { label: 'Voices', href: voicesIndex().url, icon: Mic, active: 'settings.voices.*' },
+    { label: 'Documents', href: documentsIndex().url, icon: FileText, active: 'settings.documents.*' },
+    { label: 'Webhooks', href: webhooksIndex().url, icon: Webhook, active: 'settings.webhooks.*' },
+    { label: 'Webhook Deliveries', href: webhookDeliveriesIndex().url, icon: Activity, active: 'settings.webhooks.deliveries*' },
+    { label: 'Billing', href: billingIndex().url, icon: CreditCard, active: 'billing.*' },
+    { label: 'Activity Log', href: activityIndex().url, icon: Activity, active: 'settings.activity.*' },
+    { label: 'Errors', href: '/settings/errors', icon: AlertTriangle, active: 'settings.errors.*' },
+    { label: 'Agents', href: agentsIndex().url, icon: Bot, active: 'settings.agents.*' },
+    { label: 'Phone Numbers', href: '/settings/phone-numbers', icon: Smartphone, active: 'settings.phone-numbers' },
+    { label: 'System', href: systemIndex().url, icon: Server, active: 'settings.system' },
+    { label: 'Roles', href: '/settings/roles', icon: Shield, active: 'settings.roles' },
 ]
 
 export default function AuthenticatedLayout({ children }) {
