@@ -51,11 +51,28 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(KnowledgeChunkRepositoryInterface::class, EloquentChunkRepository::class);
         $this->app->bind(CustomVoiceRepositoryInterface::class, fn () => new EloquentCustomVoiceRepository(new CustomVoiceModel));
 
-        $this->app->bind(EmbeddingServiceInterface::class, function () {
-            return new OpenAIEmbeddingService(
-                apiKey: config('services.openai.api_key'),
-            );
-        });
+        if (config('services.openai.api_key')) {
+            $this->app->bind(EmbeddingServiceInterface::class, function () {
+                return new OpenAIEmbeddingService(
+                    apiKey: config('services.openai.api_key'),
+                );
+            });
+        } else {
+            $this->app->bind(EmbeddingServiceInterface::class, function () {
+                return new class implements EmbeddingServiceInterface
+                {
+                    public function embed(string $text): array
+                    {
+                        return array_fill(0, 1536, 0.0);
+                    }
+
+                    public function embedMany(array $texts): array
+                    {
+                        return array_fill(0, count($texts), array_fill(0, 1536, 0.0));
+                    }
+                };
+            });
+        }
 
         $this->app->singleton(ChunkingService::class);
         $this->app->singleton(KnowledgeRetrievalService::class);
