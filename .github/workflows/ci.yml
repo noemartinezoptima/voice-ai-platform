@@ -145,6 +145,7 @@ jobs:
       - run: pnpm run build
 
       - run: |
+          cp .env.example .env
           touch database/database.sqlite
           php artisan migrate --env=dusk --no-interaction
         env:
