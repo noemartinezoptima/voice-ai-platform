@@ -28,7 +28,7 @@ function SentimentEmoji({ score }) {
 
 function StatCard({ label, value, icon, format }) {
   return (
-    <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+    <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <Text className="!text-zinc-500">{label}</Text>
@@ -48,7 +48,7 @@ function StatCard({ label, value, icon, format }) {
 
 function ChartCard({ title, children }) {
   return (
-    <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+    <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="mb-4 flex items-center gap-2">
         <Subheading>{title}</Subheading>
       </div>
@@ -99,7 +99,7 @@ export default function Index({
       </div>
 
       {isEmpty ? (
-        <div className="mt-12 flex flex-col items-center justify-center rounded-xl border border-zinc-950/5 bg-white p-12 dark:border-white/10 dark:bg-zinc-900">
+        <div className="mt-12 flex flex-col items-center justify-center rounded-xl border border-zinc-950/5 bg-white p-12 dark:border-zinc-800 dark:bg-zinc-900">
           <Text className="text-lg text-zinc-500">No transcripts analyzed yet</Text>
           <Text className="mt-1 text-sm text-zinc-400">
             Call transcripts will appear here once conversations are recorded.

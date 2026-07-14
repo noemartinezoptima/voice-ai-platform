@@ -37,7 +37,7 @@ function ScoreBadge({ score }) {
 
 function StatCard({ label, value, sub }) {
   return (
-    <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+    <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
       <Text className="!text-zinc-500">{label}</Text>
       <p className="text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">{value}</p>
       {sub && <Text className="mt-1 text-sm !text-zinc-400">{sub}</Text>}
@@ -87,7 +87,7 @@ export default function Index({
       </div>
 
       {isEmpty ? (
-        <div className="mt-12 flex flex-col items-center justify-center rounded-xl border border-zinc-950/5 bg-white p-12 dark:border-white/10 dark:bg-zinc-900">
+        <div className="mt-12 flex flex-col items-center justify-center rounded-xl border border-zinc-950/5 bg-white p-12 dark:border-zinc-800 dark:bg-zinc-900">
           <ShieldCheck className="h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-4" />
           <Text className="text-lg text-zinc-500">No quality scores yet</Text>
           <Text className="mt-1 text-sm text-zinc-400 max-w-sm text-center">
@@ -110,7 +110,7 @@ export default function Index({
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <Subheading>Score Distribution</Subheading>
               <div className="mt-4 space-y-3">
                 <DistributionBar label="Excellent" count={scoreDistribution?.excellent ?? 0} total={distTotal} color="#22c55e" />
@@ -120,7 +120,7 @@ export default function Index({
               </div>
             </div>
 
-            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <Subheading>Top Flows by Average Score</Subheading>
               {topFlows.length === 0 ? (
                 <Text className="mt-4 text-zinc-400">No data yet</Text>
@@ -144,7 +144,7 @@ export default function Index({
           </div>
 
           <div className="mt-6">
-            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <Subheading>Recent Scored Calls</Subheading>
               <div className="mt-4">
                 <Table>
@@ -189,7 +189,7 @@ export default function Index({
           </div>
 
           <div className="mt-6">
-            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <Subheading>All Scored Calls</Subheading>
               <div className="mt-4">
                 <Table>

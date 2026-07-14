@@ -77,14 +77,14 @@ export default function CallShow({ call }) {
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-6 lg:grid-cols-4">
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-white/5">
                     <Text className="!text-[10px] uppercase tracking-wider text-zinc-500">Status</Text>
                     <div className="mt-1 flex items-center gap-2">
                         <StatusIcon className="size-5 text-zinc-500" />
                         <Badge color={statusColors[call.status] || 'zinc'}>{call.status.replace('_', ' ')}</Badge>
                     </div>
                 </div>
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-white/5">
                     <Text className="text-sm">Duration</Text>
                     <p className="mt-1 text-2xl font-semibold text-zinc-950 dark:text-white">
                         {call.duration_seconds
@@ -92,18 +92,18 @@ export default function CallShow({ call }) {
                             : '\u2014'}
                     </p>
                 </div>
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-white/5">
                     <Text className="text-sm">From</Text>
                     <p className="mt-1 text-lg font-medium text-zinc-950 dark:text-white">{call.from_number}</p>
                 </div>
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-white/5">
                     <Text className="text-sm">To</Text>
                     <p className="mt-1 text-lg font-medium text-zinc-950 dark:text-white">{call.to_number}</p>
                 </div>
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-6 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-white/5">
                     <div className="flex items-center justify-between">
                         <h3 className="text-base font-semibold text-zinc-950 dark:text-white">Transcript</h3>
                         <Button outline onClick={() => setShowTranscript(!showTranscript)}>
@@ -129,7 +129,7 @@ export default function CallShow({ call }) {
                     ) : null}
                 </div>
 
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-6 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-white/5">
                     <h3 className="text-base font-semibold text-zinc-950 dark:text-white">Call Logs</h3>
                     {call.call_logs?.length > 0 ? (
                         <ul className="mt-4 max-h-96 space-y-2 overflow-y-auto">
@@ -147,7 +147,7 @@ export default function CallShow({ call }) {
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-6 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-white/5">
                     <h3 className="text-base font-semibold text-zinc-950 dark:text-white">Flow Context</h3>
                     {call.context ? (
                         <pre className="mt-4 max-h-64 overflow-auto rounded-lg bg-zinc-50 p-3 text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
@@ -158,7 +158,7 @@ export default function CallShow({ call }) {
                     )}
                 </div>
 
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-6 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-white/5">
                     <h3 className="text-base font-semibold text-zinc-950 dark:text-white">Notes</h3>
                     <Textarea
                         className="mt-4"
