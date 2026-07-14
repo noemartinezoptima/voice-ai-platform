@@ -11,10 +11,13 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -59,6 +62,37 @@ return Application::configure(basePath: dirname(__DIR__))
             return null;
         });
 
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->header('X-Inertia')) {
+                return Inertia::render('Error', [
+                    'status' => 404,
+                ])->toResponse($request)->setStatusCode(404);
+            }
+
+            return null;
+        });
+
+        $exceptions->render(function (HttpException $e, Request $request) {
+            if ($e->getStatusCode() === 403 && $request->header('X-Inertia')) {
+                return Inertia::render('Error', [
+                    'status' => 403,
+                ])->toResponse($request)->setStatusCode(403);
+            }
+
+            return null;
+        });
+
+        $exceptions->render(function (ThrottleRequestsException $e, Request $request) {
+            if ($request->header('X-Inertia')) {
+                return Inertia::render('Error', [
+                    'status' => 429,
+                    'message' => 'Too many requests. Please wait a moment and try again.',
+                ])->toResponse($request)->setStatusCode(429);
+            }
+
+            return null;
+        });
+
         $exceptions->reportable(function (Throwable $e) {
             if ($e instanceof HttpResponseException) {
                 return;
@@ -68,6 +102,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 return;
             }
 
-            ErrorEventModel::record($e);
+            try {
+                ErrorEventModel::record($e);
+            } catch (Throwable) {
+                // Silent — prevent cascade when DB transaction already aborted
+            }
         });
     })->create();

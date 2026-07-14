@@ -15,6 +15,7 @@ import {
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts';
 import { useState, useMemo, useCallback } from 'react';
+import { formatDuration } from '@/utils/format';
 
 const PRESETS = [
   { label: '7 days', days: 7 },
@@ -30,7 +31,7 @@ const statCards = [
   { label: 'Total Calls', key: 'total_calls', icon: 'Phone' },
   { label: 'Calls Today', key: 'calls_today', icon: 'PhoneIncoming' },
   { label: 'Active Calls', key: 'active_calls', icon: 'PhoneCall' },
-  { label: 'Avg Duration', key: 'avg_duration_seconds', icon: 'Clock', format: (v) => `${v}s` },
+  { label: 'Avg Duration', key: 'avg_duration_seconds', icon: 'Clock', format: formatDuration },
 ];
 
 const STATUS_COLORS = {
@@ -186,8 +187,23 @@ export default function Dashboard({
       </div>
 
       {/* Stat Cards */}
-      <div className={`mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 ${loading ? 'pointer-events-none opacity-60 transition-opacity' : ''}`}>
-        {statCards.map((s) => {
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {loading
+          ? statCards.map((s) => (
+              <div
+                key={s.key}
+                className="animate-pulse rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="space-y-2">
+                    <div className="h-3 w-24 rounded bg-zinc-200 dark:bg-zinc-700" />
+                    <div className="h-7 w-16 rounded bg-zinc-300 dark:bg-zinc-600" />
+                  </div>
+                  <div className="h-10 w-10 rounded-xl bg-zinc-100 dark:bg-zinc-800" />
+                </div>
+              </div>
+            ))
+          : statCards.map((s) => {
           const Icon = icons[s.icon];
           return (
             <div
@@ -244,7 +260,7 @@ export default function Dashboard({
                 <YAxis className="text-xs text-zinc-500" />
                 <Tooltip
                   contentStyle={tooltipStyle}
-                  formatter={(value) => [`${Math.round(value)}s`, 'Avg Duration']}
+                  formatter={(value) => [formatDuration(Math.round(value)), 'Avg Duration']}
                 />
                 <Legend />
                 <Bar dataKey="avg_seconds" name="Avg Duration" fill="#6366f1" radius={[4, 4, 0, 0]} />
@@ -331,7 +347,7 @@ export default function Dashboard({
                   <YAxis className="text-xs text-zinc-500" />
                   <Tooltip
                     contentStyle={tooltipStyle}
-                    formatter={(value) => [`${Math.round(value)}s`, 'Avg Duration']}
+                    formatter={(value) => [formatDuration(Math.round(value)), 'Avg Duration']}
                   />
                   <Legend />
                   <Bar dataKey="avg_duration" name="Avg Duration" fill="#6366f1" radius={[4, 4, 0, 0]} />
@@ -353,7 +369,7 @@ export default function Dashboard({
                       <TableRow key={f.flow_name}>
                         <TableCell className="font-medium">{f.flow_name}</TableCell>
                         <TableCell>{f.total_calls}</TableCell>
-                        <TableCell>{Math.round(f.avg_duration)}s</TableCell>
+                        <TableCell>{formatDuration(f.avg_duration)}</TableCell>
                         <TableCell>{f.success_rate.toFixed(1)}%</TableCell>
                       </TableRow>
                     ))}

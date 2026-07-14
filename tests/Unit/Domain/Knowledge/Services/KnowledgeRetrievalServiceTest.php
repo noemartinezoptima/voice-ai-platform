@@ -7,6 +7,7 @@ use App\Domain\Knowledge\Services\EmbeddingServiceInterface;
 use App\Domain\Knowledge\Services\KnowledgeRetrievalService;
 use App\Domain\Knowledge\Services\RetrievalType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -35,7 +36,7 @@ class KnowledgeRetrievalServiceTest extends TestCase
     #[Test]
     public function retrieve_returns_semantic_result(): void
     {
-        $retrievalResult = $this->service->retrieve('test-tenant', 'how do calls work', type: RetrievalType::Semantic);
+        $retrievalResult = $this->service->retrieve(Str::uuid()->toString(), 'how do calls work', type: RetrievalType::Semantic);
 
         $this->assertSame(RetrievalType::Semantic, $retrievalResult->type);
         $this->assertEmpty($retrievalResult->chunks);
@@ -44,7 +45,7 @@ class KnowledgeRetrievalServiceTest extends TestCase
     #[Test]
     public function retrieve_returns_summary_result(): void
     {
-        $retrievalResult = $this->service->retrieve('test-tenant', 'summarize calls', type: RetrievalType::Summary);
+        $retrievalResult = $this->service->retrieve(Str::uuid()->toString(), 'summarize calls', type: RetrievalType::Summary);
 
         $this->assertSame(RetrievalType::Summary, $retrievalResult->type);
     }

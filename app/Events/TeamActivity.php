@@ -30,6 +30,7 @@ class TeamActivity implements ShouldBroadcast
         return 'team.activity';
     }
 
+    /** @return array<string, mixed> */
     public function broadcastWith(): array
     {
         return [

@@ -8,8 +8,8 @@ parameters:
     tmpDir: storage/framework/cache/phpstan
     excludePaths:
         - .phpstorm.meta.php
-        - _ide_helper.php
-        - _ide_helper_models.php
+        - _ide_helper.php (?)
+        - _ide_helper_models.php (?)
     databaseMigrationsPath:
         - database/migrations
 

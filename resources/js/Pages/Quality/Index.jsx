@@ -6,6 +6,7 @@ import { Badge } from '@/Components/catalyst/badge';
 import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from '@/Components/catalyst/table';
 import { Pagination, PaginationList, PaginationPage, PaginationGap, PaginationNext, PaginationPrevious } from '@/Components/catalyst/pagination';
 import { index as qualityIndex, show as qualityShow } from '@/routes/quality';
+import { ShieldCheck } from 'lucide-react';
 
 function ScoreGauge({ score }) {
   const r = 28;
@@ -87,9 +88,10 @@ export default function Index({
 
       {isEmpty ? (
         <div className="mt-12 flex flex-col items-center justify-center rounded-xl border border-zinc-950/5 bg-white p-12 dark:border-white/10 dark:bg-zinc-900">
+          <ShieldCheck className="h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-4" />
           <Text className="text-lg text-zinc-500">No quality scores yet</Text>
-          <Text className="mt-1 text-sm text-zinc-400">
-            Scores are generated automatically when calls complete. Run `calls:score-completed` to process existing calls.
+          <Text className="mt-1 text-sm text-zinc-400 max-w-sm text-center">
+            Quality scores are generated automatically after each call completes. They measure sentiment, resolution rate, and call duration to help you track conversation effectiveness.
           </Text>
         </div>
       ) : (

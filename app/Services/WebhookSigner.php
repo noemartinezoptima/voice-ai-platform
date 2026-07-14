@@ -14,6 +14,7 @@ class WebhookSigner
         return hash_equals($this->sign($payload, $secret), $signature);
     }
 
+    /** @return array<string, string> */
     public function signatureHeader(string $payload, string $secret): array
     {
         $timestamp = (string) time();
