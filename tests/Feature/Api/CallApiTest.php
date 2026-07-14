@@ -5,6 +5,7 @@ namespace Tests\Feature\Api;
 use App\Models\User;
 use Database\Factories\TenantFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CallApiTest extends TestCase
@@ -33,7 +34,7 @@ class CallApiTest extends TestCase
 
     public function test_show_call_returns_404(): void
     {
-        $response = $this->withToken($this->token)->getJson('/api/v1/calls/nonexistent');
+        $response = $this->withToken($this->token)->getJson('/api/v1/calls/'.Str::uuid()->toString());
 
         $response->assertNotFound();
     }
