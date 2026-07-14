@@ -48,14 +48,14 @@ class SmsController extends Controller
         $settings = $tenant?->settings() ?? [];
 
         $conversations = SmsMessageModel::where('tenant_id', $tenantId)
-            ->selectRaw('
+            ->selectRaw("
                 CASE
                     WHEN direction = 'inbound' THEN from_number
                     ELSE to_number
                 END as contact_number,
                 MAX(created_at) as last_message_at,
                 COUNT(*) as message_count
-            ')
+            ")
             ->groupBy('contact_number')
             ->orderBy('last_message_at', 'desc')
             ->limit(50)
