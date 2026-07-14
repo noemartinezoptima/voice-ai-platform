@@ -40,7 +40,7 @@ export default function Index({ notifications }) {
             </div>
 
             {notifications.data.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <Bell className="size-10 text-zinc-400" />
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No notifications</p>
                     <Text className="mt-2">You will see notifications here when team members mention you or flows are updated.</Text>
@@ -54,7 +54,7 @@ export default function Index({ notifications }) {
                                 key={n.id}
                                 className={`flex items-start gap-3 rounded-xl border p-4 transition-colors ${
                                     n.read_at
-                                        ? 'border-zinc-950/10 bg-white dark:border-white/10 dark:bg-zinc-900'
+                                        ? 'border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900'
                                         : 'border-indigo-200 bg-indigo-50 dark:border-indigo-800/30 dark:bg-indigo-950/20'
                                 }`}
                             >

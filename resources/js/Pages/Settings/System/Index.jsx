@@ -16,7 +16,7 @@ export default function SystemIndex({ health, failedJobs, queueDepth, errorRate 
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-white/5">
                     <Text className="text-sm">Database</Text>
                     <div className="mt-1">
                         <Badge color={health.database === 'ok' ? 'emerald' : 'red'}>
@@ -24,7 +24,7 @@ export default function SystemIndex({ health, failedJobs, queueDepth, errorRate 
                         </Badge>
                     </div>
                 </div>
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
+                <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-white/5">
                     <Text className="text-sm">Redis</Text>
                     <div className="mt-1">
                         <Badge color={health.redis === 'ok' ? 'emerald' : 'red'}>
@@ -33,17 +33,17 @@ export default function SystemIndex({ health, failedJobs, queueDepth, errorRate 
                     </div>
                 </div>
                 {queueDepth.map((q) => (
-                    <div key={q.queue} className="rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
+                    <div key={q.queue} className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-white/5">
                         <Text className="text-sm">Queue: {q.queue}</Text>
-                        <p className="mt-1 text-3xl font-semibold text-zinc-950 dark:text-white">{q.size}</p>
+                        <p className="mt-1 text-[28px] font-bold text-zinc-950 dark:text-white">{q.size}</p>
                     </div>
                 ))}
             </div>
 
             <div className="mt-8">
                 <Heading level={2}>Error Rate (24h)</Heading>
-                <div className="mt-2 rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
-                    <p className="text-3xl font-semibold text-zinc-950 dark:text-white">
+                <div className="mt-2 rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-white/5">
+                    <p className="text-[28px] font-bold text-zinc-950 dark:text-white">
                         {errorRate.failed} / {errorRate.total}
                         <span className="ml-2 text-lg text-zinc-500">({errorRate.percentage}%)</span>
                     </p>
@@ -53,7 +53,7 @@ export default function SystemIndex({ health, failedJobs, queueDepth, errorRate 
             <div className="mt-8">
                 <Heading level={2}>Failed Jobs (24h)</Heading>
                 {failedJobs.length === 0 ? (
-                    <div className="mt-4 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-12 dark:border-white/10">
+                    <div className="mt-4 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-12 dark:border-zinc-800">
                         <Text>No failed jobs in the last 24 hours.</Text>
                     </div>
                 ) : (

@@ -59,7 +59,7 @@ export default function Index({ tenant, currentPlan, plans, checkout, flash = nu
                         className={`relative flex flex-col rounded-xl border p-6 transition-shadow ${
                             isCurrent(plan.id)
                                 ? 'border-indigo-500 shadow-lg ring-1 ring-indigo-500 dark:border-indigo-400'
-                                : 'border-zinc-950/10 dark:border-white/10'
+                                : 'border-zinc-200 dark:border-zinc-800'
                         }`}
                     >
                         {isCurrent(plan.id) && (

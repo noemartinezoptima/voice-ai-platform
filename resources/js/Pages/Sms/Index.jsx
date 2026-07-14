@@ -146,7 +146,7 @@ export default function Index({ messages, conversations, filters, whatsapp_phone
             </div>
 
             <div className="mt-4 flex items-center gap-3">
-                <div className="flex items-center rounded-lg border border-zinc-950/10 bg-white p-0.5 dark:border-white/10 dark:bg-white/5">
+                <div className="flex items-center rounded-lg border border-zinc-200 bg-white p-0.5 dark:border-zinc-800 dark:bg-white/5">
                     <button onClick={() => setView('conversations')} className={`rounded-md px-3 py-1.5 text-sm font-medium ${view === 'conversations' ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950' : 'text-zinc-500 hover:text-zinc-950 dark:hover:text-white'}`}>
                         Conversations
                     </button>
@@ -172,14 +172,14 @@ export default function Index({ messages, conversations, filters, whatsapp_phone
             </div>
 
             {messagesList.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No messages</p>
                     <Text className="mt-2">Messages will appear here when your number receives texts.</Text>
                 </div>
             ) : view === 'conversations' ? (
                 <div className="mt-4 space-y-2">
                     {messagesList.map((conv) => (
-                        <div key={conv.contact_number} className="rounded-xl border border-zinc-950/10 bg-white dark:border-white/10 dark:bg-white/5">
+                        <div key={conv.contact_number} className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-white/5">
                             <button onClick={() => toggleConversation(conv.contact_number)} className="flex w-full items-center justify-between px-5 py-4 text-left">
                                 <div className="flex items-center gap-3">
                                     {expandedConv === conv.contact_number ? <ChevronDown className="size-4 text-zinc-400" /> : <ChevronRight className="size-4 text-zinc-400" />}
@@ -193,7 +193,7 @@ export default function Index({ messages, conversations, filters, whatsapp_phone
                                 </span>
                             </button>
                             {expandedConv === conv.contact_number && (
-                                <div className="border-t border-zinc-950/10 px-5 pb-4 pt-3 dark:border-white/10">
+                                <div className="border-t border-zinc-200 px-5 pb-4 pt-3 dark:border-zinc-800">
                                     <div className="max-h-80 space-y-2 overflow-y-auto">
                                         {(convMessages[conv.contact_number] ?? []).map((msg) => {
                                             const ch = channelConfig[msg.channel] || channelConfig.sms;

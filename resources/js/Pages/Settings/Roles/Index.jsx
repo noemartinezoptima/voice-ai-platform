@@ -44,7 +44,7 @@ export default function Index({ roles, allPermissions }) {
 
             <div className="mt-6 space-y-6">
                 {roles.map((role) => (
-                    <div key={role.id} className="rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-zinc-900">
+                    <div key={role.id} className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
                         <div className="flex items-center justify-between">
                             <div>
                                 <h3 className="text-base font-semibold capitalize text-zinc-950 dark:text-white">{role.name}</h3>

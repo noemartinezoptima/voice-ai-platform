@@ -19,19 +19,19 @@ export default function Index({ summary, dataProtection, consentLogs }) {
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
                     <Text className="text-sm text-zinc-500">Total Calls</Text>
                     <p className="mt-1 text-2xl font-semibold">{summary.total_calls}</p>
                 </div>
-                <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
                     <Text className="text-sm text-zinc-500">Users</Text>
                     <p className="mt-1 text-2xl font-semibold">{summary.total_users}</p>
                 </div>
-                <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
                     <Text className="text-sm text-zinc-500">Flows</Text>
                     <p className="mt-1 text-2xl font-semibold">{summary.total_flows}</p>
                 </div>
-                <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
                     <Text className="text-sm text-zinc-500">Retention</Text>
                     <p className="mt-1 text-2xl font-semibold">{dataProtection?.retention_days ?? 90} days</p>
                 </div>
@@ -41,7 +41,7 @@ export default function Index({ summary, dataProtection, consentLogs }) {
                 <div className="flex items-center justify-between">
                     <Subheading>Data Map</Subheading>
                 </div>
-                <div className="mt-4 rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-white/10 dark:bg-zinc-900">
+                <div className="mt-4 rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -97,7 +97,7 @@ export default function Index({ summary, dataProtection, consentLogs }) {
                 <Subheading>Recent Consent Activity</Subheading>
                 <div className="mt-4">
                     {consentLogs.data.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-12 dark:border-white/10">
+                        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-12 dark:border-zinc-800">
                             <p className="text-base font-semibold text-zinc-950 dark:text-white">No consent events</p>
                             <Text className="mt-2">Consent events will appear here when calls are recorded.</Text>
                         </div>

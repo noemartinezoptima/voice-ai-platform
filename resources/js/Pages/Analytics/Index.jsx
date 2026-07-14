@@ -32,7 +32,7 @@ function StatCard({ label, value, icon, format }) {
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <Text className="!text-zinc-500">{label}</Text>
-          <p className="text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">
+          <p className="text-[28px] font-bold tracking-tight text-zinc-950 dark:text-white">
             {format ? format(value) : value}
           </p>
         </div>

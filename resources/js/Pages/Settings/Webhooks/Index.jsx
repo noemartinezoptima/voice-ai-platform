@@ -130,7 +130,7 @@ export default function Index({ webhooks }) {
             </div>
 
             {showForm && (
-                <form onSubmit={handleSubmit} className="mt-6 rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
+                <form onSubmit={handleSubmit} className="mt-6 rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-white/5">
                     <div className="space-y-4">
                         <div>
                             <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">URL</label>
@@ -178,7 +178,7 @@ export default function Index({ webhooks }) {
             )}
 
             {webhooks.length === 0 && !showForm ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No webhooks</p>
                     <Text className="mt-2">Add webhook destinations to receive call events in real time.</Text>
                 </div>

@@ -49,15 +49,15 @@ export default function WebhookDeliveries({ deliveries, stats, filters, destinat
                 </div>
                 <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 dark:border-emerald-900/30 dark:bg-emerald-950/20">
                     <Text className="text-sm text-emerald-700 dark:text-emerald-300">Successful</Text>
-                    <p className="mt-1 text-3xl font-semibold text-emerald-700 dark:text-emerald-300">{stats?.successful ?? 0}</p>
+                    <p className="mt-1 text-[28px] font-bold text-emerald-700 dark:text-emerald-300">{stats?.successful ?? 0}</p>
                 </div>
                 <div className="rounded-xl border border-red-200 bg-red-50 p-5 dark:border-red-900/30 dark:bg-red-950/20">
                     <Text className="text-sm text-red-700 dark:text-red-300">Failed</Text>
-                    <p className="mt-1 text-3xl font-semibold text-red-700 dark:text-red-300">{stats?.failed ?? 0}</p>
+                    <p className="mt-1 text-[28px] font-bold text-red-700 dark:text-red-300">{stats?.failed ?? 0}</p>
                 </div>
                 <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-900/30 dark:bg-amber-950/20">
                     <Text className="text-sm text-amber-700 dark:text-amber-300">Pending</Text>
-                    <p className="mt-1 text-3xl font-semibold text-amber-700 dark:text-amber-300">{stats?.pending ?? 0}</p>
+                    <p className="mt-1 text-[28px] font-bold text-amber-700 dark:text-amber-300">{stats?.pending ?? 0}</p>
                 </div>
             </div>
 

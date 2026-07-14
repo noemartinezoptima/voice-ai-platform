@@ -85,7 +85,7 @@ export default function Index({ voices }) {
             </div>
 
             {voices.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <Mic className="size-10 text-zinc-400" />
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No custom voices</p>
                     <Text className="mt-2">Clone your voice from audio samples to get started.</Text>
@@ -179,7 +179,7 @@ export default function Index({ voices }) {
                             {data.files.length > 0 && (
                                 <div className="mt-3 space-y-2">
                                     {data.files.map((file, i) => (
-                                        <div key={`${file.name}-${i}`} className="flex items-center justify-between rounded-md border border-zinc-950/10 px-3 py-2 dark:border-white/10">
+                                        <div key={`${file.name}-${i}`} className="flex items-center justify-between rounded-md border border-zinc-200 px-3 py-2 dark:border-zinc-800">
                                             <span className="truncate text-sm">{file.name}</span>
                                             <Button plain onClick={() => removeFile(i)}><Trash2 className="size-4 text-red-500" /></Button>
                                         </div>

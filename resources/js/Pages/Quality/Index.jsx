@@ -39,7 +39,7 @@ function StatCard({ label, value, sub }) {
   return (
     <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
       <Text className="!text-zinc-500">{label}</Text>
-      <p className="text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">{value}</p>
+      <p className="text-[28px] font-bold tracking-tight text-zinc-950 dark:text-white">{value}</p>
       {sub && <Text className="mt-1 text-sm !text-zinc-400">{sub}</Text>}
     </div>
   );

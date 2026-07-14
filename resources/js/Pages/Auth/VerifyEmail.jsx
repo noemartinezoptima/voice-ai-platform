@@ -40,7 +40,7 @@ export default function VerifyEmail({ status }) {
                     href={logout().url}
                     method="post"
                     as="button"
-                    className="flex w-full items-center justify-center rounded-lg border border-zinc-950/10 px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:bg-zinc-950/2.5 focus:outline-none dark:border-white/10 dark:text-white dark:hover:bg-white/5"
+                    className="flex w-full items-center justify-center rounded-lg border border-zinc-200 px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:bg-zinc-950/2.5 focus:outline-none dark:border-zinc-800 dark:text-white dark:hover:bg-white/5"
                 >
                     Log out
                 </Link>

@@ -78,7 +78,7 @@ export default function Index({ activities, filters }) {
             </div>
 
             {activities.data.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <Activity className="size-8 text-zinc-400" />
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No activity yet</p>
                     <Text className="mt-2">Activity will appear here as actions are taken.</Text>

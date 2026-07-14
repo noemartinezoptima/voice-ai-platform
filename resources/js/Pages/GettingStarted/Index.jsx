@@ -55,7 +55,7 @@ export default function Index({ twilioConnected, elevenlabsConnected }) {
                     ))}
                 </div>
 
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
                     <div className="mb-2 text-sm font-medium text-zinc-500">
                         Step {currentStep + 1} of {STEPS.length}
                     </div>

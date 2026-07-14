@@ -74,7 +74,7 @@ export default function Index({ flows }) {
             </div>
 
             {flows.data.length === 0 ? (
-                <div className="mt-8 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-8 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800">
                         <GitBranch className="size-6 text-zinc-500 dark:text-zinc-400" />
                     </div>

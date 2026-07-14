@@ -16,12 +16,12 @@ const filters = [
 
 function StatCard({ label, value, icon: Icon }) {
     return (
-        <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-white/10 dark:bg-white/5">
+        <div className="rounded-xl border border-zinc-950/5 bg-white p-5 dark:border-zinc-800 dark:bg-white/5">
             <div className="flex items-center gap-2">
                 {Icon && <Icon className="size-4 text-zinc-400" />}
                 <Text className="text-sm">{label}</Text>
             </div>
-            <p className="mt-1 text-3xl font-semibold text-zinc-950 dark:text-white">{value}</p>
+            <p className="mt-1 text-[28px] font-bold text-zinc-950 dark:text-white">{value}</p>
         </div>
     );
 }
@@ -67,7 +67,7 @@ export default function Index({ errors, stats, filter }) {
             </div>
 
             {errors.data.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <CheckCircle2 className="size-8 text-emerald-400" />
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No errors found</p>
                     <Text className="mt-2">All clear. No errores match this filter.</Text>
