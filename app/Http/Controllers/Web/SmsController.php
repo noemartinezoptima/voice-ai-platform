@@ -50,7 +50,7 @@ class SmsController extends Controller
         $conversations = SmsMessageModel::where('tenant_id', $tenantId)
             ->selectRaw('
                 CASE
-                    WHEN direction = "inbound" THEN from_number
+                    WHEN direction = 'inbound' THEN from_number
                     ELSE to_number
                 END as contact_number,
                 MAX(created_at) as last_message_at,
