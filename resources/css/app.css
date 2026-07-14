@@ -4,8 +4,24 @@
 @source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
 
 @theme {
-    --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-    --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+    --color-primary: #6366f1;
+    --color-primary-dark: #4f46e5;
+    --color-sidebar: #111827;
+    --color-surface: #f8f9fa;
+    --color-surface-card: #ffffff;
+    --color-surface-border: #e1e3e4;
+    --color-text-primary: #191c1d;
+    --color-text-secondary: #464554;
+    --color-text-muted: #767586;
+
+    --spacing-stack-sm: 0.5rem;
+    --spacing-stack-md: 1rem;
+    --spacing-stack-lg: 1.5rem;
+    --spacing-gutter: 1.5rem;
+    --spacing-page: 2rem;
 }
 
 @layer base {
@@ -15,9 +31,10 @@
     body {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        background-color: #f8f9fa;
     }
     ::selection {
-        background-color: #4f46e5 / 0.15;
+        background-color: #6366f1 / 0.15;
     }
 }
 
@@ -27,17 +44,4 @@
 
 .auth-spinner {
     animation: auth-spin 0.6s linear infinite;
-}
-
-.auth-dot-grid {
-    background-image: radial-gradient(circle, oklch(1 0 0 / 0.08) 1px, transparent 1px);
-    background-size: 24px 24px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }

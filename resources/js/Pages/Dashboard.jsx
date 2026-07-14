@@ -145,16 +145,16 @@ export default function Dashboard({
 
       {/* Date Range Filter */}
       <div className="mt-6 flex flex-wrap items-end gap-3">
-        <div className="flex rounded-lg border border-zinc-950/10 p-0.5 dark:border-white/10">
+        <div className="flex rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-900">
           {PRESETS.map((p) => (
             <button
               key={p.days}
               type="button"
               onClick={() => applyPreset(p.days)}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+              className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
                 activePreset === p.days
-                  ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950'
-                  : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white'
+                  ? 'bg-white text-indigo-600 shadow-sm dark:bg-zinc-800 dark:text-indigo-400'
+                  : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-200'
               }`}
             >
               {p.label}
@@ -212,13 +212,13 @@ export default function Dashboard({
             >
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
-                  <Text className="!text-zinc-500">{s.label}</Text>
-                  <p className="text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">
+                  <Text className="!text-[10px] uppercase tracking-wider text-zinc-500">{s.label}</Text>
+                  <p className="text-[28px] font-bold tracking-tight text-zinc-950 dark:text-white">
                     {s.format ? s.format(stats[s.key]) : stats[s.key]}
                   </p>
                 </div>
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-950">
-                  <Icon className="size-5 text-indigo-600 dark:text-indigo-400" />
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 dark:bg-indigo-950/50">
+                  <Icon className="size-5 text-indigo-500" />
                 </div>
               </div>
             </div>
