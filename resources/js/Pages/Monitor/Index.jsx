@@ -138,27 +138,27 @@ export default function Monitor({ activeCalls: initial, tenantId }) {
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-5">
                 <div className="rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
                     <Text className="text-sm">Active Calls</Text>
-                    <p className="mt-1 text-3xl font-semibold text-zinc-950 dark:text-white">{calls.length}</p>
+                    <p className="mt-1 text-[28px] font-bold text-zinc-950 dark:text-white">{calls.length}</p>
                 </div>
                 <div className="rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
                     <Text className="text-sm">In Progress</Text>
-                    <p className="mt-1 text-3xl font-semibold text-zinc-950 dark:text-white">
+                    <p className="mt-1 text-[28px] font-bold text-zinc-950 dark:text-white">
                         {calls.filter((c) => c.status === 'in_progress').length}
                     </p>
                 </div>
                 <div className="rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
                     <Text className="text-sm">Ringing / Initiated</Text>
-                    <p className="mt-1 text-3xl font-semibold text-zinc-950 dark:text-white">
+                    <p className="mt-1 text-[28px] font-bold text-zinc-950 dark:text-white">
                         {calls.filter((c) => c.status === 'ringing' || c.status === 'initiated').length}
                     </p>
                 </div>
                 <div className="rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
                     <Text className="text-sm">Avg Duration</Text>
-                    <p className="mt-1 text-3xl font-semibold text-zinc-950 dark:text-white">{avgDuration}s</p>
+                    <p className="mt-1 text-[28px] font-bold text-zinc-950 dark:text-white">{avgDuration}s</p>
                 </div>
                 <div className="rounded-xl border border-zinc-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
                     <Text className="text-sm">Peak Today</Text>
-                    <p className="mt-1 text-3xl font-semibold text-zinc-950 dark:text-white">{calls.length}</p>
+                    <p className="mt-1 text-[28px] font-bold text-zinc-950 dark:text-white">{calls.length}</p>
                 </div>
             </div>
 

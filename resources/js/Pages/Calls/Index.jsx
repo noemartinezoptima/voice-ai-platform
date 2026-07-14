@@ -80,6 +80,7 @@ export default function CallsIndex({ calls, filters }) {
                 </div>
             </div>
 
+            <div className="mt-6 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
             {calls.data.length === 0 ? (
                 <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No calls found</p>
@@ -162,6 +163,7 @@ export default function CallsIndex({ calls, filters }) {
                     )}
                 </div>
             )}
+            </div>
         </AuthenticatedLayout>
     );
 }

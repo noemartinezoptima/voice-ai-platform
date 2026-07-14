@@ -78,7 +78,7 @@ export default function CallShow({ call }) {
 
             <div className="mt-6 grid grid-cols-2 gap-6 lg:grid-cols-4">
                 <div className="rounded-xl border border-zinc-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
-                    <Text className="text-sm">Status</Text>
+                    <Text className="!text-[10px] uppercase tracking-wider text-zinc-500">Status</Text>
                     <div className="mt-1 flex items-center gap-2">
                         <StatusIcon className="size-5 text-zinc-500" />
                         <Badge color={statusColors[call.status] || 'zinc'}>{call.status.replace('_', ' ')}</Badge>
