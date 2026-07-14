@@ -1,14 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ActivityFeed from '@/Components/ActivityFeed';
 import { Head, router, usePage } from '@inertiajs/react';
-import { Heading, Subheading } from '@/Components/catalyst/heading';
-import { Text } from '@/Components/catalyst/text';
-import { Button } from '@/Components/catalyst/button';
-import { Input } from '@/Components/catalyst/input';
-import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from '@/Components/catalyst/table';
 import {
   Activity, BarChart3, Clock, Download, GitBranch, Phone, PhoneCall,
-  PhoneIncoming, PieChart as PieChartIcon, TrendingUp,
+  PhoneIncoming, PieChart as PieChartIcon, TrendingUp, Calendar,
 } from 'lucide-react';
 import {
   Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart,
@@ -18,9 +13,9 @@ import { useState, useMemo, useCallback } from 'react';
 import { formatDuration } from '@/utils/format';
 
 const PRESETS = [
-  { label: '7 days', days: 7 },
-  { label: '30 days', days: 30 },
-  { label: '90 days', days: 90 },
+  { label: '7d', days: 7 },
+  { label: '30d', days: 30 },
+  { label: '90d', days: 90 },
 ];
 
 const icons = { Activity, GitBranch, Phone, PhoneIncoming, PhoneCall, Clock };
@@ -58,18 +53,6 @@ function shortDate(iso) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-function chartCard({ icon: Icon, title, children }) {
-  return (
-    <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
-      <div className="mb-4 flex items-center gap-2">
-        {Icon && <Icon className="size-4 text-zinc-500" />}
-        <Subheading>{title}</Subheading>
-      </div>
-      {children}
-    </div>
-  );
-}
-
 export default function Dashboard({
   stats, range, callsByDay, callsByStatus, avgDurationByDay,
   callsByFlow, callsByFlowWithMetrics,
@@ -84,25 +67,25 @@ export default function Dashboard({
   const [customStart, setCustomStart] = useState('');
   const [customEnd, setCustomEnd] = useState('');
 
-    const applyPreset = useCallback((days) => {
-        setLoading(true);
-        router.get('/dashboard', { start: dateDaysAgo(days), end: todayStr() }, {
-            preserveState: true,
-            preserveScroll: true,
-            onFinish: () => setLoading(false),
-        });
-    }, []);
+  const applyPreset = useCallback((days) => {
+    setLoading(true);
+    router.get('/dashboard', { start: dateDaysAgo(days), end: todayStr() }, {
+      preserveState: true,
+      preserveScroll: true,
+      onFinish: () => setLoading(false),
+    });
+  }, []);
 
-    const applyCustom = useCallback((e) => {
-        e.preventDefault();
-        if (!customStart || !customEnd) return;
-        setLoading(true);
-        router.get('/dashboard', { start: customStart, end: customEnd }, {
-            preserveState: true,
-            preserveScroll: true,
-            onFinish: () => setLoading(false),
-        });
-    }, [customStart, customEnd]);
+  const applyCustom = useCallback((e) => {
+    e.preventDefault();
+    if (!customStart || !customEnd) return;
+    setLoading(true);
+    router.get('/dashboard', { start: customStart, end: customEnd }, {
+      preserveState: true,
+      preserveScroll: true,
+      onFinish: () => setLoading(false),
+    });
+  }, [customStart, customEnd]);
 
   function getActivePreset() {
     if (!activeStart) return 7;
@@ -115,8 +98,8 @@ export default function Dashboard({
   }
 
   const activePreset = getActivePreset();
-
   const rangeLabel = `${shortDate(range.start)} – ${shortDate(range.end)}`;
+  const isEmpty = callsByDay.length === 0;
 
   const tooltipStyle = {
     borderRadius: '8px',
@@ -124,67 +107,84 @@ export default function Dashboard({
     backgroundColor: 'white',
   };
 
-  const isEmpty = callsByDay.length === 0;
-
   return (
     <AuthenticatedLayout>
       <Head title="Dashboard" />
 
+      {/* Page Header */}
       <div className="flex items-end justify-between">
         <div>
-          <Heading>Dashboard</Heading>
-          <Text className="mt-1">{rangeLabel}</Text>
+          <h1 className="text-xl font-semibold text-zinc-900">Operations Overview</h1>
+          <p className="mt-0.5 text-sm text-zinc-500">
+            Real-time performance metrics for your AI voice fleet — {rangeLabel}
+          </p>
         </div>
-        <a href={`/dashboard/export/csv?${params.toString()}`} className="inline-flex">
-          <Button outline>
-            <Download />
-            Export
-          </Button>
-        </a>
+        <div className="flex items-center gap-3">
+          {/* Date Range */}
+          <div className="flex items-center gap-1 rounded-lg bg-zinc-100 p-1">
+            {PRESETS.map((p) => (
+              <button
+                key={p.days}
+                type="button"
+                onClick={() => applyPreset(p.days)}
+                className={`rounded-md px-3 py-1.5 text-sm font-semibold transition-all ${
+                  activePreset === p.days
+                    ? 'bg-white text-indigo-600 shadow-sm'
+                    : 'text-zinc-500 hover:text-zinc-700'
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+            <div className="mx-1 h-4 w-px bg-zinc-300" />
+            <button
+              type="button"
+              onClick={() => document.getElementById('custom-date-toggle')?.click()}
+              className="flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-semibold text-zinc-500 hover:text-zinc-700"
+            >
+              <Calendar className="size-4" />
+              Custom
+            </button>
+          </div>
+
+          <a
+            href={`/dashboard/export/csv?${params.toString()}`}
+            className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-600 transition-all hover:bg-zinc-50"
+          >
+            <Download className="size-4" />
+            Export CSV
+          </a>
+        </div>
       </div>
 
-      {/* Date Range Filter */}
-      <div className="mt-6 flex flex-wrap items-end gap-3">
-        <div className="flex rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-900">
-          {PRESETS.map((p) => (
-            <button
-              key={p.days}
-              type="button"
-              onClick={() => applyPreset(p.days)}
-              className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
-                activePreset === p.days
-                  ? 'bg-white text-indigo-600 shadow-sm dark:bg-zinc-800 dark:text-indigo-400'
-                  : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-200'
-              }`}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
-        <form onSubmit={applyCustom} className="flex items-end gap-2">
-          <div className="w-36">
-            <Input
-              type="date"
-              value={customStart}
-              onChange={(e) => setCustomStart(e.target.value)}
-              max={todayStr()}
-            />
-          </div>
-          <Text className="mb-1.5">to</Text>
-          <div className="w-36">
-            <Input
-              type="date"
-              value={customEnd}
-              onChange={(e) => setCustomEnd(e.target.value)}
-              max={todayStr()}
-              min={customStart}
-            />
-          </div>
-          <Button type="submit" color="dark/zinc" disabled={!customStart || !customEnd}>
+      {/* Custom Date Form */}
+      <form onSubmit={applyCustom} id="custom-date-form" className="mt-3 hidden">
+        <div className="flex items-end gap-2">
+          <input
+            type="date"
+            value={customStart}
+            onChange={(e) => setCustomStart(e.target.value)}
+            max={todayStr()}
+            className="rounded-lg border border-zinc-200 px-3 py-1.5 text-sm"
+          />
+          <span className="text-sm text-zinc-500">to</span>
+          <input
+            type="date"
+            value={customEnd}
+            onChange={(e) => setCustomEnd(e.target.value)}
+            max={todayStr()}
+            min={customStart}
+            className="rounded-lg border border-zinc-200 px-3 py-1.5 text-sm"
+          />
+          <button
+            type="submit"
+            disabled={!customStart || !customEnd}
+            className="rounded-lg bg-zinc-900 px-4 py-1.5 text-sm font-medium text-white disabled:opacity-50"
+          >
             Apply
-          </Button>
-        </form>
-      </div>
+          </button>
+        </div>
+      </form>
 
       {/* Stat Cards */}
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -192,14 +192,14 @@ export default function Dashboard({
           ? statCards.map((s) => (
               <div
                 key={s.key}
-                className="animate-pulse rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900"
+                className="animate-pulse rounded-xl border border-zinc-200 bg-white p-5"
               >
                 <div className="flex items-start justify-between">
                   <div className="space-y-2">
-                    <div className="h-3 w-24 rounded bg-zinc-200 dark:bg-zinc-700" />
-                    <div className="h-7 w-16 rounded bg-zinc-300 dark:bg-zinc-600" />
+                    <div className="h-3 w-24 rounded bg-zinc-200" />
+                    <div className="h-7 w-16 rounded bg-zinc-300" />
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-zinc-100 dark:bg-zinc-800" />
+                  <div className="size-10 rounded-xl bg-zinc-100" />
                 </div>
               </div>
             ))
@@ -208,16 +208,16 @@ export default function Dashboard({
           return (
             <div
               key={s.key}
-              className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900"
+              className="rounded-xl border border-zinc-200 bg-white p-5 transition-shadow hover:shadow-md"
             >
               <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <Text className="!text-[10px] uppercase tracking-wider text-zinc-500">{s.label}</Text>
-                  <p className="text-[28px] font-bold tracking-tight text-zinc-950 dark:text-white">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">{s.label}</p>
+                  <p className="mt-1 text-[28px] font-bold tracking-tight text-zinc-900">
                     {s.format ? s.format(stats[s.key]) : stats[s.key]}
                   </p>
                 </div>
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 dark:bg-indigo-950/50">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50">
                   <Icon className="size-5 text-indigo-500" />
                 </div>
               </div>
@@ -227,37 +227,43 @@ export default function Dashboard({
       </div>
 
       {/* Charts Row 1 */}
-      <div className={`mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2 ${loading ? 'pointer-events-none opacity-60 transition-opacity' : ''}`}>
-        {chartCard({
-          icon: TrendingUp,
-          title: `Calls (${rangeLabel})`,
-          children: isEmpty ? (
+      <div className={`mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2 ${loading ? 'pointer-events-none opacity-60' : ''}`}>
+        {/* Calls Line Chart */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <TrendingUp className="size-4 text-zinc-500" />
+            <h3 className="text-sm font-semibold text-zinc-900">Calls ({rangeLabel})</h3>
+          </div>
+          {isEmpty ? (
             <div className="flex h-[250px] items-center justify-center text-sm text-zinc-400">No call data yet</div>
           ) : (
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={callsByDay}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-zinc-200 dark:stroke-zinc-700" />
-                <XAxis dataKey="date" className="text-xs text-zinc-500" />
-                <YAxis className="text-xs text-zinc-500" allowDecimals={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#9ca3af" />
+                <YAxis tick={{ fontSize: 12 }} stroke="#9ca3af" allowDecimals={false} />
                 <Tooltip contentStyle={tooltipStyle} />
                 <Legend />
                 <Line type="monotone" dataKey="count" name="Calls" stroke="#6366f1" strokeWidth={2} dot={{ r: 4 }} />
               </LineChart>
             </ResponsiveContainer>
-          ),
-        })}
+          )}
+        </div>
 
-        {chartCard({
-          icon: BarChart3,
-          title: `Avg Duration (${rangeLabel})`,
-          children: avgDurationByDay.length === 0 ? (
+        {/* Avg Duration Bar Chart */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <BarChart3 className="size-4 text-zinc-500" />
+            <h3 className="text-sm font-semibold text-zinc-900">Avg Duration ({rangeLabel})</h3>
+          </div>
+          {avgDurationByDay.length === 0 ? (
             <div className="flex h-[250px] items-center justify-center text-sm text-zinc-400">No duration data yet</div>
           ) : (
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={avgDurationByDay}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-zinc-200 dark:stroke-zinc-700" />
-                <XAxis dataKey="date" className="text-xs text-zinc-500" />
-                <YAxis className="text-xs text-zinc-500" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#9ca3af" />
+                <YAxis tick={{ fontSize: 12 }} stroke="#9ca3af" />
                 <Tooltip
                   contentStyle={tooltipStyle}
                   formatter={(value) => [formatDuration(Math.round(value)), 'Avg Duration']}
@@ -266,16 +272,19 @@ export default function Dashboard({
                 <Bar dataKey="avg_seconds" name="Avg Duration" fill="#6366f1" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          ),
-        })}
+          )}
+        </div>
       </div>
 
       {/* Charts Row 2 */}
-      <div className={`mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2 ${loading ? 'pointer-events-none opacity-60 transition-opacity' : ''}`}>
-        {chartCard({
-          icon: PieChartIcon,
-          title: 'Call Status',
-          children: callsByStatus.length === 0 ? (
+      <div className={`mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2 ${loading ? 'pointer-events-none opacity-60' : ''}`}>
+        {/* Call Status Pie */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <PieChartIcon className="size-4 text-zinc-500" />
+            <h3 className="text-sm font-semibold text-zinc-900">Call Status</h3>
+          </div>
+          {callsByStatus.length === 0 ? (
             <div className="flex h-[250px] items-center justify-center text-sm text-zinc-400">No call data yet</div>
           ) : (
             <ResponsiveContainer width="100%" height={250}>
@@ -296,7 +305,7 @@ export default function Dashboard({
                 </Pie>
                 <Tooltip
                   contentStyle={tooltipStyle}
-                  formatter={(value, name, props) => {
+                  formatter={(value, name) => {
                     const total = callsByStatus.reduce((s, i) => s + i.count, 0);
                     const pct = total ? ((value / total) * 100).toFixed(1) : 0;
                     return [`${value} (${pct}%)`, name];
@@ -305,35 +314,38 @@ export default function Dashboard({
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
-          ),
-        })}
+          )}
+        </div>
 
-        {chartCard({
-          icon: BarChart3,
-          title: `Calls by Flow (Top 5)`,
-          children: callsByFlow.length === 0 ? (
+        {/* Calls by Flow */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <BarChart3 className="size-4 text-zinc-500" />
+            <h3 className="text-sm font-semibold text-zinc-900">Calls by Flow (Top 5)</h3>
+          </div>
+          {callsByFlow.length === 0 ? (
             <div className="flex h-[250px] items-center justify-center text-sm text-zinc-400">No flow data yet</div>
           ) : (
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={callsByFlow} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" className="stroke-zinc-200 dark:stroke-zinc-700" />
-                <XAxis type="number" className="text-xs text-zinc-500" allowDecimals={false} />
-                <YAxis dataKey="flow_name" type="category" className="text-xs text-zinc-500" width={120} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis type="number" tick={{ fontSize: 12 }} stroke="#9ca3af" allowDecimals={false} />
+                <YAxis dataKey="flow_name" type="category" tick={{ fontSize: 12 }} stroke="#9ca3af" width={120} />
                 <Tooltip contentStyle={tooltipStyle} />
                 <Legend />
                 <Bar dataKey="count" name="Calls" fill="#6366f1" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          ),
-        })}
+          )}
+        </div>
       </div>
 
-      {/* Flow Performance */}
-      <div className={`mt-6 ${loading ? 'pointer-events-none opacity-60 transition-opacity' : ''}`}>
-        <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+      {/* Flow Performance Table */}
+      <div className="mt-6">
+        <div className="rounded-xl border border-zinc-200 bg-white p-6">
           <div className="mb-4 flex items-center gap-2">
             <BarChart3 className="size-4 text-zinc-500" />
-            <Subheading>Flow Performance</Subheading>
+            <h3 className="text-sm font-semibold text-zinc-900">Flow Performance</h3>
           </div>
 
           {callsByFlowWithMetrics.length === 0 ? (
@@ -342,9 +354,9 @@ export default function Dashboard({
             <>
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={callsByFlowWithMetrics} layout="horizontal">
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-zinc-200 dark:stroke-zinc-700" />
-                  <XAxis dataKey="flow_name" className="text-xs text-zinc-500" />
-                  <YAxis className="text-xs text-zinc-500" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis dataKey="flow_name" tick={{ fontSize: 12 }} stroke="#9ca3af" />
+                  <YAxis tick={{ fontSize: 12 }} stroke="#9ca3af" />
                   <Tooltip
                     contentStyle={tooltipStyle}
                     formatter={(value) => [formatDuration(Math.round(value)), 'Avg Duration']}
@@ -354,32 +366,33 @@ export default function Dashboard({
                 </BarChart>
               </ResponsiveContainer>
 
-              <div className="mt-6">
-                <Table dense>
-                  <TableHead>
-                    <TableRow>
-                      <TableHeader>Flow Name</TableHeader>
-                      <TableHeader>Calls</TableHeader>
-                      <TableHeader>Avg Duration</TableHeader>
-                      <TableHeader>Success Rate</TableHeader>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
+              <div className="mt-6 overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-zinc-200 text-left text-xs font-medium uppercase text-zinc-500">
+                      <th className="pb-3 pr-4">Flow Name</th>
+                      <th className="pb-3 pr-4">Calls</th>
+                      <th className="pb-3 pr-4">Avg Duration</th>
+                      <th className="pb-3 pr-4">Success Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     {callsByFlowWithMetrics.map((f) => (
-                      <TableRow key={f.flow_name}>
-                        <TableCell className="font-medium">{f.flow_name}</TableCell>
-                        <TableCell>{f.total_calls}</TableCell>
-                        <TableCell>{formatDuration(f.avg_duration)}</TableCell>
-                        <TableCell>{f.success_rate.toFixed(1)}%</TableCell>
-                      </TableRow>
+                      <tr key={f.flow_name} className="border-b border-zinc-100 last:border-0">
+                        <td className="py-3 pr-4 font-medium text-zinc-900">{f.flow_name}</td>
+                        <td className="py-3 pr-4 text-zinc-600">{f.total_calls}</td>
+                        <td className="py-3 pr-4 text-zinc-600">{formatDuration(f.avg_duration)}</td>
+                        <td className="py-3 pr-4 text-zinc-600">{f.success_rate.toFixed(1)}%</td>
+                      </tr>
                     ))}
-                  </TableBody>
-                </Table>
+                  </tbody>
+                </table>
               </div>
             </>
           )}
         </div>
       </div>
+
       <ActivityFeed />
     </AuthenticatedLayout>
   );
