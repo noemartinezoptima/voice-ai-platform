@@ -14,12 +14,23 @@ class NotificationController extends Controller
 {
     public function index(Request $request): Response
     {
-        $notifications = UserNotificationModel::where('user_id', $request->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->paginate(30);
+        $query = UserNotificationModel::where('user_id', $request->user()->id);
+
+        if ($type = $request->get('type')) {
+            $query->where('type', $type);
+        }
+
+        $notifications = $query->orderBy('created_at', 'desc')->paginate(30);
+
+        $types = UserNotificationModel::where('user_id', $request->user()->id)
+            ->select('type')
+            ->distinct()
+            ->pluck('type');
 
         return Inertia::render('Notifications/Index', [
             'notifications' => $notifications,
+            'types' => $types,
+            'filters' => $request->only(['type']),
         ]);
     }
 
