@@ -30,6 +30,7 @@ use App\Http\Controllers\Web\QualityController;
 use App\Http\Controllers\Web\RecordingController;
 use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\ScheduledCallController;
+use App\Http\Controllers\Web\SearchController;
 use App\Http\Controllers\Web\SmsAutoReplyController;
 use App\Http\Controllers\Web\SmsCampaignController;
 use App\Http\Controllers\Web\SmsController;
@@ -94,7 +95,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/search', \App\Http\Controllers\Web\SearchController::class)->name('search');
+    Route::get('/search', SearchController::class)->name('search');
 
     Route::get('/flows', [FlowController::class, 'index'])->name('flows.index');
     Route::get('/flows/create', [FlowController::class, 'create'])->name('flows.create');

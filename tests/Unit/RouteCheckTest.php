@@ -3,7 +3,10 @@
 namespace Tests\Unit;
 
 use App\Models\User;
+use Database\Factories\CallModelFactory;
+use Database\Factories\FlowModelFactory;
 use Database\Factories\TenantFactory;
+use Database\Factories\WebhookDestinationModelFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -20,14 +23,14 @@ class RouteCheckTest extends TestCase
             'email_verified_at' => now(),
         ]);
 
-        $flow = \Database\Factories\FlowModelFactory::new()->create([
+        $flow = FlowModelFactory::new()->create([
             'tenant_id' => $tenant->id,
         ]);
-        $call = \Database\Factories\CallModelFactory::new()->create([
+        $call = CallModelFactory::new()->create([
             'tenant_id' => $tenant->id,
             'flow_id' => $flow->id,
         ]);
-        $webhook = \Database\Factories\WebhookDestinationModelFactory::new()->create([
+        $webhook = WebhookDestinationModelFactory::new()->create([
             'tenant_id' => $tenant->id,
         ]);
 
@@ -45,7 +48,7 @@ class RouteCheckTest extends TestCase
         foreach ($routes as $r) {
             $resp = $this->actingAs($user)->get($r);
             if ($resp->getStatusCode() >= 500) {
-                $errors[] = "{$r} returned {$resp->getStatusCode()}: " . substr(strip_tags($resp->getContent()), 0, 200);
+                $errors[] = "{$r} returned {$resp->getStatusCode()}: ".substr(strip_tags($resp->getContent()), 0, 200);
             }
         }
 
@@ -61,7 +64,7 @@ class RouteCheckTest extends TestCase
 
         $resp = $this->actingAs($user)->post("/flows/{$flow->id}/test", ['to' => '+15551234567']);
         if ($resp->getStatusCode() >= 500) {
-            $errors[] = "POST /flows/{$flow->id}/test returned {$resp->getStatusCode()}: " . substr(strip_tags($resp->getContent()), 0, 200);
+            $errors[] = "POST /flows/{$flow->id}/test returned {$resp->getStatusCode()}: ".substr(strip_tags($resp->getContent()), 0, 200);
         }
 
         $resp = $this->actingAs($user)->get("/flows/{$flow->id}/simulate");
@@ -74,6 +77,6 @@ class RouteCheckTest extends TestCase
             $errors[] = "POST /calls/{$call->id}/retry returned {$resp->getStatusCode()}";
         }
 
-        $this->assertEmpty($errors, "500 errors detected:\n" . implode("\n", $errors));
+        $this->assertEmpty($errors, "500 errors detected:\n".implode("\n", $errors));
     }
 }
