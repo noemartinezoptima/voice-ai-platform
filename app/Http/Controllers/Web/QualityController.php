@@ -155,18 +155,19 @@ class QualityController extends Controller
 
         $transcripts = TranscriptModel::where('call_id', $call->id)
             ->orderBy('created_at')
-            ->limit(5)
             ->get();
 
         return Inertia::render('Quality/Show', [
             'call' => [
                 'id' => $call->id,
+                'call_sid' => $call->call_sid,
                 'from_number' => $call->from_number,
                 'to_number' => $call->to_number,
                 'status' => $call->status,
                 'duration_seconds' => $call->duration_seconds,
                 'started_at' => $call->started_at,
                 'flow_name' => $call->flow?->name,
+                'recording_url' => $call->recording_url,
             ],
             'score' => $score ? [
                 'id' => $score->id,
@@ -176,9 +177,10 @@ class QualityController extends Controller
                 'duration_score' => $score->duration_score,
                 'details' => $score->details,
             ] : null,
-            'transcriptPreview' => $transcripts->map(fn ($t) => [
+            'transcripts' => $transcripts->map(fn ($t) => [
                 'role' => $t->role,
                 'text' => $t->text,
+                'created_at' => $t->created_at,
             ]),
         ]);
     }
