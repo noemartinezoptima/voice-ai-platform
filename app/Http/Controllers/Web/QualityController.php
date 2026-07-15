@@ -58,6 +58,14 @@ class QualityController extends Controller
                 ')
                 ->first();
 
+            $scoreTrend = DB::table('call_quality_scores')
+                ->where('tenant_id', $tenantId)
+                ->where('created_at', '>=', now()->subDays(30))
+                ->selectRaw('DATE(created_at) as date, ROUND(AVG(total_score), 1) as avg_score, COUNT(*) as call_count')
+                ->groupBy(DB::raw('DATE(created_at)'))
+                ->orderBy('date')
+                ->get();
+
             return [
                 'avgScore' => $stats ? round((float) $stats->avg_score, 1) : 0.0,
                 'totalScored' => $stats ? (int) $stats->total_scored : 0,
@@ -65,6 +73,7 @@ class QualityController extends Controller
                 'topFlowScore' => $topFlow ? round((float) ($topFlow->avg_score ?? 0), 1) : 0,
                 'topFlows' => $topFlows,
                 'scoreDistribution' => $scoreDistribution,
+                'scoreTrend' => $scoreTrend,
             ];
         });
 
@@ -132,6 +141,7 @@ class QualityController extends Controller
             'topFlows' => $cachedStats['topFlows'],
             'recentScored' => $recentScored,
             'scoreDistribution' => $cachedStats['scoreDistribution'],
+            'scoreTrend' => $cachedStats['scoreTrend'],
             'filters' => $filters,
         ]);
     }

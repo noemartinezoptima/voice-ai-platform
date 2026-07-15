@@ -9,7 +9,10 @@ import { Input } from '@/Components/catalyst/input';
 import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from '@/Components/catalyst/table';
 import { Pagination, PaginationList, PaginationPage, PaginationGap, PaginationNext, PaginationPrevious } from '@/Components/catalyst/pagination';
 import { index as qualityIndex, show as qualityShow } from '@/routes/quality';
-import { ShieldCheck, Search, X } from 'lucide-react';
+import { ShieldCheck, Search, X, TrendingUp } from 'lucide-react';
+import {
+    LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer,
+} from 'recharts';
 
 function ScoreGauge({ score }) {
   const r = 28;
@@ -73,6 +76,7 @@ export default function Index({
   topFlows,
   recentScored,
   scoreDistribution,
+  scoreTrend = [],
   filters = {},
 }) {
   const [localFilters, setLocalFilters] = useState({
@@ -135,6 +139,39 @@ export default function Index({
               value={topFlow}
               sub={topFlow !== 'N/A' ? `Avg score: ${topFlowScore}` : undefined}
             />
+          </div>
+
+          <div className="mt-6 rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="flex items-center justify-between">
+              <Subheading>Score Trend (Last 30 Days)</Subheading>
+              <TrendingUp className="size-4 text-zinc-400" />
+            </div>
+            {scoreTrend.length === 0 ? (
+              <Text className="mt-4 !text-zinc-400">Not enough data to show a trend.</Text>
+            ) : (
+              <div className="mt-4">
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={scoreTrend}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#9ca3af" />
+                    <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} stroke="#9ca3af" />
+                    <Tooltip
+                      contentStyle={{ borderRadius: 8, border: '1px solid #e4e4e7', fontSize: 13 }}
+                      labelFormatter={(label) => new Date(label).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    />
+                    <Line type="monotone" dataKey="avg_score" name="Avg Score" stroke="#6366f1" strokeWidth={2} dot={{ r: 3 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+                <div className="mt-2 flex items-center justify-center gap-6 text-xs text-zinc-400">
+                  <span className="flex items-center gap-1">
+                    <span className="inline-block size-2 rounded-full bg-indigo-500" />
+                    Avg Score
+                  </span>
+                  <span>Min: {Math.min(...scoreTrend.map((d) => d.avg_score))}</span>
+                  <span>Max: {Math.max(...scoreTrend.map((d) => d.avg_score))}</span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
