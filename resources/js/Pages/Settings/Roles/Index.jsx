@@ -6,12 +6,19 @@ import { Text } from '@/Components/catalyst/text';
 import { Button } from '@/Components/catalyst/button';
 import { Badge } from '@/Components/catalyst/badge';
 import { Checkbox } from '@/Components/catalyst/checkbox';
-import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
+import { Dialog, DialogTitle, DialogDescription, DialogBody, DialogActions } from '@/Components/catalyst/dialog';
 import { Shield } from 'lucide-react';
 
 export default function Index({ roles, allPermissions }) {
     const [editingRole, setEditingRole] = useState(null);
     const [selectedPermissions, setSelectedPermissions] = useState([]);
+
+    const groups = allPermissions.reduce((acc, p) => {
+        const group = p.split('.')[0] || 'other'
+        if (!acc[group]) acc[group] = []
+        acc[group].push(p)
+        return acc
+    }, {})
 
     function openEditor(role) {
         setEditingRole(role);
@@ -61,30 +68,39 @@ export default function Index({ roles, allPermissions }) {
                 ))}
             </div>
 
-            {editingRole && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl dark:bg-zinc-900">
-                        <h3 className="text-lg font-semibold capitalize">Edit {editingRole.name} Permissions</h3>
-                        <Text className="mt-1">Select which permissions this role should have.</Text>
-                        <div className="mt-4 space-y-2">
-                            {allPermissions.map((perm) => (
-                                <label key={perm} className="flex items-center gap-2 rounded-md p-2 hover:bg-zinc-50 dark:hover:bg-zinc-800">
-                                    <Checkbox
-                                        checked={selectedPermissions.includes(perm)}
-                                        onChange={() => togglePermission(perm)}
-                                        disabled={editingRole.name === 'owner'}
-                                    />
-                                    <span className="text-sm">{perm}</span>
-                                </label>
-                            ))}
-                        </div>
-                        <div className="mt-6 flex justify-end gap-2">
-                            <Button plain onClick={() => setEditingRole(null)}>Cancel</Button>
-                            <Button onClick={saveRole} disabled={editingRole.name === 'owner'}>Save</Button>
-                        </div>
+            <Dialog open={editingRole !== null} onClose={() => setEditingRole(null)} size="lg">
+                <DialogTitle>Edit {editingRole?.name} Permissions</DialogTitle>
+                <DialogDescription>
+                    {editingRole?.name === 'owner'
+                        ? 'Owner permissions cannot be modified.'
+                        : 'Select which permissions this role should have.'}
+                </DialogDescription>
+                <DialogBody>
+                    <div className="space-y-4">
+                        {Object.entries(groups).map(([group, perms]) => (
+                            <div key={group}>
+                                <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-400">{group}</h4>
+                                <div className="space-y-1">
+                                    {perms.map((perm) => (
+                                        <label key={perm} className="flex cursor-pointer items-center gap-2 rounded-md p-2 hover:bg-zinc-50">
+                                            <Checkbox
+                                                checked={selectedPermissions.includes(perm)}
+                                                onChange={() => togglePermission(perm)}
+                                                disabled={editingRole?.name === 'owner'}
+                                            />
+                                            <span className="text-sm">{perm}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                </div>
-            )}
+                </DialogBody>
+                <DialogActions>
+                    <Button plain onClick={() => setEditingRole(null)}>Cancel</Button>
+                    <Button onClick={saveRole} disabled={editingRole?.name === 'owner'}>Save</Button>
+                </DialogActions>
+            </Dialog>
         </AuthenticatedLayout>
     );
 }
