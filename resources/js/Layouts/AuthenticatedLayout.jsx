@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
     LayoutDashboard, Radio, Phone, FileText, GitBranch, Mic, BarChart3,
-    BookOpen, Webhook, Settings, Bell, Search, Download, Plus, Calendar,
+    BookOpen, Webhook, Settings, Bell, Download, Plus, Calendar,
     LogOut, User, ChevronUp, Users, Key, Smartphone, Globe, CreditCard,
     Activity, Bot, Server, Shield, Award, AlertTriangle, UserCheck,
     MessageSquare, MessageSquareText, Hexagon,
 } from 'lucide-react'
+import SearchBar from '@/Components/SearchBar'
 import { dashboard, logout } from '@/routes'
 import { index as analyticsIndex } from '@/actions/App/Http/Controllers/Web/AnalyticsController'
 import { index as flowsIndex } from '@/actions/App/Http/Controllers/Web/FlowController'
@@ -192,14 +193,7 @@ export default function AuthenticatedLayout({ children }) {
             {/* Header */}
             <header className="fixed left-0 right-0 top-0 z-40 flex h-16 items-center justify-between border-b border-zinc-200 bg-white pl-[248px] pr-8">
                 <div className="flex flex-1 items-center gap-4">
-                    <div className="relative w-full max-w-md">
-                        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
-                        <input
-                            className="w-full rounded-lg border-none bg-zinc-100 py-2 pl-10 pr-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            placeholder="Search operations, agents, or flows..."
-                            type="text"
-                        />
-                    </div>
+                    <SearchBar />
                 </div>
 
                 <div className="flex items-center gap-4">
