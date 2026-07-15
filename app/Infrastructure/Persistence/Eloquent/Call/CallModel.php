@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Laravel\Scout\Searchable;
 
 /**
  * @property string $id
@@ -39,7 +40,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class CallModel extends Model
 {
     /** @use HasFactory<CallModelFactory> */
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Searchable;
 
     protected $table = 'calls';
 
@@ -104,6 +105,20 @@ class CallModel extends Model
     public function transcripts(): HasMany
     {
         return $this->hasMany(TranscriptModel::class, 'call_id')->orderBy('start_offset_ms');
+    }
+
+    /** @return array<string, mixed> */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'tenant_id' => $this->tenant_id,
+            'call_sid' => $this->call_sid,
+            'from_number' => $this->from_number,
+            'to_number' => $this->to_number,
+            'status' => $this->status,
+            'direction' => $this->direction,
+        ];
     }
 
     protected function casts(): array

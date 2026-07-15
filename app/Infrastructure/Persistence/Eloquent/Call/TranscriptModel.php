@@ -5,6 +5,7 @@ namespace App\Infrastructure\Persistence\Eloquent\Call;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
 
 /**
  * @property int $id
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class TranscriptModel extends Model
 {
+    use Searchable;
+
     protected $table = 'transcripts';
 
     protected $fillable = [

@@ -94,6 +94,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/search', \App\Http\Controllers\Web\SearchController::class)->name('search');
+
     Route::get('/flows', [FlowController::class, 'index'])->name('flows.index');
     Route::get('/flows/create', [FlowController::class, 'create'])->name('flows.create');
     Route::post('/flows', [FlowController::class, 'store'])->name('flows.store');
