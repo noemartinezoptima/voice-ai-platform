@@ -68,7 +68,9 @@ class QualityController extends Controller
             ];
         });
 
-        $callsWithScores = CallQualityScoreModel::query()
+        $filters = $request->only(['date_from', 'date_to', 'score_min', 'score_max', 'search']);
+
+        $callsQuery = CallQualityScoreModel::query()
             ->where('call_quality_scores.tenant_id', $tenantId)
             ->join('calls', 'call_quality_scores.call_id', '=', 'calls.id')
             ->leftJoin('flows', 'calls.flow_id', '=', 'flows.id')
@@ -79,7 +81,28 @@ class QualityController extends Controller
                 'calls.status as call_status',
                 'calls.started_at',
             )
-            ->selectRaw('COALESCE(flows.name, \'No Flow\') as flow_name')
+            ->selectRaw('COALESCE(flows.name, \'No Flow\') as flow_name');
+
+        if ($dateFrom = $filters['date_from'] ?? null) {
+            $callsQuery->whereDate('call_quality_scores.created_at', '>=', $dateFrom);
+        }
+        if ($dateTo = $filters['date_to'] ?? null) {
+            $callsQuery->whereDate('call_quality_scores.created_at', '<=', $dateTo);
+        }
+        if ($scoreMin = $filters['score_min'] ?? null) {
+            $callsQuery->where('call_quality_scores.total_score', '>=', (int) $scoreMin);
+        }
+        if ($scoreMax = $filters['score_max'] ?? null) {
+            $callsQuery->where('call_quality_scores.total_score', '<=', (int) $scoreMax);
+        }
+        if ($search = $filters['search'] ?? null) {
+            $callsQuery->where(function ($q) use ($search) {
+                $q->where('calls.from_number', 'like', "%{$search}%")
+                    ->orWhere('calls.to_number', 'like', "%{$search}%");
+            });
+        }
+
+        $callsWithScores = $callsQuery
             ->orderByDesc('call_quality_scores.created_at')
             ->paginate(15);
 
@@ -109,6 +132,7 @@ class QualityController extends Controller
             'topFlows' => $cachedStats['topFlows'],
             'recentScored' => $recentScored,
             'scoreDistribution' => $cachedStats['scoreDistribution'],
+            'filters' => $filters,
         ]);
     }
 
