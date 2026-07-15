@@ -61,6 +61,18 @@ class SmsController extends Controller
             ->limit(50)
             ->get();
 
+        $conversations->each(function ($conv) use ($tenantId) {
+            $last = SmsMessageModel::where('tenant_id', $tenantId)
+                ->where(function ($q) use ($conv) {
+                    $q->where('from_number', $conv->contact_number)
+                        ->orWhere('to_number', $conv->contact_number);
+                })
+                ->latest()
+                ->first();
+            $conv->last_body = $last?->body;
+            $conv->last_channel = $last?->channel;
+        });
+
         return Inertia::render('Sms/Index', [
             'messages' => $messages,
             'conversations' => $conversations,
