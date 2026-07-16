@@ -2,6 +2,8 @@
 
 namespace App\Infrastructure\Persistence\Eloquent\Webhook;
 
+use Database\Factories\WebhookDeliveryModelFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -22,6 +24,8 @@ use Illuminate\Support\Carbon;
  */
 class WebhookDeliveryModel extends Model
 {
+    /** @use HasFactory<WebhookDeliveryModelFactory> */
+    use HasFactory;
     protected $table = 'webhook_deliveries';
 
     protected $fillable = [
@@ -47,5 +51,10 @@ class WebhookDeliveryModel extends Model
     public function webhookDestination(): BelongsTo
     {
         return $this->belongsTo(WebhookDestinationModel::class);
+    }
+
+    protected static function newFactory(): WebhookDeliveryModelFactory
+    {
+        return WebhookDeliveryModelFactory::new();
     }
 }
