@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -35,9 +36,14 @@ class GettingStartedController extends Controller
             return redirect()->route('dashboard');
         }
 
+        $hasPhone = FlowModel::where('tenant_id', $user->tenant_id)->whereNotNull('phone_number')->exists();
+        $hasFlow = FlowModel::where('tenant_id', $user->tenant_id)->exists();
+
         return Inertia::render('GettingStarted/Index', [
             'twilioConnected' => ! empty($settings['twilio_oauth'] ?? null) || ! empty($settings['twilio_account_sid'] ?? null),
             'elevenlabsConnected' => ! empty($settings['elevenlabs_api_key'] ?? null),
+            'hasPhone' => $hasPhone,
+            'hasFlow' => $hasFlow,
         ]);
     }
 
