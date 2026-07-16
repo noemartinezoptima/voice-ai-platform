@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
@@ -19,41 +22,118 @@ class SystemHealthController extends Controller
         $tenantId = $request->user()->tenant_id;
 
         return Inertia::render('Settings/System/Index', [
-            'health' => [
-                'database' => $this->checkDatabase(),
-                'redis' => $this->checkRedis(),
-            ],
+            'health' => $this->buildHealth(),
             'failedJobs' => $this->getFailedJobs(),
             'queueDepth' => $this->getQueueDepth(),
             'errorRate' => $this->getErrorRate($tenantId),
+            'lastChecked' => now()->toIso8601String(),
         ]);
     }
 
-    private function checkDatabase(): string
+    public function poll(Request $request): JsonResponse
+    {
+        Gate::authorize('manageSettings');
+        $tenantId = $request->user()->tenant_id;
+
+        return response()->json([
+            'health' => $this->buildHealth(),
+            'failedJobs' => $this->getFailedJobs(),
+            'queueDepth' => $this->getQueueDepth(),
+            'errorRate' => $this->getErrorRate($tenantId),
+            'lastChecked' => now()->toIso8601String(),
+        ]);
+    }
+
+    private function buildHealth(): array
+    {
+        $db = $this->checkDatabase();
+        $redis = $this->checkRedis();
+        $cache = $this->checkCache();
+        $twilio = $this->checkTwilio();
+
+        $services = [$db, $redis, $cache, $twilio];
+        $ok = count(array_filter($services, fn ($s) => $s['status'] === 'ok'));
+        $total = count($services);
+
+        return [
+            'score' => $total > 0 ? round(($ok / $total) * 100) : 0,
+            'database' => $db,
+            'redis' => $redis,
+            'cache' => $cache,
+            'twilio' => $twilio,
+        ];
+    }
+
+    private function checkDatabase(): array
     {
         try {
             DB::connection()->getPdo();
 
-            return 'ok';
-        } catch (\Throwable) {
-            return 'error';
+            return ['status' => 'ok', 'label' => 'Database', 'latency' => $this->measure(fn () => DB::select('SELECT 1'))];
+        } catch (\Throwable $e) {
+            return ['status' => 'error', 'label' => 'Database', 'message' => $e->getMessage()];
         }
     }
 
-    private function checkRedis(): string
+    private function checkRedis(): array
     {
         try {
             Redis::connection()->ping();
 
-            return 'ok';
-        } catch (\Throwable) {
-            return 'error';
+            return ['status' => 'ok', 'label' => 'Redis'];
+        } catch (\Throwable $e) {
+            return ['status' => 'error', 'label' => 'Redis', 'message' => $e->getMessage()];
         }
     }
 
-    /**
-     * @return array{id: int, connection: string, queue: string, exception: string, failed_at: string}
-     */
+    private function checkCache(): array
+    {
+        try {
+            $key = 'health:'.now()->timestamp;
+            Cache::put($key, true, 1);
+            $retrieved = Cache::get($key);
+            Cache::forget($key);
+
+            return ['status' => $retrieved ? 'ok' : 'error', 'label' => 'Cache'];
+        } catch (\Throwable $e) {
+            return ['status' => 'error', 'label' => 'Cache', 'message' => $e->getMessage()];
+        }
+    }
+
+    private function checkTwilio(): array
+    {
+        try {
+            $accountSid = config('twilio.account_sid');
+            if (empty($accountSid)) {
+                return ['status' => 'warning', 'label' => 'Twilio', 'message' => 'Not configured'];
+            }
+
+            $response = Http::withBasicAuth($accountSid, config('twilio.auth_token'))
+                ->timeout(5)
+                ->get("https://api.twilio.com/2010-04-01/Accounts/{$accountSid}.json");
+
+            return [
+                'status' => $response->successful() ? 'ok' : 'error',
+                'label' => 'Twilio',
+                'latency' => $response->successful() ? $response->handlerStats('total_time_us') ?? null : null,
+            ];
+        } catch (\Throwable $e) {
+            return ['status' => 'error', 'label' => 'Twilio', 'message' => $e->getMessage()];
+        }
+    }
+
+    private function measure(callable $fn): ?int
+    {
+        $start = hrtime(true);
+        try {
+            $fn();
+
+            return (int) ((hrtime(true) - $start) / 1000);
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
     private function getFailedJobs(): array
     {
         return DB::table('failed_jobs')
@@ -71,9 +151,6 @@ class SystemHealthController extends Controller
             ->toArray();
     }
 
-    /**
-     * @return array{queue: string, size: int}[]
-     */
     private function getQueueDepth(): array
     {
         $queues = ['default', 'twilio', 'emails'];
@@ -84,9 +161,6 @@ class SystemHealthController extends Controller
         ], $queues);
     }
 
-    /**
-     * @return array{total: int, failed: int, percentage: float}
-     */
     private function getErrorRate(string $tenantId): array
     {
         $total = DB::table('calls')

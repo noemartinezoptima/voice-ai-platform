@@ -233,6 +233,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/settings/system', [SystemHealthController::class, 'index'])
         ->name('settings.system');
 
+    Route::get('/settings/system/poll', [SystemHealthController::class, 'poll'])
+        ->name('settings.system.poll');
+
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
     Route::get('/analytics/export/csv', [AnalyticsController::class, 'export'])->name('analytics.export');
 
