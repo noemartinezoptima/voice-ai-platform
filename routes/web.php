@@ -188,6 +188,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/settings/webhooks/{webhook}/test', [WebhookDestinationController::class, 'test'])->name('settings.webhooks.test');
     Route::get('/settings/webhooks/deliveries', [WebhookDeliveryController::class, 'index'])->name('settings.webhooks.deliveries');
     Route::get('/settings/webhooks/deliveries/{id}', [WebhookDeliveryController::class, 'show'])->name('settings.webhooks.deliveries.show');
+    Route::post('/settings/webhooks/deliveries/{id}/retry', [WebhookDeliveryController::class, 'retry'])->name('settings.webhooks.deliveries.retry');
 
     Route::get('/settings/activity', [ActivityLogController::class, 'index'])->name('settings.activity.index');
 

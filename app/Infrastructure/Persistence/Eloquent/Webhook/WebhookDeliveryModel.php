@@ -26,6 +26,7 @@ class WebhookDeliveryModel extends Model
 {
     /** @use HasFactory<WebhookDeliveryModelFactory> */
     use HasFactory;
+
     protected $table = 'webhook_deliveries';
 
     protected $fillable = [
