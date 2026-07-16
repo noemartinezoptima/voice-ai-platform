@@ -5,8 +5,7 @@ import { Text } from '@/Components/catalyst/text';
 import { Badge } from '@/Components/catalyst/badge';
 import { Button } from '@/Components/catalyst/button';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
-import { Pagination, PaginationPrevious, PaginationNext, PaginationList, PaginationPage } from '@/Components/catalyst/pagination';
-import { AlertTriangle, CheckCircle2, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, AlertTriangle, CheckCircle2, Clock } from 'lucide-react';
 
 const filters = [
     { key: 'all', label: 'All' },
@@ -120,25 +119,29 @@ export default function Index({ errors, stats, filter }) {
                     </Table>
 
                     {errors.last_page > 1 && (
-                        <Pagination className="mt-6">
-                            {errors.current_page > 1 && (
-                                <PaginationPrevious href={`/settings/errors?page=${errors.current_page - 1}&filter=${filter}`} />
+                        <div className="flex items-center justify-center gap-1 border-t border-zinc-200 px-6 py-4">
+                            {errors.prev_page_url && (
+                                <Link href={errors.prev_page_url} className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm font-medium text-zinc-600 hover:bg-zinc-100">
+                                    <ChevronLeft className="size-4" /> Previous
+                                </Link>
                             )}
-                            <PaginationList>
-                                {Array.from({ length: errors.last_page }, (_, i) => i + 1).map((page) => (
-                                    <PaginationPage
-                                        key={page}
-                                        href={`/settings/errors?page=${page}&filter=${filter}`}
-                                        current={page === errors.current_page}
-                                    >
-                                        {page}
-                                    </PaginationPage>
-                                ))}
-                            </PaginationList>
-                            {errors.current_page < errors.last_page && (
-                                <PaginationNext href={`/settings/errors?page=${errors.current_page + 1}&filter=${filter}`} />
+                            {Array.from({ length: errors.last_page }, (_, i) => i + 1).map((page) => (
+                                <Link
+                                    key={page}
+                                    href={`/settings/errors?page=${page}&filter=${filter}`}
+                                    className={`min-w-9 rounded-md px-2.5 py-1.5 text-center text-sm font-medium transition-colors ${
+                                        errors.current_page === page ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100'
+                                    }`}
+                                >
+                                    {page}
+                                </Link>
+                            ))}
+                            {errors.next_page_url && (
+                                <Link href={errors.next_page_url} className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm font-medium text-zinc-600 hover:bg-zinc-100">
+                                    Next <ChevronRight className="size-4" />
+                                </Link>
                             )}
-                        </Pagination>
+                        </div>
                     )}
                 </div>
             )}
