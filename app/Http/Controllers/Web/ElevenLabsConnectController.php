@@ -23,31 +23,40 @@ class ElevenLabsConnectController extends Controller
 
         $apiKey = $request->input('api_key');
 
-        $userResponse = Http::withHeaders(['xi-api-key' => $apiKey])
+        $voicesResponse = Http::withHeaders(['xi-api-key' => $apiKey])
             ->timeout(10)
-            ->get('https://api.elevenlabs.io/v1/user');
+            ->get('https://api.elevenlabs.io/v1/voices');
 
-        if ($userResponse->status() === 401) {
+        if ($voicesResponse->status() === 401) {
             return response()->json([
                 'success' => false,
                 'error' => 'Invalid API key. Please check and try again.',
             ], 422);
         }
 
-        if (! $userResponse->successful()) {
+        if (! $voicesResponse->successful()) {
             return response()->json([
                 'success' => false,
                 'error' => 'Could not connect to ElevenLabs. Please try again.',
             ], 422);
         }
 
-        $userData = $userResponse->json();
+        $userData = [];
+        $subData = [];
 
-        $subResponse = Http::withHeaders(['xi-api-key' => $apiKey])
+        $userResponse = Http::withHeaders(['xi-api-key' => $apiKey])
             ->timeout(10)
-            ->get('https://api.elevenlabs.io/v1/user/subscription');
+            ->get('https://api.elevenlabs.io/v1/user');
 
-        $subData = $subResponse->json() ?? [];
+        if ($userResponse->successful()) {
+            $userData = $userResponse->json();
+
+            $subResponse = Http::withHeaders(['xi-api-key' => $apiKey])
+                ->timeout(10)
+                ->get('https://api.elevenlabs.io/v1/user/subscription');
+
+            $subData = $subResponse->successful() ? ($subResponse->json() ?? []) : [];
+        }
 
         $tenant = TenantModel::find($request->user()->tenant_id);
         $settings = $tenant->settings ?? [];
@@ -67,13 +76,13 @@ class ElevenLabsConnectController extends Controller
         activity()
             ->event($isRotation ? 'elevenlabs_key_rotated' : 'elevenlabs_connected')
             ->performedOn($tenant)
-            ->withProperties(['account_id' => $userData['xi_api_key_preview'] ?? null])
+            ->withProperties(['account_id' => $userData['xi_api_key_preview'] ?? substr($apiKey, 0, 8)])
             ->log($isRotation ? 'ElevenLabs API key rotated' : 'ElevenLabs account connected');
 
         return response()->json([
             'success' => true,
             'account' => [
-                'user_id' => $userData['xi_api_key_preview'] ?? null,
+                'user_id' => $userData['xi_api_key_preview'] ?? substr($apiKey, 0, 8),
                 'tier' => $subData['tier'] ?? 'unknown',
                 'character_count' => $subData['character_count'] ?? 0,
                 'character_limit' => $subData['character_limit'] ?? 0,

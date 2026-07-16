@@ -28,6 +28,7 @@ class ElevenLabsConnectControllerTest extends TestCase
     public function test_connect_with_valid_key_saves_credentials(): void
     {
         Http::fake([
+            'api.elevenlabs.io/v1/voices' => Http::response(['voices' => []]),
             'api.elevenlabs.io/v1/user' => Http::response([
                 'xi_api_key_preview' => 'sk-xxxx',
             ]),
@@ -47,10 +48,26 @@ class ElevenLabsConnectControllerTest extends TestCase
         $this->assertArrayHasKey('elevenlabs_api_key', $this->tenant->settings);
     }
 
+    public function test_connect_with_restricted_key_accepts_without_user_info(): void
+    {
+        Http::fake([
+            'api.elevenlabs.io/v1/voices' => Http::response(['voices' => []]),
+            'api.elevenlabs.io/v1/user' => Http::response([], 401),
+        ]);
+
+        $this->actingAs($this->user)
+            ->postJson('/settings/elevenlabs/connect', ['api_key' => str_repeat('x', 20)])
+            ->assertOk()
+            ->assertJson(['success' => true]);
+
+        $this->tenant->refresh();
+        $this->assertArrayHasKey('elevenlabs_api_key', $this->tenant->settings);
+    }
+
     public function test_connect_with_invalid_key_returns_422(): void
     {
         Http::fake([
-            'api.elevenlabs.io/v1/user' => Http::response([], 401),
+            'api.elevenlabs.io/v1/voices' => Http::response([], 401),
         ]);
 
         $this->actingAs($this->user)
@@ -109,6 +126,7 @@ class ElevenLabsConnectControllerTest extends TestCase
         $this->tenant->save();
 
         Http::fake([
+            'api.elevenlabs.io/v1/voices' => Http::response(['voices' => []]),
             'api.elevenlabs.io/v1/user' => Http::response([
                 'xi_api_key_preview' => 'sk-new',
             ]),
