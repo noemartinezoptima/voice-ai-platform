@@ -45,7 +45,9 @@ class WebhookDeliveryController extends Controller
                 SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) as successful,
                 SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) as failed,
                 SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending
-            ")->first();
+            ")
+            ->toBase()
+            ->first();
 
         $successRate = $stats && $stats->total > 0
             ? round(($stats->successful / $stats->total) * 100, 1)

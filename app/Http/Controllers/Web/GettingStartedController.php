@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Infrastructure\Persistence\Eloquent\Flow\FlowModel;
 use App\Infrastructure\Persistence\Eloquent\Tenant\TenantModel;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

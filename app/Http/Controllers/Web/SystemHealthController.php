@@ -44,6 +44,9 @@ class SystemHealthController extends Controller
         ]);
     }
 
+    /**
+     * @return array{score: int<0, 100>, database: array<string, mixed>, redis: array<string, mixed>, cache: array<string, mixed>, twilio: array<string, mixed>}
+     */
     private function buildHealth(): array
     {
         $db = $this->checkDatabase();
@@ -56,7 +59,7 @@ class SystemHealthController extends Controller
         $total = count($services);
 
         return [
-            'score' => $total > 0 ? round(($ok / $total) * 100) : 0,
+            'score' => (int) round(($ok / $total) * 100),
             'database' => $db,
             'redis' => $redis,
             'cache' => $cache,
@@ -64,6 +67,9 @@ class SystemHealthController extends Controller
         ];
     }
 
+    /**
+     * @return array{status: string, label: string, latency?: ?int, message?: string}
+     */
     private function checkDatabase(): array
     {
         try {
@@ -75,6 +81,9 @@ class SystemHealthController extends Controller
         }
     }
 
+    /**
+     * @return array{status: string, label: string, message?: string}
+     */
     private function checkRedis(): array
     {
         try {
@@ -86,6 +95,9 @@ class SystemHealthController extends Controller
         }
     }
 
+    /**
+     * @return array{status: string, label: string, message?: string}
+     */
     private function checkCache(): array
     {
         try {
@@ -100,6 +112,9 @@ class SystemHealthController extends Controller
         }
     }
 
+    /**
+     * @return array{status: string, label: string, latency?: ?int, message?: string}
+     */
     private function checkTwilio(): array
     {
         try {
@@ -112,10 +127,16 @@ class SystemHealthController extends Controller
                 ->timeout(5)
                 ->get("https://api.twilio.com/2010-04-01/Accounts/{$accountSid}.json");
 
+            $latency = null;
+            if ($response->successful()) {
+                $stats = $response->handlerStats();
+                $latency = $stats['total_time_us'] ?? null;
+            }
+
             return [
                 'status' => $response->successful() ? 'ok' : 'error',
                 'label' => 'Twilio',
-                'latency' => $response->successful() ? $response->handlerStats('total_time_us') ?? null : null,
+                'latency' => $latency,
             ];
         } catch (\Throwable $e) {
             return ['status' => 'error', 'label' => 'Twilio', 'message' => $e->getMessage()];
@@ -134,6 +155,9 @@ class SystemHealthController extends Controller
         }
     }
 
+    /**
+     * @return list<array{id: string, connection: string, queue: string, exception: string, failed_at: string}>
+     */
     private function getFailedJobs(): array
     {
         return DB::table('failed_jobs')
@@ -151,6 +175,9 @@ class SystemHealthController extends Controller
             ->toArray();
     }
 
+    /**
+     * @return list<array{queue: string, size: int}>
+     */
     private function getQueueDepth(): array
     {
         $queues = ['default', 'twilio', 'emails'];
@@ -161,6 +188,9 @@ class SystemHealthController extends Controller
         ], $queues);
     }
 
+    /**
+     * @return array{total: int, failed: int, percentage: float}
+     */
     private function getErrorRate(string $tenantId): array
     {
         $total = DB::table('calls')
