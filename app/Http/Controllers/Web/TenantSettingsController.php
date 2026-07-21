@@ -52,8 +52,8 @@ class TenantSettingsController extends Controller
                 'timezone' => $settings['timezone'] ?? null,
                 'default_language' => $settings['default_language'] ?? null,
                 'is_active' => $tenant->isActive(),
-                'twilio_account_sid' => $settings['twilio_account_sid'] ?? '',
-                'twilio_auth_token' => isset($settings['twilio_auth_token']) ? self::MASK : '',
+                'twilio_account_sid' => $settings['twilio_account_sid'] ?? config('twilio.account_sid', ''),
+                'twilio_auth_token' => isset($settings['twilio_auth_token']) ? self::MASK : (config('twilio.auth_token') ? self::MASK : ''),
                 'twilio_phone_number' => $settings['twilio_phone_number'] ?? '',
                 'whatsapp_phone_number' => $settings['whatsapp_phone_number'] ?? '',
                 'twilio_oauth_enabled' => $settings['twilio_oauth_enabled'] ?? false,
@@ -87,6 +87,8 @@ class TenantSettingsController extends Controller
 
         if ($request->twilio_auth_token !== self::MASK) {
             $settings['twilio_auth_token'] = $request->twilio_auth_token;
+        } elseif (! isset($settings['twilio_auth_token']) && $request->twilio_account_sid === config('twilio.account_sid')) {
+            $settings['twilio_auth_token'] = config('twilio.auth_token');
         }
 
         if ($request->elevenlabs_api_key !== self::MASK) {
