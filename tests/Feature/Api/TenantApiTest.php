@@ -67,13 +67,4 @@ class TenantApiTest extends TestCase
         $response->assertOk();
         $response->assertJsonFragment(['name' => 'Updated Corp']);
     }
-
-    public function test_delete_tenant_returns_501(): void
-    {
-        $tenant = TenantFactory::new()->create();
-
-        $response = $this->withToken($this->token)->deleteJson("/api/v1/tenants/{$tenant->id}");
-
-        $response->assertStatus(501);
-    }
 }

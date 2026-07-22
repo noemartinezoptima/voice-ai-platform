@@ -16,11 +16,6 @@ class TenantController extends Controller
         private readonly TenantRepositoryInterface $tenantRepository,
     ) {}
 
-    public function index(): JsonResponse
-    {
-        return response()->json(['error' => 'Not implemented: use admin scope'], 501);
-    }
-
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -78,10 +73,5 @@ class TenantController extends Controller
         $this->tenantRepository->save($updated);
 
         return response()->json(new TenantResource($updated));
-    }
-
-    public function destroy(string $id): JsonResponse
-    {
-        return response()->json(['error' => 'Not implemented'], 501);
     }
 }
