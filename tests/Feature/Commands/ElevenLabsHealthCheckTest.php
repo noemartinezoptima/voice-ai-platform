@@ -24,6 +24,7 @@ class ElevenLabsHealthCheckTest extends TestCase
         $tenant->save();
 
         Http::fake([
+            'api.elevenlabs.io/v1/voices' => Http::response(['voices' => []]),
             'api.elevenlabs.io/v1/user' => Http::response(['ok' => true]),
             'api.elevenlabs.io/v1/user/subscription' => Http::response([
                 'tier' => 'pro',
@@ -39,6 +40,25 @@ class ElevenLabsHealthCheckTest extends TestCase
         $this->assertEquals('pro', $tenant->settings['elevenlabs_subscription_tier']);
     }
 
+    public function test_health_check_marks_restricted_key_healthy(): void
+    {
+        $tenant = TenantFactory::new()->create();
+        $tenant->settings = [
+            'elevenlabs_api_key' => Crypt::encryptString('restricted-key'),
+        ];
+        $tenant->save();
+
+        Http::fake([
+            'api.elevenlabs.io/v1/voices' => Http::response(['voices' => []]),
+            'api.elevenlabs.io/v1/user' => Http::response([], 401),
+        ]);
+
+        $this->artisan('elevenlabs:health-check')->assertExitCode(0);
+
+        $tenant->refresh();
+        $this->assertNull($tenant->settings['elevenlabs_health_status'] ?? null);
+    }
+
     public function test_health_check_invalid_key_sends_notification(): void
     {
         Notification::fake();
@@ -50,7 +70,7 @@ class ElevenLabsHealthCheckTest extends TestCase
         $tenant->save();
 
         Http::fake([
-            'api.elevenlabs.io/v1/user' => Http::response([], 401),
+            'api.elevenlabs.io/v1/voices' => Http::response([], 401),
         ]);
 
         $this->artisan('elevenlabs:health-check')->assertExitCode(0);

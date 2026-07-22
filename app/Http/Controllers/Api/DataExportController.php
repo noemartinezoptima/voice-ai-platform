@@ -26,7 +26,7 @@ class DataExportController extends Controller
 
         $flows = DB::table('flows')
             ->where('tenant_id', $tenantId)
-            ->get(['name', 'status', 'created_at']);
+            ->get(['name', 'is_active', 'created_at']);
 
         $users = DB::table('users')
             ->where('tenant_id', $tenantId)

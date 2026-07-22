@@ -9,7 +9,7 @@ import { Input } from '@/Components/catalyst/input'
 import { Select } from '@/Components/catalyst/select'
 import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from '@/Components/catalyst/table'
 import { Alert, AlertDescription } from '@/Components/catalyst/alert'
-import { Phone, PhoneOff, Search, Loader2, Check, X } from 'lucide-react'
+import { Phone, PhoneOff, Search, Loader2, Check, X, Copy, DollarSign } from 'lucide-react'
 
 const COUNTRIES = [
     { code: 'US', label: 'United States' },
@@ -39,6 +39,15 @@ export default function Index({ connected, numbers, flows, error }) {
             flowMap[flow.phone_number] = flow.name
         }
     })
+
+    const [copied, setCopied] = useState(null)
+
+    function copyNumber(phoneNumber) {
+        navigator.clipboard.writeText(phoneNumber).then(() => {
+            setCopied(phoneNumber)
+            setTimeout(() => setCopied(null), 2000)
+        }).catch(() => {})
+    }
 
     function handleSearch(e) {
         e.preventDefault()
@@ -114,7 +123,21 @@ export default function Index({ connected, numbers, flows, error }) {
                                     <TableBody>
                                         {numbers.map((number) => (
                                             <TableRow key={number.sid}>
-                                                <TableCell className="font-mono">{number.phone_number}</TableCell>
+                                                <TableCell>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="font-mono">{number.phone_number}</span>
+                                                        <button
+                                                            onClick={() => copyNumber(number.phone_number)}
+                                                            className="shrink-0 text-zinc-300 hover:text-zinc-500"
+                                                            title="Copy number"
+                                                        >
+                                                            {copied === number.phone_number
+                                                                ? <Check className="size-3.5 text-emerald-500" />
+                                                                : <Copy className="size-3.5" />
+                                                            }
+                                                        </button>
+                                                    </div>
+                                                </TableCell>
                                                 <TableCell>{number.friendly_name}</TableCell>
                                                 <TableCell>
                                                     <div className="flex gap-2">
@@ -131,7 +154,7 @@ export default function Index({ connected, numbers, flows, error }) {
                                                 <TableCell>
                                                     {flowMap[number.phone_number]
                                                         ? <Badge>{flowMap[number.phone_number]}</Badge>
-                                                        : <Text className="text-zinc-400 text-sm">—</Text>
+                                                        : <Text className="text-sm text-zinc-400">—</Text>
                                                     }
                                                 </TableCell>
                                                 <TableCell className="text-right">
@@ -210,8 +233,9 @@ export default function Index({ connected, numbers, flows, error }) {
                                     <TableHead>
                                         <TableRow>
                                             <TableHeader>Phone Number</TableHeader>
-                                            <TableHeader>Locality</TableHeader>
-                                            <TableHeader>Region</TableHeader>
+                                            <TableHeader>Capabilities</TableHeader>
+                                            <TableHeader>Location</TableHeader>
+                                            <TableHeader>Price</TableHeader>
                                             <TableHeader className="text-right">Actions</TableHeader>
                                         </TableRow>
                                     </TableHead>
@@ -219,8 +243,27 @@ export default function Index({ connected, numbers, flows, error }) {
                                         {searchResults.map((number) => (
                                             <TableRow key={number.phone_number}>
                                                 <TableCell className="font-mono">{number.phone_number}</TableCell>
-                                                <TableCell>{number.locality ?? '—'}</TableCell>
-                                                <TableCell>{number.region ?? '—'}</TableCell>
+                                                <TableCell>
+                                                    <div className="flex gap-2">
+                                                        <span className="flex items-center gap-1 text-xs">
+                                                            <CapabilityIcon enabled={number.capabilities?.voice} />
+                                                            Voice
+                                                        </span>
+                                                        <span className="flex items-center gap-1 text-xs">
+                                                            <CapabilityIcon enabled={number.capabilities?.sms} />
+                                                            SMS
+                                                        </span>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {[number.locality, number.region].filter(Boolean).join(', ') || '—'}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {number.monthly_price
+                                                        ? <span className="flex items-center gap-1 text-sm"><DollarSign className="size-3" />{number.monthly_price}/mo</span>
+                                                        : '—'
+                                                    }
+                                                </TableCell>
                                                 <TableCell className="text-right">
                                                     <Button
                                                         outline

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Laravel\Scout\Searchable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -30,7 +31,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class FlowModel extends Model
 {
     /** @use HasFactory<FlowModelFactory> */
-    use HasFactory, HasUuids, LogsActivity;
+    use HasFactory, HasUuids, LogsActivity, Searchable;
 
     protected $table = 'flows';
 
@@ -77,5 +78,16 @@ class FlowModel extends Model
     public function calls(): HasMany
     {
         return $this->hasMany(CallModel::class, 'flow_id', 'id');
+    }
+
+    /** @return array<string, mixed> */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'tenant_id' => $this->tenant_id,
+            'name' => $this->name,
+            'is_active' => $this->is_active,
+        ];
     }
 }

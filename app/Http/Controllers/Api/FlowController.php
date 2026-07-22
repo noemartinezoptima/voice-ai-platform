@@ -96,10 +96,4 @@ class FlowController extends Controller
 
         return response()->json(new FlowResource($updated));
     }
-
-    public function destroy(Request $request, string $id): JsonResponse
-    {
-        // Soft-delete not implemented — hard delete for now
-        return response()->json(['error' => 'Not implemented'], 501);
-    }
 }

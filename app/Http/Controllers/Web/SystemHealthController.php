@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
@@ -19,40 +22,141 @@ class SystemHealthController extends Controller
         $tenantId = $request->user()->tenant_id;
 
         return Inertia::render('Settings/System/Index', [
-            'health' => [
-                'database' => $this->checkDatabase(),
-                'redis' => $this->checkRedis(),
-            ],
+            'health' => $this->buildHealth(),
             'failedJobs' => $this->getFailedJobs(),
             'queueDepth' => $this->getQueueDepth(),
             'errorRate' => $this->getErrorRate($tenantId),
+            'lastChecked' => now()->toIso8601String(),
         ]);
     }
 
-    private function checkDatabase(): string
+    public function poll(Request $request): JsonResponse
+    {
+        Gate::authorize('manageSettings');
+        $tenantId = $request->user()->tenant_id;
+
+        return response()->json([
+            'health' => $this->buildHealth(),
+            'failedJobs' => $this->getFailedJobs(),
+            'queueDepth' => $this->getQueueDepth(),
+            'errorRate' => $this->getErrorRate($tenantId),
+            'lastChecked' => now()->toIso8601String(),
+        ]);
+    }
+
+    /**
+     * @return array{score: int<0, 100>, database: array<string, mixed>, redis: array<string, mixed>, cache: array<string, mixed>, twilio: array<string, mixed>}
+     */
+    private function buildHealth(): array
+    {
+        $db = $this->checkDatabase();
+        $redis = $this->checkRedis();
+        $cache = $this->checkCache();
+        $twilio = $this->checkTwilio();
+
+        $services = [$db, $redis, $cache, $twilio];
+        $ok = count(array_filter($services, fn ($s) => $s['status'] === 'ok'));
+        $total = count($services);
+
+        return [
+            'score' => (int) round(($ok / $total) * 100),
+            'database' => $db,
+            'redis' => $redis,
+            'cache' => $cache,
+            'twilio' => $twilio,
+        ];
+    }
+
+    /**
+     * @return array{status: string, label: string, latency?: ?int, message?: string}
+     */
+    private function checkDatabase(): array
     {
         try {
             DB::connection()->getPdo();
 
-            return 'ok';
-        } catch (\Throwable) {
-            return 'error';
-        }
-    }
-
-    private function checkRedis(): string
-    {
-        try {
-            Redis::connection()->ping();
-
-            return 'ok';
-        } catch (\Throwable) {
-            return 'error';
+            return ['status' => 'ok', 'label' => 'Database', 'latency' => $this->measure(fn () => DB::select('SELECT 1'))];
+        } catch (\Throwable $e) {
+            return ['status' => 'error', 'label' => 'Database', 'message' => $e->getMessage()];
         }
     }
 
     /**
-     * @return array{id: int, connection: string, queue: string, exception: string, failed_at: string}
+     * @return array{status: string, label: string, message?: string}
+     */
+    private function checkRedis(): array
+    {
+        try {
+            Redis::connection()->ping();
+
+            return ['status' => 'ok', 'label' => 'Redis'];
+        } catch (\Throwable $e) {
+            return ['status' => 'error', 'label' => 'Redis', 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * @return array{status: string, label: string, message?: string}
+     */
+    private function checkCache(): array
+    {
+        try {
+            $key = 'health:'.now()->timestamp;
+            Cache::put($key, true, 1);
+            $retrieved = Cache::get($key);
+            Cache::forget($key);
+
+            return ['status' => $retrieved ? 'ok' : 'error', 'label' => 'Cache'];
+        } catch (\Throwable $e) {
+            return ['status' => 'error', 'label' => 'Cache', 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * @return array{status: string, label: string, latency?: ?int, message?: string}
+     */
+    private function checkTwilio(): array
+    {
+        try {
+            $accountSid = config('twilio.account_sid');
+            if (empty($accountSid)) {
+                return ['status' => 'warning', 'label' => 'Twilio', 'message' => 'Not configured'];
+            }
+
+            $response = Http::withBasicAuth($accountSid, config('twilio.auth_token'))
+                ->timeout(5)
+                ->get("https://api.twilio.com/2010-04-01/Accounts/{$accountSid}.json");
+
+            $latency = null;
+            if ($response->successful()) {
+                $stats = $response->handlerStats();
+                $latency = $stats['total_time_us'] ?? null;
+            }
+
+            return [
+                'status' => $response->successful() ? 'ok' : 'error',
+                'label' => 'Twilio',
+                'latency' => $latency,
+            ];
+        } catch (\Throwable $e) {
+            return ['status' => 'error', 'label' => 'Twilio', 'message' => $e->getMessage()];
+        }
+    }
+
+    private function measure(callable $fn): ?int
+    {
+        $start = hrtime(true);
+        try {
+            $fn();
+
+            return (int) ((hrtime(true) - $start) / 1000);
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+    /**
+     * @return list<array{id: string, connection: string, queue: string, exception: string, failed_at: string}>
      */
     private function getFailedJobs(): array
     {
@@ -72,7 +176,7 @@ class SystemHealthController extends Controller
     }
 
     /**
-     * @return array{queue: string, size: int}[]
+     * @return list<array{queue: string, size: int}>
      */
     private function getQueueDepth(): array
     {

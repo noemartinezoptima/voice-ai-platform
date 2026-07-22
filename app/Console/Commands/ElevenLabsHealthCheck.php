@@ -24,11 +24,11 @@ class ElevenLabsHealthCheck extends Command
             try {
                 $apiKey = Crypt::decryptString($tenant->settings['elevenlabs_api_key']);
 
-                $response = Http::withHeaders(['xi-api-key' => $apiKey])
+                $voicesResponse = Http::withHeaders(['xi-api-key' => $apiKey])
                     ->timeout(10)
-                    ->get('https://api.elevenlabs.io/v1/user');
+                    ->get('https://api.elevenlabs.io/v1/voices');
 
-                if ($response->status() === 401) {
+                if ($voicesResponse->status() === 401) {
                     $settings = $tenant->settings;
                     $settings['elevenlabs_health_status'] = 'invalid';
                     $tenant->settings = $settings;
@@ -45,12 +45,20 @@ class ElevenLabsHealthCheck extends Command
                         ->log('ElevenLabs API key is invalid');
 
                     $this->warn("Invalid key for tenant: {$tenant->name}");
-                } elseif ($response->successful()) {
-                    $subResponse = Http::withHeaders(['xi-api-key' => $apiKey])
+                } elseif ($voicesResponse->successful()) {
+                    $subData = [];
+                    $userResponse = Http::withHeaders(['xi-api-key' => $apiKey])
                         ->timeout(10)
-                        ->get('https://api.elevenlabs.io/v1/user/subscription');
+                        ->get('https://api.elevenlabs.io/v1/user');
 
-                    $subData = $subResponse->json() ?? [];
+                    if ($userResponse->successful()) {
+                        $subResponse = Http::withHeaders(['xi-api-key' => $apiKey])
+                            ->timeout(10)
+                            ->get('https://api.elevenlabs.io/v1/user/subscription');
+
+                        $subData = $subResponse->successful() ? ($subResponse->json() ?? []) : [];
+                    }
+
                     $settings = $tenant->settings;
                     $settings['elevenlabs_character_count'] = $subData['character_count'] ?? 0;
                     $settings['elevenlabs_character_limit'] = $subData['character_limit'] ?? 0;

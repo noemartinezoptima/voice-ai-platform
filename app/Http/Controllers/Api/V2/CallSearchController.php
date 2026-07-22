@@ -30,7 +30,7 @@ class CallSearchController extends Controller
             ->when($request->flow_id, fn ($q, $v) => $q->where('calls.flow_id', $v))
             ->when($request->date_from, fn ($q, $v) => $q->where('calls.created_at', '>=', $v))
             ->when($request->date_to, fn ($q, $v) => $q->where('calls.created_at', '<=', $v))
-            ->select('calls.*', 'flows.name as flow_name')
+            ->select('calls.id', 'calls.tenant_id', 'calls.flow_id', 'calls.call_sid', 'calls.from_number', 'calls.to_number', 'calls.direction', 'calls.status', 'calls.duration_seconds', 'calls.current_step', 'calls.started_at', 'calls.ended_at', 'calls.created_at', 'calls.updated_at', 'flows.name as flow_name')
             ->distinct()
             ->orderBy('calls.created_at', 'desc')
             ->paginate($request->per_page ?? 25);

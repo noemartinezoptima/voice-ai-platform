@@ -109,9 +109,11 @@ class ProcessDocumentJob implements ShouldQueue
 
     private function resolveProcessor(string $mimeType): ?object
     {
+        $apiKey = config('services.openai.api_key') ?? '';
+
         $processors = [
             new PdfDocumentProcessor,
-            new ImageDocumentProcessor(config('services.openai.api_key')),
+            new ImageDocumentProcessor($apiKey),
             new TextDocumentProcessor,
             new CsvDocumentProcessor,
         ];

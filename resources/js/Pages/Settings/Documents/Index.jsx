@@ -30,7 +30,7 @@ export default function Index({ documents, stats }) {
             </div>
 
             {documents.data.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <p className="text-base font-semibold text-zinc-950 dark:text-white">No documents</p>
                     <Text className="mt-2">Upload PDFs, images, CSV files, or text documents.</Text>
                     <Link href={create().url} className="mt-4">
@@ -41,15 +41,15 @@ export default function Index({ documents, stats }) {
                 <>
                     {stats && (
                         <div className="mt-6 grid grid-cols-3 gap-4">
-                            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+                            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
                                 <p className="text-sm text-zinc-500 dark:text-zinc-400">Total Documents</p>
                                 <p className="mt-1 text-2xl font-semibold text-zinc-950 dark:text-white">{stats.total_documents}</p>
                             </div>
-                            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+                            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
                                 <p className="text-sm text-zinc-500 dark:text-zinc-400">Total Chunks</p>
                                 <p className="mt-1 text-2xl font-semibold text-zinc-950 dark:text-white">{stats.total_chunks}</p>
                             </div>
-                            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+                            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
                                 <p className="text-sm text-zinc-500 dark:text-zinc-400">Avg Chunks / Doc</p>
                                 <p className="mt-1 text-2xl font-semibold text-zinc-950 dark:text-white">{stats.avg_chunks_per_doc}</p>
                             </div>

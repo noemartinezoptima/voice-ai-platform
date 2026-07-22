@@ -76,7 +76,7 @@ export default function Show({ document, chunks }) {
             </div>
 
             <div className="mt-8 max-w-4xl space-y-6">
-                <div className="rounded-xl border border-zinc-950/5 bg-white p-8 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-950/5 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
                     <div className="flex items-start justify-between">
                         <Subheading>Document Info</Subheading>
                         <div className="flex gap-2">
@@ -118,11 +118,11 @@ export default function Show({ document, chunks }) {
                     </DescriptionList>
                 </div>
 
-                <div className="rounded-xl border border-zinc-950/5 bg-white p-8 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-950/5 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
                     <Subheading>Extracted Chunks ({chunks.length})</Subheading>
 
                     {chunks.length === 0 ? (
-                        <div className="mt-4 flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-950/10 py-12 dark:border-white/10">
+                        <div className="mt-4 flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-200 py-12 dark:border-zinc-800">
                             <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">No chunks extracted yet</p>
                             <Text className="mt-1">Document may still be processing or processing failed.</Text>
                         </div>

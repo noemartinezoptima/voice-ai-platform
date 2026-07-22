@@ -58,6 +58,14 @@ class QualityController extends Controller
                 ')
                 ->first();
 
+            $scoreTrend = DB::table('call_quality_scores')
+                ->where('tenant_id', $tenantId)
+                ->where('created_at', '>=', now()->subDays(30))
+                ->selectRaw('DATE(created_at) as date, ROUND(AVG(total_score), 1) as avg_score, COUNT(*) as call_count')
+                ->groupBy(DB::raw('DATE(created_at)'))
+                ->orderBy('date')
+                ->get();
+
             return [
                 'avgScore' => $stats ? round((float) $stats->avg_score, 1) : 0.0,
                 'totalScored' => $stats ? (int) $stats->total_scored : 0,
@@ -65,10 +73,13 @@ class QualityController extends Controller
                 'topFlowScore' => $topFlow ? round((float) ($topFlow->avg_score ?? 0), 1) : 0,
                 'topFlows' => $topFlows,
                 'scoreDistribution' => $scoreDistribution,
+                'scoreTrend' => $scoreTrend,
             ];
         });
 
-        $callsWithScores = CallQualityScoreModel::query()
+        $filters = $request->only(['date_from', 'date_to', 'score_min', 'score_max', 'search']);
+
+        $callsQuery = CallQualityScoreModel::query()
             ->where('call_quality_scores.tenant_id', $tenantId)
             ->join('calls', 'call_quality_scores.call_id', '=', 'calls.id')
             ->leftJoin('flows', 'calls.flow_id', '=', 'flows.id')
@@ -79,7 +90,28 @@ class QualityController extends Controller
                 'calls.status as call_status',
                 'calls.started_at',
             )
-            ->selectRaw('COALESCE(flows.name, \'No Flow\') as flow_name')
+            ->selectRaw('COALESCE(flows.name, \'No Flow\') as flow_name');
+
+        if ($dateFrom = $filters['date_from'] ?? null) {
+            $callsQuery->whereDate('call_quality_scores.created_at', '>=', $dateFrom);
+        }
+        if ($dateTo = $filters['date_to'] ?? null) {
+            $callsQuery->whereDate('call_quality_scores.created_at', '<=', $dateTo);
+        }
+        if ($scoreMin = $filters['score_min'] ?? null) {
+            $callsQuery->where('call_quality_scores.total_score', '>=', (int) $scoreMin);
+        }
+        if ($scoreMax = $filters['score_max'] ?? null) {
+            $callsQuery->where('call_quality_scores.total_score', '<=', (int) $scoreMax);
+        }
+        if ($search = $filters['search'] ?? null) {
+            $callsQuery->where(function ($q) use ($search) {
+                $q->where('calls.from_number', 'like', "%{$search}%")
+                    ->orWhere('calls.to_number', 'like', "%{$search}%");
+            });
+        }
+
+        $callsWithScores = $callsQuery
             ->orderByDesc('call_quality_scores.created_at')
             ->paginate(15);
 
@@ -109,6 +141,8 @@ class QualityController extends Controller
             'topFlows' => $cachedStats['topFlows'],
             'recentScored' => $recentScored,
             'scoreDistribution' => $cachedStats['scoreDistribution'],
+            'scoreTrend' => $cachedStats['scoreTrend'],
+            'filters' => $filters,
         ]);
     }
 
@@ -121,18 +155,19 @@ class QualityController extends Controller
 
         $transcripts = TranscriptModel::where('call_id', $call->id)
             ->orderBy('created_at')
-            ->limit(5)
             ->get();
 
         return Inertia::render('Quality/Show', [
             'call' => [
                 'id' => $call->id,
+                'call_sid' => $call->call_sid,
                 'from_number' => $call->from_number,
                 'to_number' => $call->to_number,
                 'status' => $call->status,
                 'duration_seconds' => $call->duration_seconds,
                 'started_at' => $call->started_at,
                 'flow_name' => $call->flow?->name,
+                'recording_url' => $call->recording_url,
             ],
             'score' => $score ? [
                 'id' => $score->id,
@@ -142,9 +177,10 @@ class QualityController extends Controller
                 'duration_score' => $score->duration_score,
                 'details' => $score->details,
             ] : null,
-            'transcriptPreview' => $transcripts->map(fn ($t) => [
+            'transcripts' => $transcripts->map(fn ($t) => [
                 'role' => $t->role,
                 'text' => $t->text,
+                'created_at' => $t->created_at,
             ]),
         ]);
     }

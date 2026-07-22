@@ -65,22 +65,22 @@ export default function Index({ calls, flows, stats }) {
             </div>
 
             <div className="mt-6 grid grid-cols-3 gap-4">
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
                     <Text className="text-sm">Pending</Text>
                     <p className="mt-1 text-2xl font-semibold">{stats.pending}</p>
                 </div>
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
                     <Text className="text-sm">Due Today</Text>
                     <p className="mt-1 text-2xl font-semibold">{stats.dueToday}</p>
                 </div>
-                <div className="rounded-xl border border-zinc-950/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
                     <Text className="text-sm">Completed Today</Text>
                     <p className="mt-1 text-2xl font-semibold">{stats.completedToday}</p>
                 </div>
             </div>
 
             {calls.data.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No scheduled calls</p>
                     <Text className="mt-2">Schedule your first call to get started.</Text>
                 </div>
@@ -171,7 +171,7 @@ export default function Index({ calls, flows, stats }) {
 
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="w-full max-w-md rounded-xl border border-zinc-950/10 bg-white p-6 shadow-xl dark:border-white/10 dark:bg-zinc-900">
+                    <div className="w-full max-w-md rounded-xl border border-zinc-200 bg-white p-6 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
                         <Heading>Schedule a Call</Heading>
                         <Text className="mt-1 mb-4">Set up an automated outbound call.</Text>
                         <form onSubmit={handleSubmit} className="space-y-4">

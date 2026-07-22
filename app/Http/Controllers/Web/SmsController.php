@@ -48,18 +48,39 @@ class SmsController extends Controller
         $settings = $tenant?->settings() ?? [];
 
         $conversations = SmsMessageModel::where('tenant_id', $tenantId)
-            ->selectRaw('
+            ->selectRaw("
                 CASE
-                    WHEN direction = "inbound" THEN from_number
+                    WHEN direction = 'inbound' THEN from_number
                     ELSE to_number
                 END as contact_number,
                 MAX(created_at) as last_message_at,
                 COUNT(*) as message_count
-            ')
+            ")
             ->groupBy('contact_number')
             ->orderBy('last_message_at', 'desc')
             ->limit(50)
-            ->get();
+            ->toBase()
+            ->get()
+            ->map(fn ($row) => [
+                'contact_number' => $row->contact_number,
+                'last_message_at' => $row->last_message_at,
+                'message_count' => (int) $row->message_count,
+            ])
+            ->map(function ($conv) use ($tenantId) {
+                $last = SmsMessageModel::where('tenant_id', $tenantId)
+                    ->where(function ($q) use ($conv) {
+                        $q->where('from_number', $conv['contact_number'])
+                            ->orWhere('to_number', $conv['contact_number']);
+                    })
+                    ->latest()
+                    ->first();
+
+                return (object) [
+                    ...$conv,
+                    'last_body' => $last?->body,
+                    'last_channel' => $last?->channel,
+                ];
+            })->values();
 
         return Inertia::render('Sms/Index', [
             'messages' => $messages,

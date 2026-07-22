@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\CallModelFactory;
 use Database\Factories\TenantFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CallsPageTest extends TestCase
@@ -112,7 +113,7 @@ class CallsPageTest extends TestCase
     public function test_calls_show_returns_404_for_missing(): void
     {
         $this->actingAs($this->user)
-            ->get('/calls/nonexistent-id')
+            ->get('/calls/'.Str::uuid()->toString())
             ->assertNotFound();
     }
 

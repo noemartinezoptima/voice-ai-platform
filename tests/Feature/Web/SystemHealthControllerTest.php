@@ -30,4 +30,45 @@ class SystemHealthControllerTest extends TestCase
     {
         $this->actingAs($this->user)->get('/settings/system')->assertOk();
     }
+
+    public function test_index_contains_health_data(): void
+    {
+        $response = $this->actingAs($this->user)->get('/settings/system');
+
+        $response->assertInertia(fn ($page) => $page
+            ->component('Settings/System/Index')
+            ->has('health')
+            ->has('failedJobs')
+            ->has('queueDepth')
+            ->has('errorRate')
+            ->has('lastChecked')
+        );
+    }
+
+    public function test_poll_requires_authentication(): void
+    {
+        $this->getJson('/settings/system/poll')->assertRedirect();
+    }
+
+    public function test_poll_returns_json(): void
+    {
+        $response = $this->actingAs($this->user)->getJson('/settings/system/poll');
+
+        $response->assertOk()
+            ->assertJsonStructure([
+                'health' => ['score', 'database', 'redis', 'cache', 'twilio'],
+                'failedJobs',
+                'queueDepth',
+                'errorRate',
+                'lastChecked',
+            ]);
+    }
+
+    public function test_poll_health_database_is_ok(): void
+    {
+        $response = $this->actingAs($this->user)->getJson('/settings/system/poll');
+
+        $response->assertOk();
+        $this->assertEquals('ok', $response->json('health.database.status'));
+    }
 }

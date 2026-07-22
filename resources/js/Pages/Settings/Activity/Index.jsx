@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { Heading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
@@ -8,9 +8,8 @@ import { Select } from '@/Components/catalyst/select';
 import { Badge } from '@/Components/catalyst/badge';
 import { Button } from '@/Components/catalyst/button';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/Components/catalyst/table';
-import { Pagination, PaginationPrevious, PaginationNext, PaginationList, PaginationPage } from '@/Components/catalyst/pagination';
 import { index as activityIndex } from '@/actions/App/Http/Controllers/Web/ActivityLogController';
-import { Activity, Shield, Users, CreditCard, GitBranch, Webhook, FileText, Settings } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const LOG_NAMES = [
     { value: '', label: 'All Events' },
@@ -78,7 +77,7 @@ export default function Index({ activities, filters }) {
             </div>
 
             {activities.data.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <Activity className="size-8 text-zinc-400" />
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No activity yet</p>
                     <Text className="mt-2">Activity will appear here as actions are taken.</Text>
@@ -117,21 +116,29 @@ export default function Index({ activities, filters }) {
                     </Table>
 
                     {activities.last_page > 1 && (
-                        <Pagination className="mt-6">
-                            {activities.current_page > 1 && (
-                                <PaginationPrevious href={`${activityIndex().url}?page=${activities.current_page - 1}`} />
+                        <div className="flex items-center justify-center gap-1 border-t border-zinc-200 px-6 py-4">
+                            {activities.prev_page_url && (
+                                <Link href={activities.prev_page_url} className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm font-medium text-zinc-600 hover:bg-zinc-100">
+                                    <ChevronLeft className="size-4" /> Previous
+                                </Link>
                             )}
-                            <PaginationList>
-                                {Array.from({ length: activities.last_page }, (_, i) => i + 1).map((page) => (
-                                    <PaginationPage key={page} href={`${activityIndex().url}?page=${page}`} current={page === activities.current_page}>
-                                        {page}
-                                    </PaginationPage>
-                                ))}
-                            </PaginationList>
-                            {activities.current_page < activities.last_page && (
-                                <PaginationNext href={`${activityIndex().url}?page=${activities.current_page + 1}`} />
+                            {Array.from({ length: activities.last_page }, (_, i) => i + 1).map((page) => (
+                                <Link
+                                    key={page}
+                                    href={`${activityIndex().url}?page=${page}${logName ? `&log_name=${logName}` : ''}${search ? `&search=${search}` : ''}${from ? `&from=${from}` : ''}${to ? `&to=${to}` : ''}`}
+                                    className={`min-w-9 rounded-md px-2.5 py-1.5 text-center text-sm font-medium transition-colors ${
+                                        activities.current_page === page ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100'
+                                    }`}
+                                >
+                                    {page}
+                                </Link>
+                            ))}
+                            {activities.next_page_url && (
+                                <Link href={activities.next_page_url} className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm font-medium text-zinc-600 hover:bg-zinc-100">
+                                    Next <ChevronRight className="size-4" />
+                                </Link>
                             )}
-                        </Pagination>
+                        </div>
                     )}
                 </div>
             )}

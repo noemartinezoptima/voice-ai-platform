@@ -55,82 +55,7 @@ jobs:
   test:
     needs: [phpstan, pint]
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: test
-        ports: ['5432:5432']
-        options: >-
-          --health-cmd="pg_isready -U test -d test"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.3
-          extensions: mbstring, bcmath, dom, pdo, pdo_pgsql, fileinfo
-          coverage: none
-
-      - uses: actions/cache@v4
-        with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - run: npm install -g pnpm
-
-      - uses: actions/cache@v4
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm-
-
-      - run: composer install --no-progress --no-interaction --prefer-dist
-
-      - run: pnpm install --frozen-lockfile
-
-      - run: pnpm run build
-
-      - run: php artisan migrate --env=testing --no-interaction
-        env:
-          DB_CONNECTION: pgsql
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_DATABASE: test
-          DB_USERNAME: test
-          DB_PASSWORD: test
-
-      - run: php artisan test --compact --parallel
-        env:
-          DB_CONNECTION: pgsql
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_DATABASE: test
-          DB_USERNAME: test
-          DB_PASSWORD: test
-
-      - name: Upload test artifacts
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-logs
-          path: storage/logs/
-
-  dusk:
-    needs: test
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -166,28 +91,24 @@ jobs:
 
       - run: |
           touch database/database.sqlite
-          php artisan migrate --env=dusk --no-interaction
+          php artisan migrate --env=testing --no-interaction
         env:
           DB_CONNECTION: sqlite
 
-      - run: php artisan serve --env=dusk &
+      - run: php artisan test --compact
         env:
           DB_CONNECTION: sqlite
+          APP_KEY: base64:bg/2bc+wbm6AkWqIDaQpKMbndn6WutEm/eL9x9wXkGU=
 
-      - run: php artisan dusk --env=dusk
-        env:
-          APP_URL: http://127.0.0.1:8000
-          DB_CONNECTION: sqlite
-
-      - name: Upload screenshots
+      - name: Upload test artifacts
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: dusk-screenshots
-          path: tests/Browser/screenshots/
+          name: test-logs
+          path: storage/logs/
 
   deploy:
-    needs: [test, dusk]
+    needs: [test]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: production

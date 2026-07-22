@@ -105,13 +105,4 @@ class FlowApiTest extends TestCase
         $response->assertOk();
         $response->assertJsonFragment(['name' => 'Updated Flow']);
     }
-
-    public function test_delete_flow_returns_501(): void
-    {
-        $flow = FlowModelFactory::new()->create(['tenant_id' => $this->user->tenant_id]);
-
-        $response = $this->withToken($this->token)->deleteJson("/api/v1/flows/{$flow->id}");
-
-        $response->assertStatus(501);
-    }
 }

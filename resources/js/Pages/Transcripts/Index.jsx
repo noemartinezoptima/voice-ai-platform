@@ -60,13 +60,13 @@ export default function Index({ transcripts, stats, filters }) {
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="rounded-xl border border-zinc-950/10 p-4 dark:border-white/10">
+                <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
                     <Text className="text-sm/5">Total Transcripts</Text>
                     <p className="mt-1 text-2xl font-semibold text-zinc-950 dark:text-white">
                         {stats.total_transcripts.toLocaleString()}
                     </p>
                 </div>
-                <div className="rounded-xl border border-zinc-950/10 p-4 dark:border-white/10">
+                <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
                     <Text className="text-sm/5">Calls Transcribed</Text>
                     <p className="mt-1 text-2xl font-semibold text-zinc-950 dark:text-white">
                         {stats.calls_with_transcripts.toLocaleString()}
@@ -109,7 +109,7 @@ export default function Index({ transcripts, stats, filters }) {
             </div>
 
             {transcripts.data.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No transcripts found</p>
                     <Text className="mt-2">Transcripts will appear here once your calls are processed.</Text>
                 </div>
@@ -118,7 +118,7 @@ export default function Index({ transcripts, stats, filters }) {
                     {transcripts.data.map((transcript) => (
                         <div
                             key={transcript.id}
-                            className="rounded-xl border border-zinc-950/10 p-4 dark:border-white/10"
+                            className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800"
                         >
                             <div className="flex items-start justify-between gap-4">
                                 <div className="min-w-0 flex-1">

@@ -168,7 +168,7 @@ export default function Builder({ flow }) {
         </div>
 
         {activeTab === 'builder' && (
-          <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-white/10 dark:bg-zinc-900">
+          <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
             <FlowBuilderComponent
               ref={builderRef}
               config={config}
@@ -180,13 +180,13 @@ export default function Builder({ flow }) {
         )}
 
         {activeTab === 'comments' && (
-          <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-white/10 dark:bg-zinc-900">
+          <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
             <FlowCommentPanel flowId={flow.id} />
           </div>
         )}
 
         {activeTab === 'history' && (
-          <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-white/10 dark:bg-zinc-900">
+          <div className="flex-1 overflow-hidden rounded-xl border border-zinc-950/5 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
             <FlowVersionPanel flowId={flow.id} />
           </div>
         )}
@@ -222,7 +222,7 @@ export default function Builder({ flow }) {
               {simulateResults.results.map((r, i) => (
                 <div key={i} className={`rounded-lg border p-3 ${
                   r.status === 'error' ? 'border-red-200 bg-red-50 dark:border-red-800/50 dark:bg-red-900/20' :
-                  'border-zinc-950/10 dark:border-white/10'
+                  'border-zinc-200 dark:border-zinc-800'
                 }`}>
                   <div className="flex items-center gap-2">
                     <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-mono text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">

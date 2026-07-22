@@ -112,7 +112,7 @@ export default function Index({ autoReplies }) {
             </div>
 
             {autoReplies.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No auto-reply rules</p>
                     <Text className="mt-2">Create a rule to automatically respond to incoming messages.</Text>
                 </div>

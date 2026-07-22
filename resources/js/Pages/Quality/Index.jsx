@@ -1,12 +1,18 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Link, Head } from '@inertiajs/react';
+import { Link, Head, router } from '@inertiajs/react';
+import { useState } from 'react';
 import { Heading, Subheading } from '@/Components/catalyst/heading';
 import { Text } from '@/Components/catalyst/text';
 import { Badge } from '@/Components/catalyst/badge';
+import { Button } from '@/Components/catalyst/button';
+import { Input } from '@/Components/catalyst/input';
 import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from '@/Components/catalyst/table';
 import { Pagination, PaginationList, PaginationPage, PaginationGap, PaginationNext, PaginationPrevious } from '@/Components/catalyst/pagination';
 import { index as qualityIndex, show as qualityShow } from '@/routes/quality';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Search, X, TrendingUp } from 'lucide-react';
+import {
+    LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer,
+} from 'recharts';
 
 function ScoreGauge({ score }) {
   const r = 28;
@@ -37,9 +43,9 @@ function ScoreBadge({ score }) {
 
 function StatCard({ label, value, sub }) {
   return (
-    <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+    <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
       <Text className="!text-zinc-500">{label}</Text>
-      <p className="text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">{value}</p>
+      <p className="text-[28px] font-bold tracking-tight text-zinc-950 dark:text-white">{value}</p>
       {sub && <Text className="mt-1 text-sm !text-zinc-400">{sub}</Text>}
     </div>
   );
@@ -70,7 +76,33 @@ export default function Index({
   topFlows,
   recentScored,
   scoreDistribution,
+  scoreTrend = [],
+  filters = {},
 }) {
+  const [localFilters, setLocalFilters] = useState({
+    date_from: filters.date_from ?? '',
+    date_to: filters.date_to ?? '',
+    score_min: filters.score_min ?? '',
+    score_max: filters.score_max ?? '',
+    search: filters.search ?? '',
+  });
+
+  function applyFilters() {
+    const params = {}
+    Object.entries(localFilters).forEach(([k, v]) => { if (v) params[k] = v })
+    router.get(qualityIndex().url, params, { preserveState: true, replace: true })
+  }
+
+  function clearFilters() {
+    setLocalFilters({ date_from: '', date_to: '', score_min: '', score_max: '', search: '' })
+    router.get(qualityIndex().url, {}, { preserveState: true, replace: true })
+  }
+
+  function handleFilterKeyDown(e) {
+    if (e.key === 'Enter') applyFilters()
+  }
+
+  const hasActiveFilters = filters.date_from || filters.date_to || filters.score_min || filters.score_max || filters.search
   const isEmpty = totalScored === 0;
   const distTotal = (scoreDistribution?.excellent ?? 0)
     + (scoreDistribution?.good ?? 0)
@@ -87,7 +119,7 @@ export default function Index({
       </div>
 
       {isEmpty ? (
-        <div className="mt-12 flex flex-col items-center justify-center rounded-xl border border-zinc-950/5 bg-white p-12 dark:border-white/10 dark:bg-zinc-900">
+        <div className="mt-12 flex flex-col items-center justify-center rounded-xl border border-zinc-950/5 bg-white p-12 dark:border-zinc-800 dark:bg-zinc-900">
           <ShieldCheck className="h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-4" />
           <Text className="text-lg text-zinc-500">No quality scores yet</Text>
           <Text className="mt-1 text-sm text-zinc-400 max-w-sm text-center">
@@ -109,8 +141,41 @@ export default function Index({
             />
           </div>
 
+          <div className="mt-6 rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="flex items-center justify-between">
+              <Subheading>Score Trend (Last 30 Days)</Subheading>
+              <TrendingUp className="size-4 text-zinc-400" />
+            </div>
+            {scoreTrend.length === 0 ? (
+              <Text className="mt-4 !text-zinc-400">Not enough data to show a trend.</Text>
+            ) : (
+              <div className="mt-4">
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={scoreTrend}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#9ca3af" />
+                    <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} stroke="#9ca3af" />
+                    <Tooltip
+                      contentStyle={{ borderRadius: 8, border: '1px solid #e4e4e7', fontSize: 13 }}
+                      labelFormatter={(label) => new Date(label).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    />
+                    <Line type="monotone" dataKey="avg_score" name="Avg Score" stroke="#6366f1" strokeWidth={2} dot={{ r: 3 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+                <div className="mt-2 flex items-center justify-center gap-6 text-xs text-zinc-400">
+                  <span className="flex items-center gap-1">
+                    <span className="inline-block size-2 rounded-full bg-indigo-500" />
+                    Avg Score
+                  </span>
+                  <span>Min: {Math.min(...scoreTrend.map((d) => d.avg_score))}</span>
+                  <span>Max: {Math.max(...scoreTrend.map((d) => d.avg_score))}</span>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <Subheading>Score Distribution</Subheading>
               <div className="mt-4 space-y-3">
                 <DistributionBar label="Excellent" count={scoreDistribution?.excellent ?? 0} total={distTotal} color="#22c55e" />
@@ -120,7 +185,7 @@ export default function Index({
               </div>
             </div>
 
-            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <Subheading>Top Flows by Average Score</Subheading>
               {topFlows.length === 0 ? (
                 <Text className="mt-4 text-zinc-400">No data yet</Text>
@@ -144,7 +209,7 @@ export default function Index({
           </div>
 
           <div className="mt-6">
-            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <Subheading>Recent Scored Calls</Subheading>
               <div className="mt-4">
                 <Table>
@@ -189,8 +254,80 @@ export default function Index({
           </div>
 
           <div className="mt-6">
-            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <div className="rounded-xl border border-zinc-950/5 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <Subheading>All Scored Calls</Subheading>
+
+              <div className="mt-4 flex flex-wrap items-end gap-3">
+                <div>
+                  <Text className="mb-1 text-xs !text-zinc-500">From</Text>
+                  <Input
+                    type="date"
+                    value={localFilters.date_from}
+                    onChange={(e) => setLocalFilters((p) => ({ ...p, date_from: e.target.value }))}
+                    onKeyDown={handleFilterKeyDown}
+                    className="h-9 text-sm"
+                  />
+                </div>
+                <div>
+                  <Text className="mb-1 text-xs !text-zinc-500">To</Text>
+                  <Input
+                    type="date"
+                    value={localFilters.date_to}
+                    onChange={(e) => setLocalFilters((p) => ({ ...p, date_to: e.target.value }))}
+                    onKeyDown={handleFilterKeyDown}
+                    className="h-9 text-sm"
+                  />
+                </div>
+                <div>
+                  <Text className="mb-1 text-xs !text-zinc-500">Min Score</Text>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={100}
+                    value={localFilters.score_min}
+                    onChange={(e) => setLocalFilters((p) => ({ ...p, score_min: e.target.value }))}
+                    onKeyDown={handleFilterKeyDown}
+                    placeholder="0"
+                    className="h-9 w-20 text-sm"
+                  />
+                </div>
+                <div>
+                  <Text className="mb-1 text-xs !text-zinc-500">Max Score</Text>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={100}
+                    value={localFilters.score_max}
+                    onChange={(e) => setLocalFilters((p) => ({ ...p, score_max: e.target.value }))}
+                    onKeyDown={handleFilterKeyDown}
+                    placeholder="100"
+                    className="h-9 w-20 text-sm"
+                  />
+                </div>
+                <div className="flex-1">
+                  <Text className="mb-1 text-xs !text-zinc-500">Phone Number</Text>
+                  <Input
+                    value={localFilters.search}
+                    onChange={(e) => setLocalFilters((p) => ({ ...p, search: e.target.value }))}
+                    onKeyDown={handleFilterKeyDown}
+                    placeholder="Search by number..."
+                    className="h-9 text-sm"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button onClick={applyFilters}>
+                    <Search className="size-4" />
+                    Apply
+                  </Button>
+                  {hasActiveFilters && (
+                    <Button outline onClick={clearFilters}>
+                      <X className="size-4" />
+                      Clear
+                    </Button>
+                  )}
+                </div>
+              </div>
+
               <div className="mt-4">
                 <Table>
                   <TableHead>

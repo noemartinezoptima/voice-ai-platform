@@ -80,7 +80,7 @@ export default function Index({ agents }) {
             </div>
 
             {agents.length === 0 ? (
-                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-950/10 py-16 dark:border-white/10">
+                <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 dark:border-zinc-800">
                     <p className="mt-4 text-base font-semibold text-zinc-950 dark:text-white">No agents</p>
                     <Text className="mt-2">Create an AI agent or sync from ElevenLabs to get started.</Text>
                     <Button onClick={handleSync} className="mt-4">Sync from ElevenLabs</Button>

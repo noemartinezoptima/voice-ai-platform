@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Laravel\Scout\Searchable;
 
 /**
  * @property string $id
@@ -26,7 +27,7 @@ use Illuminate\Support\Carbon;
 class SmsMessageModel extends Model
 {
     /** @use HasFactory<SmsMessageModelFactory> */
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Searchable;
 
     protected static function newFactory(): SmsMessageModelFactory
     {
@@ -58,5 +59,19 @@ class SmsMessageModel extends Model
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(TenantModel::class);
+    }
+
+    /** @return array<string, mixed> */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'tenant_id' => $this->tenant_id,
+            'from_number' => $this->from_number,
+            'to_number' => $this->to_number,
+            'body' => $this->body,
+            'channel' => $this->channel,
+            'direction' => $this->direction,
+        ];
     }
 }
